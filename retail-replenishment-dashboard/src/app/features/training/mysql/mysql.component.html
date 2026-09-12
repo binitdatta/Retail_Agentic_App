@@ -1,0 +1,1238 @@
+<div class="training-content">
+
+    <!-- ============================================================
+         PAGE HEADER
+         ============================================================ -->
+
+    <div class="mb-4">
+
+        <div class="d-flex align-items-center gap-2 mb-2">
+      <span class="badge bg-primary px-3 py-2">
+        Database Architecture
+      </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+        MySQL 8
+      </span>
+        </div>
+
+        <h1 class="display-6 fw-bold mb-2">
+            2. MySQL 8
+        </h1>
+
+        <p class="lead text-muted mb-0">
+            Understand the relational data model behind the Retail Replenishment
+            Agentic AI POC, including reference data, inventory, agent auditing,
+            orders, delivery tracking, escalations, SQL views, optimistic locking,
+            and Hibernate schema validation.
+        </p>
+
+    </div>
+
+
+    <!-- ============================================================
+         DATABASE GOVERNANCE / OWNERSHIP
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header bg-primary text-white py-3">
+            <strong>Database ownership model</strong>
+        </div>
+
+        <div class="card-body">
+
+            <p class="mb-3">
+                The schema is <strong>DBA-owned</strong> and intentionally managed
+                independently from the Spring Boot JPA entity model.
+            </p>
+
+            <p class="mb-3">
+                Tables, indexes, constraints, generated columns, views, foreign keys,
+                and reference structures are written explicitly as versioned SQL rather
+                than being created automatically from Java entities.
+            </p>
+
+            <div class="alert alert-info mb-0">
+
+                Spring Boot runs with:
+
+                <code>ddl-auto: validate</code>
+
+                <div class="mt-2">
+                    Hibernate verifies that the database schema matches the entity
+                    mappings during application startup. If the database and Java model
+                    drift apart, the application fails fast rather than modifying the
+                    production schema automatically.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         DATABASE AT A GLANCE
+         ============================================================ -->
+
+    <h2>Database at a glance</h2>
+
+    <div class="row g-3 mb-5">
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Physical Model
+                    </div>
+
+                    <h3 class="display-6 fw-bold text-primary mb-2">
+                        21
+                    </h3>
+
+                    <div class="fw-semibold mb-1">
+                        Tables
+                    </div>
+
+                    <p class="text-muted mb-0">
+                        Reference, master, transactional, delivery,
+                        escalation, and AI audit data.
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Logical Groups
+                    </div>
+
+                    <h3 class="display-6 fw-bold text-primary mb-2">
+                        7
+                    </h3>
+
+                    <div class="fw-semibold mb-1">
+                        Functional Areas
+                    </div>
+
+                    <p class="text-muted mb-0">
+                        Data is grouped according to business purpose rather than
+                        application package structure.
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Database Views
+                    </div>
+
+                    <h3 class="display-6 fw-bold text-primary mb-2">
+                        2
+                    </h3>
+
+                    <div class="fw-semibold mb-1">
+                        Important Views
+                    </div>
+
+                    <p class="text-muted mb-0">
+                        Low-stock detection and per-agent-run LLM cost aggregation.
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Schema Strategy
+                    </div>
+
+                    <h3 class="h4 fw-bold text-primary mb-2">
+                        Validate
+                    </h3>
+
+                    <div class="fw-semibold mb-1">
+                        Never Auto-Generate
+                    </div>
+
+                    <p class="text-muted mb-0">
+                        Hibernate verifies mappings but never creates or alters
+                        the DBA-managed schema.
+                    </p>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         21 TABLES
+         ============================================================ -->
+
+    <h2>21 tables, grouped by purpose</h2>
+
+    <p>
+        The schema separates relatively stable reference data from master data,
+        operational transactions, agent observability, delivery history, and
+        exception handling.
+    </p>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 18%">Group</th>
+                <th style="width: 42%">Tables</th>
+                <th>Purpose</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>
+                    <strong>Reference / lookup</strong>
+                </td>
+
+                <td>
+                    <code>ref_order_status</code><br>
+                    <code>ref_shipment_status</code><br>
+                    <code>ref_escalation_status</code><br>
+                    <code>ref_sku_category</code><br>
+                    <code>ref_uom</code><br>
+                    <code>ref_llm_provider</code>
+                </td>
+
+                <td>
+                    Defines controlled business domains as normalized lookup tables
+                    instead of database <code>ENUM</code> columns.
+
+                    <div class="mt-2 text-muted small">
+                        A new status can therefore be introduced with an
+                        <code>INSERT</code> rather than requiring an
+                        <code>ALTER TABLE</code>.
+                    </div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <strong>Master data</strong>
+                </td>
+
+                <td>
+                    <code>store</code><br>
+                    <code>product</code><br>
+                    <code>supplier</code><br>
+                    <code>supplier_product</code>
+                </td>
+
+                <td>
+                    Describes the relatively stable business entities:
+                    stores, SKUs, suppliers, and the relationship describing which
+                    supplier is capable of fulfilling which product.
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <strong>Inventory / demand</strong>
+                </td>
+
+                <td>
+                    <code>store_inventory</code><br>
+                    <code>sales_transaction_daily</code>
+                </td>
+
+                <td>
+                    Maintains current inventory position and the 14-day sales history
+                    used by the forecasting stage of the replenishment process.
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <strong>Agent audit trail</strong>
+                </td>
+
+                <td>
+                    <code>agent_run</code><br>
+                    <code>agent_decision_log</code><br>
+                    <code>demand_forecast_run</code><br>
+                    <code>llm_call_log</code>
+                </td>
+
+                <td>
+                    Records every agent execution, stage-level decisions,
+                    input/output JSON snapshots, forecasting activity, LLM request
+                    and response payloads, token usage, cost, and errors.
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <strong>Replenishment orders</strong>
+                </td>
+
+                <td>
+                    <code>replenishment_order</code><br>
+                    <code>replenishment_order_line</code>
+                </td>
+
+                <td>
+                    Implements a conventional header/detail purchasing structure.
+                    Orders can contain multiple lines rather than representing only
+                    a single SKU.
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <strong>Delivery</strong>
+                </td>
+
+                <td>
+                    <code>delivery_shipment</code><br>
+                    <code>delivery_tracking_event</code>
+                </td>
+
+                <td>
+                    Stores shipment state and the chronological tracking-event history
+                    associated with the shipment.
+
+                    <div class="mt-2 text-muted small">
+                        The POC currently models one shipment per replenishment order.
+                    </div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    <strong>Escalations</strong>
+                </td>
+
+                <td>
+                    <code>shortage_escalation</code>
+                </td>
+
+                <td>
+                    Captures business exceptions requiring attention, including the
+                    case where a low-stock product has no available supplier.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         DATA MODEL RESPONSIBILITY
+         ============================================================ -->
+
+    <h2>What type of data lives where?</h2>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Business State
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        The operational state of the replenishment system remains in
+                        relational tables.
+                    </p>
+
+                    <ul class="mb-0">
+                        <li>inventory</li>
+                        <li>stores</li>
+                        <li>products</li>
+                        <li>suppliers</li>
+                        <li>orders</li>
+                        <li>shipments</li>
+                        <li>escalations</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Agent State & Audit
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Agent activity is not treated as transient console output.
+                        Execution history is persisted for inspection.
+                    </p>
+
+                    <ul class="mb-0">
+                        <li>agent runs</li>
+                        <li>stage decisions</li>
+                        <li>forecast activity</li>
+                        <li>input snapshots</li>
+                        <li>output decisions</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        LLM Observability
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        LLM activity is tracked independently so model behavior and
+                        operating cost can be correlated with each agent execution.
+                    </p>
+
+                    <ul class="mb-0">
+                        <li>provider</li>
+                        <li>request payload</li>
+                        <li>response payload</li>
+                        <li>token usage</li>
+                        <li>cost</li>
+                        <li>errors</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         DATABASE VIEWS
+         ============================================================ -->
+
+    <h2>Two views worth knowing</h2>
+
+    <div class="row g-4 mb-5">
+
+        <!-- LOW STOCK VIEW -->
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center gap-2">
+
+                        <h3 class="h5 mb-0">
+                            <code>vw_low_stock_inventory</code>
+                        </h3>
+
+                        <span class="badge bg-primary">
+              Agent Detection
+            </span>
+
+                    </div>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        This view represents the low-stock condition used by the agent's
+                        detection stage during each replenishment cycle.
+                    </p>
+
+                    <pre class="code-block"><code>(on_hand_qty - allocated_qty) &lt;= reorder_point</code></pre>
+
+                    <p class="mb-0">
+                        The inventory rule therefore lives in a reusable SQL projection
+                        rather than being reconstructed differently by multiple consumers.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LLM COST VIEW -->
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center gap-2">
+
+                        <h3 class="h5 mb-0">
+                            <code>vw_llm_cost_by_run</code>
+                        </h3>
+
+                        <span class="badge bg-primary">
+              AI Observability
+            </span>
+
+                    </div>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        This view aggregates LLM activity at the individual agent-run level.
+                    </p>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped training-table mb-3">
+
+                            <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Purpose</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr>
+                                <td>Call count</td>
+                                <td>Number of LLM requests</td>
+                            </tr>
+
+                            <tr>
+                                <td>Tokens</td>
+                                <td>Model-consumption visibility</td>
+                            </tr>
+
+                            <tr>
+                                <td>Cost</td>
+                                <td>Per-run financial observability</td>
+                            </tr>
+
+                            <tr>
+                                <td>Error count</td>
+                                <td>Model-call reliability</td>
+                            </tr>
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <p class="mb-0">
+                        The dashboard can consume this already-aggregated shape instead of
+                        duplicating the same calculation in application code.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         DESIGN CHOICES ACCORDION
+         ============================================================ -->
+
+    <h2>Design choices worth remembering</h2>
+
+    <p>
+        Several database decisions in this POC are intentional safeguards against
+        concurrency errors, data drift, and accidental loss of historical records.
+    </p>
+
+    <div class="accordion shadow-sm mb-5" id="mysqlDesignAccordion">
+
+
+        <!-- OPTIMISTIC LOCKING -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="mysqlDesignHeadingOne">
+
+                <button
+                        class="accordion-button"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mysqlDesignOne"
+                        aria-expanded="true"
+                        aria-controls="mysqlDesignOne"
+                >
+                    <strong class="me-2">1.</strong>
+                    Optimistic locking for concurrent updates
+                </button>
+
+            </h3>
+
+            <div
+                    id="mysqlDesignOne"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="mysqlDesignHeadingOne"
+                    data-bs-parent="#mysqlDesignAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        A <code>version</code> column is maintained on:
+                    </p>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped training-table">
+
+                            <thead>
+                            <tr>
+                                <th>Table</th>
+                                <th>Why concurrent modification matters</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr>
+                                <td>
+                                    <code>store_inventory</code>
+                                </td>
+
+                                <td>
+                                    POS-driven inventory activity and autonomous agent activity
+                                    may attempt to modify the same inventory state.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <code>replenishment_order</code>
+                                </td>
+
+                                <td>
+                                    Multiple workflows may interact with the lifecycle of the
+                                    same replenishment order.
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <p class="mb-0">
+                        Optimistic locking allows the application to detect that the row
+                        changed between read and update rather than silently overwriting
+                        a newer version.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- GENERATED COLUMN -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="mysqlDesignHeadingTwo">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mysqlDesignTwo"
+                        aria-expanded="false"
+                        aria-controls="mysqlDesignTwo"
+                >
+                    <strong class="me-2">2.</strong>
+                    Generated order-line totals
+                </button>
+
+            </h3>
+
+            <div
+                    id="mysqlDesignTwo"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="mysqlDesignHeadingTwo"
+                    data-bs-parent="#mysqlDesignAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        <code>line_total</code> on
+                        <code>replenishment_order_line</code> is calculated by MySQL
+                        as a generated column rather than being independently calculated
+                        and persisted by Java.
+                    </p>
+
+                    <pre class="code-block"><code>line_total = ordered_qty × unit_cost</code></pre>
+
+                    <p class="mb-0">
+                        This gives the calculation one authoritative implementation and
+                        removes another opportunity for application-calculated values to
+                        drift from persisted data.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DELETE STRATEGY -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="mysqlDesignHeadingThree">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mysqlDesignThree"
+                        aria-expanded="false"
+                        aria-controls="mysqlDesignThree"
+                >
+                    <strong class="me-2">3.</strong>
+                    Intentional delete and cascade behavior
+                </button>
+
+            </h3>
+
+            <div
+                    id="mysqlDesignThree"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="mysqlDesignHeadingThree"
+                    data-bs-parent="#mysqlDesignAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped training-table mb-0">
+
+                            <thead>
+                            <tr>
+                                <th>Relationship Type</th>
+                                <th>Behavior</th>
+                                <th>Reason</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr>
+                                <td>
+                                    Master data
+                                </td>
+
+                                <td>
+                                    No cascading delete
+                                </td>
+
+                                <td>
+                                    A store or product cannot disappear while transactional
+                                    history still references it.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    Aggregate child records
+                                </td>
+
+                                <td>
+                                    Cascade with parent
+                                </td>
+
+                                <td>
+                                    Records such as order lines, tracking events, and decision
+                                    logs belong to their parent aggregate.
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         HIBERNATE VALIDATION
+         ============================================================ -->
+
+    <h2>Hibernate schema validation</h2>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-5">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Why use <code>ddl-auto: validate</code>?
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        The application receives the safety benefit of Hibernate checking
+                        its mappings against the physical schema without allowing Hibernate
+                        to become the schema-management authority.
+                    </p>
+
+                    <div class="alert alert-info mb-0">
+                        A mapping mismatch therefore becomes a startup failure instead of
+                        an unnoticed runtime discrepancy.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-7">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Schema ownership boundary
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped training-table mb-0">
+
+                            <thead>
+                            <tr>
+                                <th>Concern</th>
+                                <th>Owner</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr>
+                                <td>DDL definition</td>
+                                <td>Versioned SQL / DBA</td>
+                            </tr>
+
+                            <tr>
+                                <td>Tables and indexes</td>
+                                <td>Database schema</td>
+                            </tr>
+
+                            <tr>
+                                <td>Foreign-key strategy</td>
+                                <td>Database schema</td>
+                            </tr>
+
+                            <tr>
+                                <td>Java object mapping</td>
+                                <td>JPA / Hibernate</td>
+                            </tr>
+
+                            <tr>
+                                <td>Schema compatibility check</td>
+                                <td>Hibernate validation</td>
+                            </tr>
+
+                            <tr>
+                                <td>Automatic schema mutation</td>
+                                <td>
+                                    <strong>Disabled</strong>
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         TYPE MISMATCHES
+         ============================================================ -->
+
+    <h2>Common Hibernate / MySQL type mismatches</h2>
+
+    <p>
+        Two mappings discovered while building the POC demonstrate why schema
+        validation is useful. The Java type alone did not cause Hibernate to infer
+        the exact database type required by the hand-written MySQL schema.
+    </p>
+
+    <div class="accordion shadow-sm mb-5" id="hibernateTypeAccordion">
+
+
+        <!-- CHAR 36 -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="hibernateTypeHeadingOne">
+
+                <button
+                        class="accordion-button"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#hibernateTypeOne"
+                        aria-expanded="true"
+                        aria-controls="hibernateTypeOne"
+                >
+                    <strong class="me-2">Mismatch 1.</strong>
+                    Java String versus MySQL CHAR(36)
+                </button>
+
+            </h3>
+
+            <div
+                    id="hibernateTypeOne"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="hibernateTypeHeadingOne"
+                    data-bs-parent="#hibernateTypeAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        A plain Java <code>String</code> normally maps as a
+                        <code>VARCHAR</code>, but the physical schema defines
+                        <code>run_uuid</code> as <code>CHAR(36)</code>.
+                    </p>
+
+                    <pre class="code-block"><code>// CHAR(36) — plain String defaults to VARCHAR in Hibernate
+
+&#64;Column(
+    name = "run_uuid",
+    length = 36,
+    columnDefinition = "CHAR(36)"
+)
+private String runUuid;</code></pre>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SMALLINT UNSIGNED -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="hibernateTypeHeadingTwo">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#hibernateTypeTwo"
+                        aria-expanded="false"
+                        aria-controls="hibernateTypeTwo"
+                >
+                    <strong class="me-2">Mismatch 2.</strong>
+                    Java Integer versus MySQL SMALLINT UNSIGNED
+                </button>
+
+            </h3>
+
+            <div
+                    id="hibernateTypeTwo"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="hibernateTypeHeadingTwo"
+                    data-bs-parent="#hibernateTypeAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        A plain Java <code>Integer</code> does not describe the precise
+                        MySQL column definition required by the schema.
+                    </p>
+
+                    <pre class="code-block"><code>// SMALLINT UNSIGNED — plain Integer defaults to INTEGER
+
+&#64;Column(
+    name = "http_status_code",
+    columnDefinition = "SMALLINT UNSIGNED"
+)
+private Integer httpStatusCode;</code></pre>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         VALIDATION FAILURE
+         ============================================================ -->
+
+    <div class="card border-warning shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                What happens when the mapping is wrong?
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                These mismatches were discovered because Hibernate validated the entity
+                model during Spring Boot startup.
+            </p>
+
+            <pre class="code-block"><code>SchemaManagementException</code></pre>
+
+            <p class="mb-0">
+                That failure is desirable in this architecture. It exposes schema drift
+                immediately rather than allowing the application to start with an
+                incorrect assumption about the database.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         KEY LESSONS
+         ============================================================ -->
+
+    <h2>Key database lessons from this POC</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 25%">Principle</th>
+                <th>Implementation in this POC</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>
+                    <strong>Schema ownership is explicit</strong>
+                </td>
+
+                <td>
+                    SQL defines the physical model; JPA maps to it.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Schema drift fails fast</strong>
+                </td>
+
+                <td>
+                    <code>ddl-auto: validate</code> checks entity/schema compatibility
+                    at startup.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Reference domains are data</strong>
+                </td>
+
+                <td>
+                    Status values are normalized into reference tables instead of
+                    being embedded as MySQL ENUM definitions.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Concurrency is expected</strong>
+                </td>
+
+                <td>
+                    Version columns protect important mutable aggregates through
+                    optimistic locking.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Auditability is persistent</strong>
+                </td>
+
+                <td>
+                    Agent decisions and LLM calls are stored as durable business
+                    observability records.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Derived data has one owner</strong>
+                </td>
+
+                <td>
+                    MySQL calculates <code>line_total</code> as a generated column.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Historical integrity is protected</strong>
+                </td>
+
+                <td>
+                    Master-data deletes do not cascade through existing transactional
+                    history.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         FINAL TAKEAWAY
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-4">
+
+        <div class="card-header bg-primary text-white">
+            <strong>Database architecture takeaway</strong>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                MySQL is not simply persistence behind the AI agent.
+                It is the durable system of record for the business application.
+            </p>
+
+            <p>
+                Agent reasoning can recommend actions, but inventory state,
+                replenishment orders, escalations, delivery tracking, execution history,
+                and LLM observability are persisted independently of any individual
+                model invocation.
+            </p>
+
+            <p class="mb-0">
+                <strong>
+                    The database schema remains deterministic, versioned, auditable,
+                    and independently governed while the AI layer remains replaceable.
+                </strong>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>

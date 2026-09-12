@@ -1,0 +1,64 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Replenishment orders</h4>
+    <select class="form-select form-select-sm w-auto" [value]="statusFilter()"
+            (change)="onFilterChange($any($event.target).value)">
+        <option value="">All statuses</option>
+        @for (s of statusOptions.slice(1); track s) {
+            <option [value]="s">{{ s }}</option>
+        }
+    </select>
+</div>
+
+@if (!auth.hasRole('SUPPLY_CHAIN_MANAGER')) {
+    <div class="alert alert-secondary py-2 small">
+        Viewing read-only — approving or cancelling an order requires the Supply Chain Manager role.
+    </div>
+}
+
+@if (actionError()) {
+    <div class="alert alert-danger py-2">{{ actionError() }}</div>
+}
+
+@if (loading()) {
+    <p class="text-muted">Loading…</p>
+} @else if (loadError()) {
+    <div class="alert alert-danger">{{ loadError() }}</div>
+} @else if (orders().length === 0) {
+    <p class="text-muted">No orders match this filter.</p>
+} @else {
+    <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white">
+            <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Store</th>
+                <th>Supplier</th>
+                <th>Status</th>
+                <th>Total cost</th>
+                <th>Requested delivery</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (o of orders(); track o.replenishmentOrderId) {
+                    <tr (click)="open(o)">
+                        <td>{{ o.orderNumber }}</td>
+                        <td>{{ o.storeCode }}</td>
+                        <td>{{ o.supplierCode }}</td>
+                        <td><span class="badge badge-status" [ngClass]="statusBadgeClass(o.statusCode)">{{ o.statusCode }}</span></td>
+                        <td>{{ o.totalCost | currency }}</td>
+                        <td>{{ o.requestedDeliveryDate ?? '—' }}</td>
+                        <td>
+                            @if (o.statusCode === 'RECOMMENDED' && canManage()) {
+                                <button class="btn btn-sm btn-accent me-1" [disabled]="busyOrderId() === o.replenishmentOrderId"
+                                        (click)="approve(o, $event)">Approve</button>
+                                <button class="btn btn-sm btn-outline-danger" [disabled]="busyOrderId() === o.replenishmentOrderId"
+                                        (click)="cancel(o, $event)">Cancel</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

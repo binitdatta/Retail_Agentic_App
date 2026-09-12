@@ -1,0 +1,155 @@
+# =============================================================================
+# Retail_Agentic_App - Root .gitignore
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# macOS
+# -----------------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# -----------------------------------------------------------------------------
+# JetBrains / IDEs
+# -----------------------------------------------------------------------------
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+
+# Editor temporary files
+*.swp
+*.swo
+*~
+
+# -----------------------------------------------------------------------------
+# Local archive / backup material
+# -----------------------------------------------------------------------------
+/archive/
+
+# =============================================================================
+# ANGULAR / NODE.JS
+# =============================================================================
+**/node_modules/
+**/.angular/
+**/dist/
+**/.cache/
+**/coverage/
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# package-lock.json SHOULD be committed.
+
+# =============================================================================
+# JAVA / SPRING BOOT / MAVEN
+# =============================================================================
+**/target/
+**/*.class
+**/*.jar
+**/*.war
+**/*.ear
+
+**/.flattened-pom.xml
+**/pom.xml.releaseBackup
+**/release.properties
+**/dependency-reduced-pom.xml
+
+# =============================================================================
+# PYTHON
+# =============================================================================
+**/.venv/
+**/venv/
+**/env/
+
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.tox/
+**/.nox/
+
+**/.coverage
+**/.coverage.*
+**/htmlcov/
+
+**/build/
+**/*.egg-info/
+**/.eggs/
+**/pip-wheel-metadata/
+
+# =============================================================================
+# ENVIRONMENT FILES / SECRETS
+# =============================================================================
+**/.env
+**/.env.*
+
+# Keep safe templates/examples
+!**/.env.example
+!**/.env.template
+!**/.env.sample
+
+# Spring Boot local/private configuration
+**/application-local.yml
+**/application-local.yaml
+**/application-secrets.yml
+**/application-secrets.yaml
+**/application-private.yml
+**/application-private.yaml
+
+# Certificates / private keys / keystores
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/*.jks
+**/*.keystore
+
+# =============================================================================
+# LOGS / CRASH FILES
+# =============================================================================
+**/*.log
+**/logs/
+**/log/
+
+**/hs_err_pid*
+**/java_error_in_idea_*
+**/jbr_err_pid*
+
+**/*.pid
+**/*.pid.lock
+
+# =============================================================================
+# TEMPORARY FILES
+# =============================================================================
+**/tmp/
+**/temp/
+**/*.tmp
+**/*.bak
+
+# =============================================================================
+# LOCAL DATABASE FILES
+# =============================================================================
+**/*.sqlite
+**/*.sqlite3
+**/*.db
+
+# IMPORTANT:
+# The SQL source files at repository root are intentionally committed:
+#
+# V1__init_retail_replenishment_schema.sql
+# V2__seed_test_data.sql
+# =============================================================================
+
+# Local backup source files
+**/*-bkp.*
+**/*_bkp.*

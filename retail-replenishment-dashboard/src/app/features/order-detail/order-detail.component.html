@@ -1,0 +1,106 @@
+<a routerLink="/orders" class="btn btn-sm btn-outline-secondary mb-3">&larr; All orders</a>
+
+@if (loading()) {
+    <p class="text-muted">Loading…</p>
+} @else if (loadError()) {
+    <div class="alert alert-danger">{{ loadError() }}</div>
+} @else if (order(); as o) {
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <h4 class="mb-0">{{ o.orderNumber }}</h4>
+        <span class="badge badge-status" [ngClass]="statusBadgeClass(o.statusCode)">{{ o.statusCode }}</span>
+    </div>
+
+    <div class="row g-3 mb-3 text-muted small">
+        <div class="col-auto"><strong>Store:</strong> {{ o.storeCode }}</div>
+        <div class="col-auto"><strong>Supplier:</strong> {{ o.supplierCode }}</div>
+        <div class="col-auto"><strong>Source:</strong> {{ o.sourceType }}</div>
+        @if (o.generatedByAgentRunId) {
+            <div class="col-auto"><strong>Agent run:</strong> #{{ o.generatedByAgentRunId }}</div>
+        }
+        <div class="col-auto"><strong>Requested delivery:</strong> {{ o.requestedDeliveryDate ?? '—' }}</div>
+        @if (o.approvedBy) {
+            <div class="col-auto"><strong>Approved by:</strong> {{ o.approvedBy }} ({{ o.approvedAt | date: 'medium' }})</div>
+        }
+    </div>
+
+    @if (actionError()) {
+        <div class="alert alert-danger py-2">{{ actionError() }}</div>
+    }
+
+    @if (o.statusCode === 'RECOMMENDED') {
+        @if (canManage()) {
+            <div class="mb-4">
+                <button class="btn btn-accent me-2" [disabled]="busy()" (click)="approve()">Approve order</button>
+                <button class="btn btn-outline-danger" [disabled]="busy()" (click)="cancel()">Cancel order</button>
+            </div>
+        } @else {
+            <div class="alert alert-secondary py-2 small mb-4">
+                Approving or cancelling this order requires the Supply Chain Manager role.
+            </div>
+        }
+    }
+
+    <h5 class="mb-3">Line items</h5>
+    <div class="table-responsive mb-4">
+        <table class="table bg-white">
+            <thead>
+            <tr>
+                <th>SKU</th>
+                <th>Product</th>
+                <th>Ordered qty</th>
+                <th>Unit cost</th>
+                <th>Line total</th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (l of o.lines; track l.orderLineId) {
+                    <tr>
+                        <td>{{ l.skuCode }}</td>
+                        <td>{{ l.productName }}</td>
+                        <td>{{ l.orderedQty }}</td>
+                        <td>{{ l.unitCost | currency }}</td>
+                        <td>{{ l.lineTotal != null ? (l.lineTotal | currency) : '—' }}</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4" class="text-end fw-semibold">Total</td>
+                <td class="fw-semibold">{{ o.totalCost | currency }}</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <h5 class="mb-3">Delivery</h5>
+    @if (shipments().length === 0) {
+        <p class="text-muted">No shipment yet — the supplier-integration listener creates one once the order is approved and transmitted.</p>
+    } @else {
+        @for (s of shipments(); track s.shipmentId) {
+            <div class="card stat-card p-3 mb-3">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <span class="badge badge-status" [ngClass]="statusBadgeClass(s.statusCode)">{{ s.statusCode }}</span>
+                    <span class="text-muted small">{{ s.carrierName }} — tracking {{ s.trackingNumber }}</span>
+                </div>
+                <div class="text-muted small mb-2">
+                    Shipped {{ s.shippedAt ? (s.shippedAt | date: 'medium') : '—' }}
+                    · Estimated arrival {{ s.estimatedArrivalAt ? (s.estimatedArrivalAt | date: 'medium') : '—' }}
+                    @if (s.actualArrivalAt) {
+                        · Delivered {{ s.actualArrivalAt | date: 'medium' }}
+                    }
+                </div>
+                @if (s.events.length > 0) {
+                    <ul class="list-unstyled small mb-0">
+                        @for (e of s.events; track e.eventCode + e.eventAt) {
+                            <li class="mb-1">
+                                <strong>{{ e.eventCode }}</strong> — {{ e.eventAt | date: 'HH:mm:ss' }}
+                                @if (e.eventLocation) { · {{ e.eventLocation }} }
+                                @if (e.notes) { <span class="text-muted">— {{ e.notes }}</span> }
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+    }
+}

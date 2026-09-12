@@ -1,0 +1,10 @@
+# Core
+requests>=2.31,<3
+python-dotenv>=1.0,<2
+
+# Agent orchestration
+langgraph>=0.2,<0.3
+
+# LLM provider (Anthropic backs both judgment calls: order recommendation
+# and shortage-escalation severity)
+anthropic>=0.34,<1

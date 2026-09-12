@@ -1,0 +1,154 @@
+<a routerLink="/" class="btn btn-sm btn-outline-secondary mb-3">&larr; All runs</a>
+
+@if (loading()) {
+  <p class="text-muted">Loading…</p>
+} @else if (loadError()) {
+  <div class="alert alert-danger">{{ loadError() }}</div>
+} @else if (run(); as r) {
+  <div class="d-flex align-items-center gap-3 mb-4">
+    <h4 class="mb-0">Run {{ r.runUuid.slice(0, 8) }}&hellip;</h4>
+    <span class="badge badge-status" [ngClass]="statusBadgeClass(r.status)">{{ r.status }}</span>
+    <a [routerLink]="['/runs', r.agentRunId, 'http-trace']" class="btn btn-sm btn-outline-secondary ms-auto">
+      View raw HTTP trace &rarr;
+    </a>
+  </div>
+
+  <div class="row g-3 mb-2 text-muted small">
+    <div class="col-auto"><strong>Trigger:</strong> {{ r.triggerType }} @if (r.triggerSource) { ({{ r.triggerSource }}) }</div>
+    <div class="col-auto"><strong>Store:</strong> {{ r.storeCode ?? 'All stores' }}</div>
+    <div class="col-auto"><strong>Started:</strong> {{ r.startedAt | date: 'medium' }}</div>
+    <div class="col-auto"><strong>Completed:</strong> {{ r.completedAt ? (r.completedAt | date: 'medium') : 'in progress' }}</div>
+  </div>
+
+  @if (r.summary) {
+    <p class="mb-4">{{ r.summary }}</p>
+  }
+
+  @if (cost(); as c) {
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-2">
+        <div class="card stat-card p-3">
+          <div class="stat-label">LLM calls</div>
+          <div class="stat-value">{{ c.callCount }}</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="card stat-card p-3">
+          <div class="stat-label">Prompt tokens</div>
+          <div class="stat-value">{{ c.totalPromptTokens }}</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="card stat-card p-3">
+          <div class="stat-label">Completion tokens</div>
+          <div class="stat-value">{{ c.totalCompletionTokens }}</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="card stat-card p-3">
+          <div class="stat-label">Est. cost (USD)</div>
+          <div class="stat-value">{{ c.totalEstimatedCostUsd | number: '1.4-4' }}</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="card stat-card p-3">
+          <div class="stat-label">Avg latency</div>
+          <div class="stat-value">{{ c.avgLatencyMs | number: '1.0-0' }} ms</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="card stat-card p-3">
+          <div class="stat-label">Errors</div>
+          <div class="stat-value" [class.text-danger]="c.errorCount > 0">{{ c.errorCount }}</div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <h5 class="mb-3">Decision trace</h5>
+  @if (decisions().length === 0) {
+    <p class="text-muted">No decisions logged for this run.</p>
+  } @else {
+    <div class="table-responsive mb-4">
+      <table class="table table-hover align-middle bg-white">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Store / SKU</th>
+            <th>LLM model</th>
+            <th>Duration</th>
+            <th>Executed at</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (d of decisions(); track d.decisionId) {
+            <tr (click)="toggleDecision(d.decisionId)">
+              <td>{{ d.stageName }}</td>
+              <td>{{ d.storeCode ?? '—' }} / {{ d.skuCode ?? '—' }}</td>
+              <td>{{ d.llmModel ?? 'deterministic' }}</td>
+              <td>{{ d.durationMs ? d.durationMs + ' ms' : '—' }}</td>
+              <td>{{ d.executedAt | date: 'HH:mm:ss' }}</td>
+            </tr>
+            @if (expandedDecisionId() === d.decisionId) {
+              <tr>
+                <td colspan="5" class="bg-light">
+                  @if (d.llmRationale) {
+                    <p class="mb-2"><strong>Rationale:</strong> {{ d.llmRationale }}</p>
+                  }
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="text-muted small mb-1">Input snapshot</div>
+                      <pre class="small bg-white p-2 rounded border">{{ formatJson(d.inputSnapshot) }}</pre>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="text-muted small mb-1">Output decision</div>
+                      <pre class="small bg-white p-2 rounded border">{{ formatJson(d.outputDecision) }}</pre>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  <h5 class="mb-3">LLM calls</h5>
+  @if (llmCalls().length === 0) {
+    <p class="text-muted">No LLM calls logged for this run.</p>
+  } @else {
+    <div class="table-responsive">
+      <table class="table align-middle bg-white">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Model</th>
+            <th>Prompt / Completion tokens</th>
+            <th>Cost (USD)</th>
+            <th>Latency</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of llmCalls(); track c.llmCallId) {
+            <tr>
+              <td>{{ c.providerCode }}</td>
+              <td>{{ c.modelName }}</td>
+              <td>{{ c.promptTokens ?? 0 }} / {{ c.completionTokens ?? 0 }}</td>
+              <td>{{ c.estimatedCostUsd != null ? (c.estimatedCostUsd | number: '1.4-6') : '—' }}</td>
+              <td>{{ c.latencyMs ? c.latencyMs + ' ms' : '—' }}</td>
+              <td>
+                @if (c.success) {
+                  <span class="badge bg-success">OK</span>
+                } @else {
+                  <span class="badge bg-danger">Error</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+}

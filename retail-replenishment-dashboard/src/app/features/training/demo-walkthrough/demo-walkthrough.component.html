@@ -1,0 +1,2013 @@
+<div class="training-content">
+
+    <!-- ============================================================
+         PAGE HEADER
+         ============================================================ -->
+
+    <div class="mb-4">
+
+        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+
+            <span class="badge bg-primary px-3 py-2">
+                End-to-End Execution
+            </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+                LangGraph Agent
+            </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+                Human-in-the-Loop
+            </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+                Real Log Analysis
+            </span>
+
+        </div>
+
+        <h1 class="display-6 fw-bold mb-2">
+            Demo Run Walkthrough
+        </h1>
+
+        <p class="lead text-muted mb-0">
+            Follow one complete <code>python -m agent.main</code> execution from
+            Keycloak authentication through low-stock detection, LangGraph processing,
+            Anthropic judgment, order creation, Human-in-the-Loop approval,
+            RabbitMQ-driven shipment processing, and delivery monitoring.
+        </p>
+
+    </div>
+
+
+    <!-- ============================================================
+         RUN AT A GLANCE
+         ============================================================ -->
+
+    <h2>Real run at a glance</h2>
+
+    <div class="row g-3 mb-5">
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Low-Stock Items
+                    </div>
+
+                    <h3 class="display-6 fw-bold text-primary mb-2">
+                        5
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Five inventory items entered the replenishment workflow.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        LLM Judgments
+                    </div>
+
+                    <h3 class="display-6 fw-bold text-primary mb-2">
+                        5
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Each low-stock item reached exactly one Anthropic judgment stage.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Orders Monitored
+                    </div>
+
+                    <h3 class="display-6 fw-bold text-primary mb-2">
+                        4
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Four of the five items produced replenishment orders.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Escalation Branch
+                    </div>
+
+                    <h3 class="display-6 fw-bold text-primary mb-2">
+                        1
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        One item did not produce an order because no supplier path was available.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         CORE INTERPRETATION
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header bg-primary text-white py-3">
+            <strong>What this walkthrough is really teaching</strong>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                The console log is only a partial view of the agent's execution.
+                A single visible Anthropic HTTP line appears only after several
+                deterministic stages have already completed for that inventory item.
+            </p>
+
+            <p>
+                The most useful skill is therefore not merely reading individual
+                log lines. It is learning how to infer the hidden graph state from:
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped training-table mb-0">
+
+                    <tbody>
+
+                    <tr>
+                        <th style="width: 35%">
+                            Number of detected items
+                        </th>
+                        <td>
+                            How many inventory items entered the agent workflow.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            Number of Anthropic HTTP calls
+                        </th>
+                        <td>
+                            How many items reached a judgment stage.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            Number of monitored orders
+                        </th>
+                        <td>
+                            How many items actually produced replenishment orders.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            Shipment appearance timing
+                        </th>
+                        <td>
+                            Whether an order was auto-approved or waited for human approval.
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         TABLE OF CONTENTS
+         ============================================================ -->
+
+    <div class="card stat-card shadow-sm p-4 mb-5 training-toc">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+
+            <strong class="h5 mb-0">
+                On this page
+            </strong>
+
+            <span class="badge bg-primary">
+                6 Chapters
+            </span>
+
+        </div>
+
+        <div class="row g-2">
+
+            <div class="col-md-6">
+                <a routerLink="." fragment="shape">
+                    1. The shape of one run
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a routerLink="." fragment="per-item">
+                    2. What happens per item
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a routerLink="." fragment="branch">
+                    3. Auto-approve vs. human review
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a routerLink="." fragment="monitoring">
+                    4. The monitoring loop
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a routerLink="." fragment="annotated-log">
+                    5. Real run annotated
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <a routerLink="." fragment="cheatsheet">
+                    6. Log-reading cheat sheet
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         1. SHAPE OF A RUN
+         ============================================================ -->
+
+    <h2 id="shape">1. The shape of one run</h2>
+
+    <p>
+        One invocation of:
+    </p>
+
+    <pre class="code-block"><code>python -m agent.main</code></pre>
+
+    <p>
+        performs three major phases in sequence.
+    </p>
+
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Phase 1 — Authenticate
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="display-6 fw-bold text-primary mb-3">
+                        1
+                    </div>
+
+                    <p>
+                        The Python agent authenticates to Keycloak once using its
+                        service-account identity.
+                    </p>
+
+                    <p class="mb-0">
+                        It receives the access token used for secured Spring Boot API calls.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Phase 2 — Process Inventory
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="display-6 fw-bold text-primary mb-3">
+                        2
+                    </div>
+
+                    <p>
+                        The agent calls:
+                    </p>
+
+                    <pre class="code-block"><code>GET /inventory/low-stock</code></pre>
+
+                    <p class="mb-0">
+                        Every returned item then traverses the complete
+                        LangGraph workflow one item at a time.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Phase 3 — Monitor Delivery
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="display-6 fw-bold text-primary mb-3">
+                        3
+                    </div>
+
+                    <p>
+                        Once item processing finishes, the agent remains alive
+                        and polls delivery status for created orders.
+                    </p>
+
+                    <p class="mb-0">
+                        Monitoring stops after all deliveries complete or the
+                        configured monitoring window expires.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="alert alert-info mb-5">
+
+        <strong>Important log-reading lesson:</strong>
+
+        <div class="mt-2">
+            A visible Anthropic <code>httpx</code> line does not represent the
+            entire processing of one inventory item. It is the visible tail end
+            of a complete graph traversal that already performed several fast
+            backend stages.
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         2. PER ITEM
+         ============================================================ -->
+
+    <h2 id="per-item">2. What happens per item</h2>
+
+    <p>
+        Every low-stock inventory item goes through the following stages before
+        the next item begins.
+    </p>
+
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+
+            <tr>
+                <th style="width: 27%">
+                    Stage
+                </th>
+
+                <th style="width: 48%">
+                    What it does
+                </th>
+
+                <th>
+                    Visible in console?
+                </th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <td>
+                    <code>detect_low_inventory</code>
+                </td>
+
+                <td>
+                    Records a decision confirming that the item satisfies the
+                    low-stock condition.
+                </td>
+
+                <td>
+                    Usually no
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    <code>forecast_demand</code>
+                </td>
+
+                <td>
+                    Calls:
+                    <code>POST /demand-forecasts</code>
+                    and computes a moving average using 14 days of sales history.
+                </td>
+
+                <td>
+                    Usually no
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    <code>check_supplier_availability</code>
+                </td>
+
+                <td>
+                    Calls:
+                    <code>GET /suppliers/availability</code>
+                    to determine whether an eligible supplier is available.
+                </td>
+
+                <td>
+                    Usually no
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    <code>recommend_replenishment</code>
+                    <br>
+                    <span class="text-muted small">or</span>
+                    <br>
+                    <code>escalate_shortage</code>
+                </td>
+
+                <td>
+                    The branch point. One of these stages invokes Anthropic
+                    for the contextual judgment required by the workflow.
+                </td>
+
+                <td>
+                    <strong>Yes</strong>
+                    <br>
+                    <span class="text-muted small">
+                        This produces the visible <code>httpx</code> line.
+                    </span>
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    <code>monitor_delivery</code>
+                </td>
+
+                <td>
+                    At the per-item stage, records that the order has entered
+                    the next part of the workflow.
+                </td>
+
+                <td>
+                    Usually no
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         WHAT THE HTTPX LINES MEAN
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                How to interpret five Anthropic HTTP lines
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <div class="col-lg-4">
+
+                    <div class="text-primary fw-bold display-6">
+                        5
+                    </div>
+
+                    <div class="fw-semibold">
+                        Low-stock items
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-4">
+
+                    <div class="text-primary fw-bold display-6">
+                        5
+                    </div>
+
+                    <div class="fw-semibold">
+                        Anthropic responses
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-4">
+
+                    <div class="text-primary fw-bold h3 mt-2">
+                        6–10 sec
+                    </div>
+
+                    <div class="fw-semibold">
+                        Approximate visible gap
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <p class="mb-0">
+                In this run, the five visible <code>httpx</code> lines correspond
+                to five separate items reaching their judgment stage. The longer
+                gaps are dominated by Anthropic response latency; the deterministic
+                API operations preceding each judgment complete much faster.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         3. BRANCH
+         ============================================================ -->
+
+    <h2 id="branch">
+        3. The branch that matters: auto-approve vs. human review
+    </h2>
+
+    <p>
+        After supplier availability is checked, the graph selects one of two
+        fundamentally different business paths.
+    </p>
+
+
+    <div class="row g-4 mb-4">
+
+        <!-- SUPPLIER FOUND -->
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm border-primary">
+
+                <div class="card-header">
+
+                    <div class="d-flex justify-content-between align-items-center gap-2">
+
+                        <h3 class="h5 mb-0">
+                            Supplier Found
+                        </h3>
+
+                        <span class="badge bg-primary">
+                            Order Path
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        The graph executes:
+                    </p>
+
+                    <pre class="code-block"><code>recommend_replenishment</code></pre>
+
+                    <p>
+                        The LLM produces the order recommendation and determines
+                        whether the recommendation qualifies for auto-approval.
+                    </p>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped training-table mb-0">
+
+                            <thead>
+                            <tr>
+                                <th>Outcome</th>
+                                <th>Result</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr>
+                                <td>
+                                    Auto-approved
+                                </td>
+                                <td>
+                                    Order is created as
+                                    <code>APPROVED</code>
+                                    and proceeds without human intervention.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    Human review required
+                                </td>
+                                <td>
+                                    Order is created as
+                                    <code>RECOMMENDED</code>
+                                    and waits for manager approval.
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NO SUPPLIER -->
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm border-warning">
+
+                <div class="card-header">
+
+                    <div class="d-flex justify-content-between align-items-center gap-2">
+
+                        <h3 class="h5 mb-0">
+                            No Supplier Found
+                        </h3>
+
+                        <span class="badge bg-warning text-dark">
+                            Escalation Path
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        The graph executes:
+                    </p>
+
+                    <pre class="code-block"><code>escalate_shortage</code></pre>
+
+                    <p>
+                        The LLM determines escalation severity:
+                    </p>
+
+                    <div class="d-flex gap-2 flex-wrap mb-3">
+
+                        <span class="badge bg-light text-dark border">
+                            LOW
+                        </span>
+
+                        <span class="badge bg-light text-dark border">
+                            MEDIUM
+                        </span>
+
+                        <span class="badge bg-light text-dark border">
+                            HIGH
+                        </span>
+
+                        <span class="badge bg-light text-dark border">
+                            CRITICAL
+                        </span>
+
+                    </div>
+
+                    <p class="mb-0">
+                        The shortage is escalated for human attention.
+                        No replenishment order is created for that item.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         BRANCH ARITHMETIC
+         ============================================================ -->
+
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                The branch is visible in the arithmetic
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-striped training-table align-middle mb-0">
+
+                    <tbody>
+
+                    <tr>
+                        <th style="width: 40%">
+                            Detected low-stock items
+                        </th>
+                        <td>
+                            <strong>5</strong>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            Items reaching judgment
+                        </th>
+                        <td>
+                            <strong>5</strong>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            Orders monitored
+                        </th>
+                        <td>
+                            <strong>4</strong>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            Difference
+                        </th>
+                        <td>
+                            <strong>1 escalation</strong>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <p class="mt-3 mb-0">
+                The fifth item reached a judgment stage but never appeared in the
+                delivery watch list because its path produced an escalation rather
+                than a replenishment order.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         4. MONITORING
+         ============================================================ -->
+
+    <h2 id="monitoring">4. The monitoring loop</h2>
+
+    <p>
+        After all inventory items have been processed,
+        <code>runner.py</code> moves into delivery monitoring.
+    </p>
+
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Endpoint
+                    </div>
+
+                    <code>GET /delivery-status</code>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Poll Interval
+                    </div>
+
+                    <h3 class="h4 text-primary">
+                        30 seconds
+                    </h3>
+
+                    <code>MONITOR_DELIVERY_POLL_SECONDS</code>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Log Behavior
+                    </div>
+
+                    <h3 class="h5 text-primary">
+                        Changes Only
+                    </h3>
+
+                    <p class="mb-0 text-muted">
+                        A console line appears only when shipment status changes.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Missing Shipment
+                    </div>
+
+                    <h3 class="h5 text-primary">
+                        404 = Wait
+                    </h3>
+
+                    <p class="mb-0 text-muted">
+                        No shipment yet is treated as a normal waiting condition.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         SHIPMENT TIMING INTERPRETATION
+         ============================================================ -->
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 32%">
+                    What you see
+                </th>
+
+                <th>
+                    What it means
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>
+                    Shipment exists on the first delivery poll
+                </td>
+
+                <td>
+                    The order was already approved and transmitted before
+                    monitoring began. In this run, this indicates the auto-approved path.
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    No shipment appears for several polls
+                </td>
+
+                <td>
+                    The order may still be in
+                    <code>RECOMMENDED</code>
+                    state waiting for Human-in-the-Loop approval.
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    Several shipments appear at almost exactly the same time
+                </td>
+
+                <td>
+                    This is consistent with multiple recommended orders being
+                    approved together through the dashboard.
+                </td>
+            </tr>
+
+
+            <tr>
+                <td>
+                    No repeated "waiting" log lines
+                </td>
+
+                <td>
+                    Expected behavior. Polling continues silently until
+                    the shipment state changes.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         5. ANNOTATED LOG
+         ============================================================ -->
+
+    <h2 id="annotated-log">5. A real run, annotated line by line</h2>
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                <h3 class="h5 mb-0">
+                    Real Agent Execution Log
+                </h3>
+
+                <span class="badge bg-primary">
+                    September 12, 2026
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <pre class="code-block mb-0"><code>2026-09-12 07:00:31,932  Fetching a new access token from ... /protocol/openid-connect/token
+2026-09-12 07:00:31,972  Started agent_run 1 (uuid=911659a1-...)
+2026-09-12 07:00:31,979  Detected 5 low-stock item(s)
+
+2026-09-12 07:00:38,513  httpx: POST .../messages "200 OK"
+2026-09-12 07:00:48,205  httpx: POST .../messages "200 OK"
+2026-09-12 07:00:54,385  httpx: POST .../messages "200 OK"
+2026-09-12 07:01:04,318  httpx: POST .../messages "200 OK"
+2026-09-12 07:01:06,777  httpx: POST .../messages "200 OK"
+
+2026-09-12 07:01:06,840  Monitoring delivery for 4 order(s) for up to 8 minute(s)
+
+2026-09-12 07:01:06,858  Order 1 shipment now CREATED
+2026-09-12 07:01:36,907  Order 1 shipment now DEPARTED
+2026-09-12 07:02:37,001  Order 1 shipment now IN_TRANSIT
+2026-09-12 07:05:07,261  Order 1 shipment now OUT_FOR_DELIVERY
+
+2026-09-12 07:06:07,379  Order 2 shipment now CREATED
+2026-09-12 07:06:07,401  Order 3 shipment now CREATED
+2026-09-12 07:06:07,419  Order 4 shipment now CREATED
+
+2026-09-12 07:06:37,484  Order 2/3/4 shipment now DEPARTED
+2026-09-12 07:07:07,567  Order 1 shipment now DELIVERED
+2026-09-12 07:07:37,631  Order 2/3/4 shipment now IN_TRANSIT</code></pre>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         LOG INTERPRETATION ACCORDION
+         ============================================================ -->
+
+    <div class="accordion shadow-sm mb-5" id="runLogAccordion">
+
+
+        <!-- 07:00:31 -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="logHeadingOne">
+
+                <button
+                        class="accordion-button"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#logOne"
+                        aria-expanded="true"
+                        aria-controls="logOne"
+                >
+
+                    <strong class="me-2">
+                        07:00:31
+                    </strong>
+
+                    Authentication, run creation, and detection
+                </button>
+
+            </h3>
+
+            <div
+                    id="logOne"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="logHeadingOne"
+                    data-bs-parent="#runLogAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped training-table mb-0">
+
+                            <tbody>
+
+                            <tr>
+                                <th style="width: 32%">
+                                    Access token
+                                </th>
+                                <td>
+                                    Python authenticates as the Keycloak service account.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    Agent run
+                                </th>
+                                <td>
+                                    Persistent execution record is created.
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>
+                                    Detection
+                                </th>
+                                <td>
+                                    Spring Boot returns 5 low-stock items.
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- JUDGMENTS -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="logHeadingTwo">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#logTwo"
+                        aria-expanded="false"
+                        aria-controls="logTwo"
+                >
+
+                    <strong class="me-2">
+                        07:00:38–07:01:06
+                    </strong>
+
+                    Five items reach their judgment stages
+                </button>
+
+            </h3>
+
+            <div
+                    id="logTwo"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="logHeadingTwo"
+                    data-bs-parent="#runLogAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        Five separate Anthropic calls return
+                        <code>200 OK</code>.
+                    </p>
+
+                    <p>
+                        Because five items were detected and five model calls
+                        occurred, every detected item reached one of the
+                        judgment stages.
+                    </p>
+
+                    <p class="mb-0">
+                        The preceding deterministic operations occur between
+                        these visible calls but complete fast enough that the
+                        model latency dominates the console timing.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- 4 ORDERS -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="logHeadingThree">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#logThree"
+                        aria-expanded="false"
+                        aria-controls="logThree"
+                >
+
+                    <strong class="me-2">
+                        07:01:06
+                    </strong>
+
+                    Why only four orders are monitored
+                </button>
+
+            </h3>
+
+            <div
+                    id="logThree"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="logHeadingThree"
+                    data-bs-parent="#runLogAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped training-table mb-3">
+
+                            <tbody>
+
+                            <tr>
+                                <th>Detected</th>
+                                <td>5 items</td>
+                            </tr>
+
+                            <tr>
+                                <th>Judgment calls</th>
+                                <td>5</td>
+                            </tr>
+
+                            <tr>
+                                <th>Orders monitored</th>
+                                <td>4</td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                    <p class="mb-0">
+                        One item's judgment path therefore resulted in
+                        <code>escalate_shortage</code>, which creates an escalation
+                        rather than an order.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER 1 -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="logHeadingFour">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#logFour"
+                        aria-expanded="false"
+                        aria-controls="logFour"
+                >
+
+                    <strong class="me-2">
+                        07:01:06
+                    </strong>
+
+                    Order 1 already has a shipment
+                </button>
+
+            </h3>
+
+            <div
+                    id="logFour"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="logHeadingFour"
+                    data-bs-parent="#runLogAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        The first monitoring poll immediately sees:
+                    </p>
+
+                    <pre class="code-block"><code>Order 1 shipment now CREATED</code></pre>
+
+                    <p class="mb-0">
+                        In this run, that means Order 1 had already been approved
+                        and transmitted before delivery monitoring began. This is
+                        the auto-approved order.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER 1 PROGRESSES -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="logHeadingFive">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#logFive"
+                        aria-expanded="false"
+                        aria-controls="logFive"
+                >
+
+                    <strong class="me-2">
+                        07:01:36–07:05:07
+                    </strong>
+
+                    Order 1 progresses while other orders wait
+                </button>
+
+            </h3>
+
+            <div
+                    id="logFive"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="logHeadingFive"
+                    data-bs-parent="#runLogAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped training-table mb-3">
+
+                            <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Order 1 status</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr>
+                                <td>07:01:36</td>
+                                <td><code>DEPARTED</code></td>
+                            </tr>
+
+                            <tr>
+                                <td>07:02:37</td>
+                                <td><code>IN_TRANSIT</code></td>
+                            </tr>
+
+                            <tr>
+                                <td>07:05:07</td>
+                                <td><code>OUT_FOR_DELIVERY</code></td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <p class="mb-0">
+                        Orders 2–4 remain silent because no shipment exists for
+                        them yet. They are still waiting for approval.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- HUMAN APPROVAL -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="logHeadingSix">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#logSix"
+                        aria-expanded="false"
+                        aria-controls="logSix"
+                >
+
+                    <strong class="me-2">
+                        07:06:07
+                    </strong>
+
+                    Orders 2, 3, and 4 appear together
+                </button>
+
+            </h3>
+
+            <div
+                    id="logSix"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="logHeadingSix"
+                    data-bs-parent="#runLogAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <pre class="code-block"><code>Order 2 shipment now CREATED
+Order 3 shipment now CREATED
+Order 4 shipment now CREATED</code></pre>
+
+                    <p>
+                        All three shipments appear within milliseconds of one another.
+                    </p>
+
+                    <p class="mb-0">
+                        In this walkthrough, that timing is the signature of several
+                        previously <code>RECOMMENDED</code> orders being approved
+                        together through the Human-in-the-Loop dashboard.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTINUED DELIVERY -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="logHeadingSeven">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#logSeven"
+                        aria-expanded="false"
+                        aria-controls="logSeven"
+                >
+
+                    <strong class="me-2">
+                        07:07:07 onward
+                    </strong>
+
+                    Delivery simulation continues independently
+                </button>
+
+            </h3>
+
+            <div
+                    id="logSeven"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="logHeadingSeven"
+                    data-bs-parent="#runLogAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        Order 1 reaches:
+                    </p>
+
+                    <pre class="code-block"><code>DELIVERED</code></pre>
+
+                    <p>
+                        while Orders 2–4 remain one delivery sequence behind because
+                        their shipments were created approximately five minutes later.
+                    </p>
+
+                    <p class="mb-0">
+                        From this point onward, the delivery simulator continues
+                        processing shipment state independently of the earlier
+                        inventory-decision stages.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         COMPLETE RUN TIMELINE
+         ============================================================ -->
+
+    <h2>Complete run timeline</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+
+            <tr>
+                <th style="width: 18%">
+                    Time
+                </th>
+
+                <th style="width: 25%">
+                    Phase
+                </th>
+
+                <th>
+                    Interpretation
+                </th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <td>
+                    07:00:31
+                </td>
+
+                <td>
+                    Authentication + detection
+                </td>
+
+                <td>
+                    Service token fetched, agent run created,
+                    5 low-stock items detected.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    07:00:38–07:01:06
+                </td>
+
+                <td>
+                    Judgment
+                </td>
+
+                <td>
+                    Five Anthropic calls correspond to five items reaching
+                    recommendation or escalation.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    07:01:06
+                </td>
+
+                <td>
+                    Monitoring starts
+                </td>
+
+                <td>
+                    Four orders exist. One of five items followed
+                    the escalation path.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    07:01:06
+                </td>
+
+                <td>
+                    Auto-approved order
+                </td>
+
+                <td>
+                    Order 1 already has a shipment when monitoring begins.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    07:01:36–07:05:07
+                </td>
+
+                <td>
+                    Delivery progress
+                </td>
+
+                <td>
+                    Order 1 progresses while Orders 2–4 remain unshipped.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    07:06:07
+                </td>
+
+                <td>
+                    Human-in-the-Loop
+                </td>
+
+                <td>
+                    Orders 2–4 all receive shipments at effectively the same time.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    07:07:07+
+                </td>
+
+                <td>
+                    Delivery completion
+                </td>
+
+                <td>
+                    Order 1 delivers while later-approved orders progress
+                    through their own delivery lifecycle.
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         6. CHEAT SHEET
+         ============================================================ -->
+
+    <h2 id="cheatsheet">6. Cheat sheet: reading your own run's log</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 34%">
+                    Observation
+                </th>
+
+                <th>
+                    Interpretation
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <td>
+                    Count the <code>httpx</code> lines
+                </td>
+
+                <td>
+                    This tells you how many items reached an LLM judgment stage.
+                    If fewer appear than the detected-item count, inspect preceding
+                    error lines for an item that failed earlier.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    Compare detected count with monitored-order count
+                </td>
+
+                <td>
+                    The difference identifies items that were escalated instead
+                    of converted into replenishment orders.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    Shipment appears as soon as monitoring starts
+                </td>
+
+                <td>
+                    In this run, the order was auto-approved and transmitted
+                    before delivery polling began.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    Shipment appears later
+                </td>
+
+                <td>
+                    The order remained in
+                    <code>RECOMMENDED</code>
+                    state until a human approved it.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    Several shipments appear together
+                </td>
+
+                <td>
+                    Strong indication in this walkthrough that multiple orders
+                    were approved together through the dashboard.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    Silence for an order
+                </td>
+
+                <td>
+                    Not necessarily an error. The monitoring loop may be silently
+                    polling while waiting for a shipment to exist.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    Need the actual decision detail
+                </td>
+
+                <td>
+                    Open the corresponding run under
+                    <strong>Agent Runs</strong>
+                    to inspect stage inputs, outputs, rationale,
+                    token usage, and cost.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    Need wire-level LLM traffic
+                </td>
+
+                <td>
+                    Use the run's
+                    <strong>View raw HTTP trace</strong>
+                    capability for the underlying judgment calls.
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         OBSERVABILITY LEVELS
+         ============================================================ -->
+
+    <h2>Three levels of observability</h2>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Console Log
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Best for understanding overall execution timing,
+                        major transitions, and delivery-state changes.
+                    </p>
+
+                    <p class="mb-0 text-muted">
+                        It intentionally does not expose every internal stage.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Agent Run Detail
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Provides the decision-by-decision view behind the
+                        condensed console output.
+                    </p>
+
+                    <p class="mb-0 text-muted">
+                        Includes stage inputs, outputs, rationale,
+                        token counts, and cost.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Raw HTTP Trace
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Provides the lowest-level view of the network traffic
+                        behind model judgment calls.
+                    </p>
+
+                    <p class="mb-0 text-muted">
+                        Useful when troubleshooting request or response behavior.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         FINAL TAKEAWAY
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-4">
+
+        <div class="card-header bg-primary text-white py-3">
+            <strong>Demo Run Takeaway</strong>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                A successful agent run is not simply a sequence of LLM calls.
+            </p>
+
+            <p>
+                Each visible model request sits inside a larger workflow containing
+                deterministic inventory detection, forecasting, supplier checks,
+                secured API calls, persistent decision logging, order or escalation
+                creation, Human-in-the-Loop approval, asynchronous messaging,
+                and delivery monitoring.
+            </p>
+
+            <p>
+                The log becomes much more useful once you learn to read the
+                relationships between counts, timestamps, and shipment state.
+            </p>
+
+            <p class="mb-0">
+
+                <strong>
+                    The important evidence is not that the AI produced a response —
+                    it is that the complete governed business workflow can be
+                    reconstructed from authentication through final delivery.
+                </strong>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>

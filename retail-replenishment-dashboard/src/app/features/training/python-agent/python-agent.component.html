@@ -1,0 +1,52 @@
+<div class="training-content">
+  <h1 class="mb-3">6. Python agent</h1>
+  <div class="alert alert-secondary small">
+    Not Flask — there's no web framework here at all. It's a plain Python CLI
+    (<code>python -m agent.main</code>) built on LangGraph, calling the Spring Boot API as a client. It runs to
+    completion and exits, rather than serving HTTP requests.
+  </div>
+  <p class="text-muted">Project: <code>retail-replenishment-agent</code>. LangGraph, <code>requests</code>,
+    <code>python-dotenv</code>, the Anthropic SDK.</p>
+
+  <h2 id="overview">Overview</h2>
+  <pre class="code-block"><code>agent/
+  config.py     Settings loaded from .env — no hardcoded credentials anywhere else
+  auth.py       Keycloak client_credentials token fetch, auto-refresh near expiry
+  api_client.py One method per backend endpoint. GET-only retries — a retried
+                POST could double-create an order
+  llm_clients.py Anthropic wrapper, returns a uniform LlmCallResult for audit logging
+  state.py      LangGraph state — one ItemState per low-stock item
+  nodes.py      The six pipeline stages
+  graph.py      Wires the stages into a LangGraph StateGraph
+  runner.py     Orchestrates one full run: fan out over every item, then watch
+                delivery on whatever orders it created
+  main.py       CLI entrypoint: --store-id, --dry-run, --trigger-type</code></pre>
+  <pre class="code-block"><code>python -m agent.main --dry-run   # exercises everything, creates nothing
+python -m agent.main             # the real thing</code></pre>
+
+  <h2 id="pipeline">LangGraph pipeline</h2>
+  <pre class="code-block"><code>detect_low_inventory -&gt; forecast_demand -&gt; check_supplier_availability
+    --(supplier found)--&gt;    recommend_replenishment --(order created)--&gt; monitor_delivery -&gt; END
+                                                       --(no order)------&gt; END
+    --(no supplier)-----&gt;    escalate_shortage -&gt; END</code></pre>
+  <p><code>detect</code>, <code>forecast</code>, <code>check_supplier</code>, and <code>monitor</code> are
+    deterministic — arithmetic and lookups, no LLM call, logged with no <code>llm_model</code>. The
+    <code>runner</code> fans this graph out over every item <code>GET /inventory/low-stock</code> returns, then
+    stays alive afterward polling delivery status on whatever orders got created — for up to
+    <code>MONITOR_DELIVERY_MAX_MINUTES</code> (default 8, deliberately longer than the backend simulator's ~6
+    minute cadence).</p>
+
+  <h2 id="llm">LLM judgment calls</h2>
+  <p>Both judgment stages run on Anthropic (this POC deliberately uses one provider, not a multi-provider split):</p>
+  <ul>
+    <li><strong><code>recommend_replenishment</code></strong> — given the deficit, forecast, and best available
+      supplier, decides whether to order, how much, and whether it qualifies for auto-approval. Auto-approval
+      logic lives in the prompt: critical SKU + reliable low-lead-time supplier → skip human review.</li>
+    <li><strong><code>escalate_shortage</code></strong> — given the deficit and (when available) the SKU's
+      shelf life, decides severity: <code>LOW</code> / <code>MEDIUM</code> / <code>HIGH</code> / <code>CRITICAL</code>.</li>
+  </ul>
+  <p>Both are instructed to return strict JSON and both are parsed defensively —
+    <code>parse_json_response()</code> falls back to a safe default and keeps the raw text for the audit trail
+    rather than crashing the run on one malformed reply. Every call logs a full <code>llm_call_log</code> row:
+    request/response payload, token counts, latency, estimated cost.</p>
+</div>

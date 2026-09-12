@@ -1,0 +1,51 @@
+<h4 class="mb-3">Low stock — detect_low_inventory stage's live worklist</h4>
+<p class="text-muted small mb-3">
+    Read-only mirror of GET /api/inventory/low-stock — the same query the agent's first stage runs
+    every cycle. Nothing here is actioned directly; the agent (or a scheduled run) turns these into
+    replenishment orders or escalations, visible under Orders / Escalations once created.
+</p>
+
+@if (loading()) {
+    <p class="text-muted">Loading…</p>
+} @else if (loadError()) {
+    <div class="alert alert-danger">{{ loadError() }}</div>
+} @else if (items().length === 0) {
+    <p class="text-muted">Nothing below its reorder point right now.</p>
+} @else {
+    <div class="table-responsive">
+        <table class="table align-middle bg-white">
+            <thead>
+            <tr>
+                <th>Store</th>
+                <th>SKU</th>
+                <th>Product</th>
+                <th>Critical</th>
+                <th>Available</th>
+                <th>Reorder point</th>
+                <th>Reorder qty</th>
+                <th>Safety stock</th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (i of items(); track i.storeInventoryId) {
+                    <tr>
+                        <td>{{ i.storeCode }}</td>
+                        <td>{{ i.skuCode }}</td>
+                        <td>{{ i.productName }}</td>
+                        <td>
+                            @if (i.critical) {
+                                <span class="badge bg-danger">critical</span>
+                            } @else {
+                                <span class="text-muted">—</span>
+                            }
+                        </td>
+                        <td [class.text-danger]="i.availableQty <= 0">{{ i.availableQty }}</td>
+                        <td>{{ i.reorderPoint }}</td>
+                        <td>{{ i.reorderQty }}</td>
+                        <td>{{ i.safetyStockQty }}</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

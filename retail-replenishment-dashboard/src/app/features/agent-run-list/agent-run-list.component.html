@@ -1,0 +1,41 @@
+<h4 class="mb-3">Recent agent runs</h4>
+
+@if (loading()) {
+  <p class="text-muted">Loading…</p>
+} @else if (loadError()) {
+  <div class="alert alert-danger">{{ loadError() }}</div>
+} @else if (runs().length === 0) {
+  <p class="text-muted">No agent runs recorded yet.</p>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-hover align-middle bg-white">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Trigger</th>
+          <th>Store</th>
+          <th>Started</th>
+          <th>Completed</th>
+          <th>Summary</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (run of runs(); track run.agentRunId) {
+          <tr (click)="open(run)">
+            <td><span class="badge badge-status" [ngClass]="statusBadgeClass(run.status)">{{ run.status }}</span></td>
+            <td>
+              {{ run.triggerType }}
+              @if (run.triggerSource) {
+                <div class="text-muted small">{{ run.triggerSource }}</div>
+              }
+            </td>
+            <td>{{ run.storeCode ?? 'All stores' }}</td>
+            <td>{{ run.startedAt | date: 'MMM d, HH:mm:ss' }}</td>
+            <td>{{ run.completedAt ? (run.completedAt | date: 'MMM d, HH:mm:ss') : '—' }}</td>
+            <td class="text-truncate" style="max-width: 320px;">{{ run.summary ?? '—' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

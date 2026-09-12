@@ -1,0 +1,81 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Shortage escalations</h4>
+    <select class="form-select form-select-sm w-auto" [value]="statusFilter()"
+            (change)="onFilterChange($any($event.target).value)">
+        <option value="">All statuses</option>
+        @for (s of statusOptions.slice(1); track s) {
+            <option [value]="s">{{ s }}</option>
+        }
+    </select>
+</div>
+
+@if (!auth.hasRole('SUPPLY_CHAIN_MANAGER')) {
+    <div class="alert alert-secondary py-2 small">
+        Viewing read-only — acknowledging or resolving an escalation requires the Supply Chain Manager role.
+    </div>
+}
+
+@if (actionError()) {
+    <div class="alert alert-danger py-2">{{ actionError() }}</div>
+}
+
+@if (loading()) {
+    <p class="text-muted">Loading…</p>
+} @else if (loadError()) {
+    <div class="alert alert-danger">{{ loadError() }}</div>
+} @else if (escalations().length === 0) {
+    <p class="text-muted">No escalations match this filter.</p>
+} @else {
+    <div class="table-responsive">
+        <table class="table align-middle bg-white">
+            <thead>
+            <tr>
+                <th>Severity</th>
+                <th>Reason</th>
+                <th>Store / SKU</th>
+                <th>Status</th>
+                <th>Assigned to</th>
+                <th>Raised</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (e of escalations(); track e.escalationId) {
+                    <tr>
+                        <td><span class="badge" [ngClass]="severityBadgeClass(e.severity)">{{ e.severity }}</span></td>
+                        <td>{{ e.escalationReason }}</td>
+                        <td>{{ e.storeCode }} / {{ e.skuCode }}</td>
+                        <td><span class="badge badge-status" [ngClass]="statusBadgeClass(e.statusCode)">{{ e.statusCode }}</span></td>
+                        <td>{{ e.assignedTo ?? '—' }}</td>
+                        <td>{{ e.createdAt | date: 'MMM d, HH:mm' }}</td>
+                        <td>
+                            @if (canManage() && (e.statusCode === 'OPEN' || e.statusCode === 'ACKNOWLEDGED' || e.statusCode === 'IN_PROGRESS')) {
+                                @if (e.statusCode === 'OPEN') {
+                                    <button class="btn btn-sm btn-outline-primary me-1" [disabled]="busyId() === e.escalationId"
+                                            (click)="acknowledge(e)">Acknowledge</button>
+                                }
+                                <button class="btn btn-sm btn-accent" [disabled]="busyId() === e.escalationId"
+                                        (click)="startResolve(e)">Resolve</button>
+                            }
+                        </td>
+                    </tr>
+                    @if (resolvingId() === e.escalationId) {
+                        <tr>
+                            <td colspan="7" class="bg-light">
+                                <div class="p-2">
+                                    <label class="form-label small mb-1">Resolution notes</label>
+                                    <textarea class="form-control form-control-sm mb-2" rows="2"
+                                              [value]="resolutionDraft()"
+                                              (input)="resolutionDraft.set($any($event.target).value)"></textarea>
+                                    <button class="btn btn-sm btn-accent me-2" [disabled]="busyId() === e.escalationId"
+                                            (click)="confirmResolve(e)">Confirm resolve</button>
+                                    <button class="btn btn-sm btn-outline-secondary" (click)="cancelResolve()">Cancel</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}

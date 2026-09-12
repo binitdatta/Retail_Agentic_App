@@ -1,0 +1,77 @@
+server:
+  port: 8087
+
+spring:
+  application:
+    name: retail-replenishment-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/retail_replenishment
+    username: root
+    password: localroot
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          time_zone: UTC
+        default_batch_fetch_size: 25
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        acknowledge-mode: auto
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/retail-replenishment
+          # jwk-set-uri is derived from issuer-uri automatically; override
+          # explicitly if Keycloak sits behind a different hostname than
+          # the one embedded in tokens (common behind a reverse proxy):
+          # jwk-set-uri: http://localhost:8080/realms/retail-replenishment/protocol/openid-connect/certs
+
+app:
+  cors:
+    allowed-origins:
+      - http://localhost:4200
+  rabbitmq:
+    exchange: retail.replenishment.events
+    routing-keys:
+      low-stock-detected: inventory.low-stock.detected
+      order-created: replenishment.order.created
+      delivery-status-updated: delivery.status.updated
+      shortage-escalated: shortage.escalated
+  forecast:
+    default-lookback-days: 14
+    default-horizon-days: 7
+  delivery-simulator:
+    enabled: true
+    # Wall-clock pacing for the demo, independent of the supplier's real
+    # lead_time_days — a live 5-10 minute run needs to *see* the shipment
+    # move, not wait out an actual 1-3 day lead time. A production variant
+    # would derive these offsets from the real ETA instead of a fixed cadence.
+    departed-delay-seconds: 20
+    in-transit-delay-seconds: 90
+    out-for-delivery-delay-seconds: 240
+    delivered-delay-seconds: 360
+    # Chance of injecting a DELAYED event between IN_TRANSIT and
+    # OUT_FOR_DELIVERY, to exercise the exception path in a demo run.
+    # Set to 0 for a guaranteed clean run.
+    delay-injection-probability: 0.15
+
+logging:
+  level:
+    com.havi.retailreplenishment: INFO
+    org.hibernate.SQL: WARN

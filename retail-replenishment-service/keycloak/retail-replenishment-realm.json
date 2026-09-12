@@ -1,0 +1,124 @@
+{
+  "realm": "retail-replenishment",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "accessTokenLifespan": 900,
+  "roles": {
+    "realm": [
+      {
+        "name": "REPLENISHMENT_AGENT",
+        "description": "LangGraph agent service account — autonomous pipeline actions (detect, forecast, supplier check, order/shipment/escalation creation, agent-run audit trail)"
+      },
+      {
+        "name": "SUPPLY_CHAIN_MANAGER",
+        "description": "Human approver — approves/rejects recommended orders, resolves shortage escalations"
+      },
+      {
+        "name": "DASHBOARD_VIEWER",
+        "description": "Read-only access to inventory, orders, escalations, and the LLM cost/audit dashboard"
+      }
+    ]
+  },
+  "clientScopes": [
+    {
+      "name": "retail-replenishment-roles",
+      "protocol": "openid-connect",
+      "description": "Adds realm roles to the token under realm_access.roles",
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String",
+            "multivalued": "true",
+            "access.token.claim": "true",
+            "id.token.claim": "false",
+            "userinfo.token.claim": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "retail-replenishment-agent",
+      "name": "Retail Replenishment LangGraph Agent",
+      "description": "Confidential service-to-service client. The Python agent authenticates with client_credentials to get a token carrying REPLENISHMENT_AGENT, then calls the Spring Boot API directly — no user is ever involved in this flow.",
+      "enabled": true,
+      "publicClient": false,
+      "protocol": "openid-connect",
+      "clientAuthenticatorType": "client-secret",
+      "secret": "CHANGE_ME_LOCAL_DEV_SECRET",
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": false,
+      "defaultClientScopes": ["retail-replenishment-roles", "web-origins", "acr"],
+      "redirectUris": [],
+      "webOrigins": []
+    },
+    {
+      "clientId": "retail-replenishment-dashboard",
+      "name": "Retail Replenishment Dashboard",
+      "description": "Public PKCE client for the future cost/audit dashboard UI. No client secret — the SPA authenticates users directly via the authorization code + PKCE flow.",
+      "enabled": true,
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      },
+      "defaultClientScopes": ["retail-replenishment-roles", "web-origins", "acr"],
+      "redirectUris": ["http://localhost:4200/*", "http://localhost:5173/*"],
+      "webOrigins": ["http://localhost:4200", "http://localhost:5173"]
+    }
+  ],
+  "users": [
+    {
+      "username": "service-account-retail-replenishment-agent",
+      "enabled": true,
+      "serviceAccountClientId": "retail-replenishment-agent",
+      "realmRoles": ["REPLENISHMENT_AGENT"]
+    },
+    {
+      "username": "priya.manager",
+      "enabled": true,
+      "email": "priya.manager@example.com",
+      "emailVerified": true,
+      "firstName": "Priya",
+      "lastName": "Manager",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": true
+        }
+      ],
+      "realmRoles": ["SUPPLY_CHAIN_MANAGER"]
+    },
+    {
+      "username": "dana.viewer",
+      "enabled": true,
+      "email": "dana.viewer@example.com",
+      "emailVerified": true,
+      "firstName": "Dana",
+      "lastName": "Viewer",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": true
+        }
+      ],
+      "realmRoles": ["DASHBOARD_VIEWER"]
+    }
+  ]
+}

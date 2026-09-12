@@ -1,0 +1,66 @@
+<a [routerLink]="['/runs', runId]" class="btn btn-sm btn-outline-secondary mb-3">&larr; Back to run</a>
+
+<h4 class="mb-1">Raw HTTP trace</h4>
+<p class="text-muted small mb-3">
+  The literal wire-level request/response for every LLM call in this run — actual URL, headers, and raw
+  bodies, not the reconstructed payload shown on the run detail page. Credential headers are redacted before
+  storage; nothing here ever holds a real API key.
+</p>
+
+@if (loading()) {
+  <p class="text-muted">Loading…</p>
+} @else if (loadError()) {
+  <div class="alert alert-danger">{{ loadError() }}</div>
+} @else if (traces().length === 0) {
+  <p class="text-muted">No HTTP traces recorded for this run yet.</p>
+} @else {
+  <div class="table-responsive">
+    <table class="table table-hover align-middle bg-white">
+      <thead>
+        <tr>
+          <th>Provider / model</th>
+          <th>Method</th>
+          <th>URL</th>
+          <th>Status</th>
+          <th>Recorded at</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (t of traces(); track t.httpTraceId) {
+          <tr (click)="toggle(t.httpTraceId)">
+            <td>{{ t.providerCode }} / {{ t.modelName }}</td>
+            <td><span class="badge bg-secondary">{{ t.httpMethod }}</span></td>
+            <td class="text-truncate" style="max-width: 320px;">{{ t.requestUrl }}</td>
+            <td><span class="badge" [ngClass]="statusBadgeClass(t.responseStatusCode)">{{ t.responseStatusCode ?? '—' }}</span></td>
+            <td>{{ t.createdAt | date: 'HH:mm:ss' }}</td>
+          </tr>
+          @if (expandedTraceId() === t.httpTraceId) {
+            <tr>
+              <td colspan="5" class="bg-light">
+                <div class="p-2">
+                  <div class="text-muted small mb-1 fw-semibold">Request &mdash; {{ t.httpMethod }} {{ t.requestUrl }}</div>
+                  <div class="text-muted small mb-1">Headers</div>
+                  <pre class="trace-pre small bg-white p-2 rounded border mb-3">{{ pretty(t.requestHeaders) }}</pre>
+                  <div class="text-muted small mb-1">Body</div>
+                  <pre class="trace-pre small bg-white p-2 rounded border mb-3">{{ pretty(t.requestBody) }}</pre>
+                  @if (t.requestParams) {
+                    <div class="text-muted small mb-1">Params</div>
+                    <pre class="trace-pre small bg-white p-2 rounded border mb-3">{{ pretty(t.requestParams) }}</pre>
+                  }
+
+                  <hr>
+
+                  <div class="text-muted small mb-1 fw-semibold">Response &mdash; {{ t.responseStatusCode ?? '—' }}</div>
+                  <div class="text-muted small mb-1">Headers</div>
+                  <pre class="trace-pre small bg-white p-2 rounded border mb-3">{{ pretty(t.responseHeaders) }}</pre>
+                  <div class="text-muted small mb-1">Body</div>
+                  <pre class="trace-pre small bg-white p-2 rounded border">{{ pretty(t.responseBody) }}</pre>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+}

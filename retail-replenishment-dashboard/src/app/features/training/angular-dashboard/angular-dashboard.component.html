@@ -1,0 +1,2487 @@
+<div class="training-content">
+
+    <!-- ============================================================
+         PAGE HEADER
+         ============================================================ -->
+
+    <div class="mb-4">
+
+        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+
+            <span class="badge bg-primary px-3 py-2">
+                Front-End Application
+            </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+                Angular 21
+            </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+                Standalone Components
+            </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+                Bootstrap 5.3.3
+            </span>
+
+        </div>
+
+        <h1 class="display-6 fw-bold mb-2">
+            5. Angular Dashboard
+        </h1>
+
+        <p class="lead text-muted mb-0">
+            Explore the browser-based user experience for the Retail Replenishment
+            Agentic AI POC: Angular 21 standalone components, routing, Keycloak
+            Authorization Code + PKCE, JWT-aware UI behavior, HTTP interceptors,
+            Human-in-the-Loop workflows, Bootstrap styling, project configuration,
+            and the standard structure of a modern Angular application.
+        </p>
+
+    </div>
+
+
+    <!-- ============================================================
+         PROJECT OVERVIEW
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-5" id="overview">
+
+        <div class="card-header bg-primary text-white py-3">
+            <strong>Angular Project Overview</strong>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <div class="col-lg-7">
+
+                    <div class="text-muted small text-uppercase fw-bold mb-1">
+                        Project
+                    </div>
+
+                    <h3 class="h4 text-primary fw-bold mb-3">
+                        <code>retail-replenishment-dashboard</code>
+                    </h3>
+
+                    <p>
+                        This application is the human-facing interface for the
+                        Retail Replenishment Agentic AI POC.
+                    </p>
+
+                    <p>
+                        It allows authenticated users to inspect autonomous agent
+                        activity, review replenishment orders, work shortage
+                        escalations, monitor low-stock inventory, and perform
+                        Human-in-the-Loop actions.
+                    </p>
+
+                    <p class="mb-0">
+                        The Angular application does not own authoritative business
+                        state. It obtains data and performs actions through the secured
+                        Spring Boot API.
+                    </p>
+
+                </div>
+
+
+                <div class="col-lg-5">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped training-table mb-0">
+
+                            <tbody>
+
+                            <tr>
+                                <th>Framework</th>
+                                <td>Angular 21</td>
+                            </tr>
+
+                            <tr>
+                                <th>Architecture</th>
+                                <td>Standalone Components</td>
+                            </tr>
+
+                            <tr>
+                                <th>Language</th>
+                                <td>TypeScript 5.9</td>
+                            </tr>
+
+                            <tr>
+                                <th>Reactive Library</th>
+                                <td>RxJS 7.8</td>
+                            </tr>
+
+                            <tr>
+                                <th>UI Framework</th>
+                                <td>Bootstrap 5.3.3</td>
+                            </tr>
+
+                            <tr>
+                                <th>Authentication</th>
+                                <td>OAuth2 / OIDC + PKCE</td>
+                            </tr>
+
+                            <tr>
+                                <th>Identity Provider</th>
+                                <td>Keycloak</td>
+                            </tr>
+
+                            <tr>
+                                <th>Port</th>
+                                <td><code>4200</code></td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         ANGULAR AT A GLANCE
+         ============================================================ -->
+
+    <h2>Angular dashboard at a glance</h2>
+
+    <div class="row g-3 mb-5">
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Application Style
+                    </div>
+
+                    <h3 class="h5 fw-bold text-primary">
+                        SPA
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Angular provides a browser-based Single Page Application
+                        with client-side routing.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Component Model
+                    </div>
+
+                    <h3 class="h5 fw-bold text-primary">
+                        Standalone
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Features are implemented without the traditional
+                        NgModule-centric application structure.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Authentication
+                    </div>
+
+                    <h3 class="h5 fw-bold text-primary">
+                        PKCE
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Human users authenticate with Keycloak using
+                        Authorization Code + PKCE.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Business Actions
+                    </div>
+
+                    <h3 class="h5 fw-bold text-primary">
+                        HITL
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Managers can approve orders and acknowledge or resolve
+                        business exceptions.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         CURRENT PROJECT STRUCTURE
+         ============================================================ -->
+
+    <h2 id="project-structure">Your Angular 21 project structure</h2>
+
+    <p>
+        Your project already follows a clean modern Angular structure:
+        application infrastructure is separated from business features,
+        environment configuration, static assets, and root-level build files.
+    </p>
+
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <strong>Current high-level project structure</strong>
+        </div>
+
+        <div class="card-body">
+
+            <pre class="code-block mb-0"><code>retail-replenishment-dashboard/
+├── .angular/
+├── .idea/
+├── node_modules/
+│
+├── public/
+│   └── images/
+│       └── training/
+│           └── architecture/
+│               └── agentic-retail-replenishment-architecture.png
+│
+├── src/
+│   ├── app/
+│   │   ├── core/
+│   │   ├── features/
+│   │   ├── models/
+│   │   ├── app.component.ts
+│   │   ├── app.config.ts
+│   │   └── app.routes.ts
+│   │
+│   ├── environments/
+│   ├── index.html
+│   ├── main.ts
+│   ├── styles.scss
+│   └── styles-bkp.scss
+│
+├── .gitignore
+├── angular.json
+├── package.json
+├── package-lock.json
+├── README.md
+├── tsconfig.app.json
+└── tsconfig.json</code></pre>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         STANDARD PROJECT STRUCTURE
+         ============================================================ -->
+
+    <h2>Standard structure of a modern Angular application</h2>
+
+    <p>
+        Angular does not force every project to use the exact same folder layout,
+        but a scalable standalone application commonly separates application-wide
+        infrastructure from business features and reusable models.
+    </p>
+
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+
+            <tr>
+                <th style="width: 25%">Location</th>
+                <th style="width: 25%">Responsibility</th>
+                <th>Typical Contents</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><code>src/app/core/</code></td>
+                <td>Application-wide infrastructure</td>
+                <td>
+                    Authentication, HTTP interceptors, route guards,
+                    singleton services, API clients, PKCE utilities,
+                    global state helpers.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>src/app/features/</code></td>
+                <td>Business capabilities</td>
+                <td>
+                    Route-oriented features such as Orders, Inventory,
+                    Agent Runs, Escalations, Training, and Authentication Callback.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>src/app/models/</code></td>
+                <td>TypeScript domain contracts</td>
+                <td>
+                    Interfaces and types describing API requests,
+                    API responses, orders, inventory, escalations,
+                    agent runs, and related structures.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>src/app/shared/</code></td>
+                <td>Reusable UI building blocks</td>
+                <td>
+                    Shared components, pipes, directives, utility widgets,
+                    reusable tables, badges, dialogs, and presentation helpers.
+                    Your current project may add this later if reuse grows.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>src/environments/</code></td>
+                <td>Environment-specific values</td>
+                <td>
+                    API URLs, Keycloak base URLs, realm names,
+                    client IDs, and environment-specific configuration.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>public/</code></td>
+                <td>Static files</td>
+                <td>
+                    Images, icons, downloadable files, training diagrams,
+                    and other files copied as static build assets.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>src/styles.scss</code></td>
+                <td>Global styling</td>
+                <td>
+                    Global Bootstrap overrides, application colors,
+                    navbar styling, training-page styles, cards,
+                    tables, code blocks, and shared layout rules.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>src/main.ts</code></td>
+                <td>Application bootstrap</td>
+                <td>
+                    Starts the Angular application and typically calls
+                    <code>bootstrapApplication()</code> for a standalone app.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>app.config.ts</code></td>
+                <td>Application providers</td>
+                <td>
+                    Global dependency-injection providers such as routing,
+                    HTTP client configuration, interceptors, and related
+                    standalone application configuration.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>app.routes.ts</code></td>
+                <td>Routing configuration</td>
+                <td>
+                    Defines application routes, lazy feature loading,
+                    route guards, dynamic route parameters, and training pages.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>app.component.ts</code></td>
+                <td>Root Angular component</td>
+                <td>
+                    Application shell containing the top navigation,
+                    router outlet, global layout, and other root UI behavior.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         ROOT CONFIGURATION FILES
+         ============================================================ -->
+
+    <h2>Root project files and what they do</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+
+            <tr>
+                <th style="width: 25%">File</th>
+                <th style="width: 28%">Responsibility</th>
+                <th>What it controls in this project</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><code>angular.json</code></td>
+                <td>Angular CLI workspace configuration</td>
+                <td>
+                    Build configuration, dev server, output directory,
+                    static assets, Bootstrap CSS/JavaScript, global styles,
+                    development options, production budgets, and port 4200.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>package.json</code></td>
+                <td>Node / npm project manifest</td>
+                <td>
+                    Angular, Bootstrap, RxJS, TypeScript and build-tool
+                    dependencies plus npm commands such as
+                    <code>npm start</code> and <code>npm run build</code>.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>package-lock.json</code></td>
+                <td>Resolved dependency lock</td>
+                <td>
+                    Records the precise dependency tree installed by npm so
+                    installations remain reproducible.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>tsconfig.json</code></td>
+                <td>Base TypeScript configuration</td>
+                <td>
+                    Strict type checking, ECMAScript target, module strategy,
+                    Angular template checks, source maps, decorator support,
+                    and compiler behavior.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>tsconfig.app.json</code></td>
+                <td>Application TypeScript configuration</td>
+                <td>
+                    Extends the root TypeScript configuration and identifies
+                    <code>src/main.ts</code> as the application entry point.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>.gitignore</code></td>
+                <td>Source-control exclusions</td>
+                <td>
+                    Prevents generated or local-only directories and files
+                    such as dependency caches and build output from being committed.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>README.md</code></td>
+                <td>Developer documentation</td>
+                <td>
+                    Documents how to install, configure, run, build,
+                    test, and understand the project.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         ANGULAR.JSON
+         ============================================================ -->
+
+    <h2 id="angular-json">Understanding angular.json</h2>
+
+    <p>
+        <code>angular.json</code> is the Angular CLI workspace configuration.
+        It does not contain application business logic; it tells Angular's
+        build and development tooling how the project should be processed.
+    </p>
+
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Build Configuration
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-striped training-table mb-0">
+
+                        <tbody>
+
+                        <tr>
+                            <th>Builder</th>
+                            <td>
+                                <code>&#64;angular/build:application</code>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Output</th>
+                            <td>
+                                <code>dist/retail-replenishment-dashboard</code>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>HTML entry</th>
+                            <td>
+                                <code>src/index.html</code>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Browser entry</th>
+                            <td>
+                                <code>src/main.ts</code>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>TS config</th>
+                            <td>
+                                <code>tsconfig.app.json</code>
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Development Server
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-striped training-table mb-0">
+
+                        <tbody>
+
+                        <tr>
+                            <th>Builder</th>
+                            <td>
+                                <code>&#64;angular/build:dev-server</code>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Default mode</th>
+                            <td>
+                                <code>development</code>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Port</th>
+                            <td>
+                                <code>4200</code>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Source maps</th>
+                            <td>Enabled in development</td>
+                        </tr>
+
+                        <tr>
+                            <th>Optimization</th>
+                            <td>Disabled in development</td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         STATIC ASSETS
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                Static assets from <code>public/</code>
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                Your Angular configuration copies everything inside
+                <code>public/</code> into the application's public build output.
+            </p>
+
+            <pre class="code-block"><code>"assets": [
+  &#123;
+    "glob": "**/*",
+    "input": "public"
+  &#125;
+]</code></pre>
+
+            <p>
+                That is why this physical project file:
+            </p>
+
+            <pre class="code-block"><code>public/images/training/architecture/
+agentic-retail-replenishment-architecture.png</code></pre>
+
+            <p>
+                is available to the browser as:
+            </p>
+
+            <pre class="code-block mb-0"><code>/images/training/architecture/
+agentic-retail-replenishment-architecture.png</code></pre>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         GLOBAL STYLES
+         ============================================================ -->
+
+    <h2>Bootstrap and global styling</h2>
+
+    <p>
+        Bootstrap is loaded globally through the Angular build configuration,
+        followed by your application-specific SCSS.
+    </p>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped training-table">
+
+            <thead>
+            <tr>
+                <th>Asset</th>
+                <th>Purpose</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>
+                    <code>node_modules/bootstrap/dist/css/bootstrap.min.css</code>
+                </td>
+
+                <td>
+                    Provides Bootstrap's grid, tables, cards, buttons,
+                    badges, spacing utilities, forms, navigation,
+                    accordions, and responsive helpers.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>src/styles.scss</code>
+                </td>
+
+                <td>
+                    Applies the custom Bright Blue visual theme and
+                    application-wide overrides.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>node_modules/bootstrap/dist/js/bootstrap.bundle.min.js</code>
+                </td>
+
+                <td>
+                    Provides Bootstrap JavaScript behavior required by
+                    components such as dropdowns and accordions.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         PACKAGE.JSON
+         ============================================================ -->
+
+    <h2 id="package-json">Understanding package.json</h2>
+
+    <p>
+        <code>package.json</code> describes the Node-based application,
+        declares its dependencies, and defines the commands developers
+        use to work with the project.
+    </p>
+
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        npm Scripts
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-striped training-table mb-0">
+
+                        <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Runs</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr>
+                            <td><code>npm start</code></td>
+                            <td><code>ng serve</code></td>
+                        </tr>
+
+                        <tr>
+                            <td><code>npm run build</code></td>
+                            <td><code>ng build</code></td>
+                        </tr>
+
+                        <tr>
+                            <td><code>npm run watch</code></td>
+                            <td>
+                                Angular build in development watch mode
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Dependency Groups
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-striped training-table mb-0">
+
+                        <tbody>
+
+                        <tr>
+                            <th>Runtime</th>
+                            <td>
+                                Angular, Bootstrap, RxJS,
+                                tslib, zone.js
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Development</th>
+                            <td>
+                                Angular CLI, Angular build tooling,
+                                compiler CLI, TypeScript
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         DEPENDENCY TABLE
+         ============================================================ -->
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+
+            <tr>
+                <th>Dependency</th>
+                <th>Version</th>
+                <th>Role</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><code>&#64;angular/core</code></td>
+                <td><code>^21.0.0</code></td>
+                <td>
+                    Angular's core runtime, components, dependency injection,
+                    lifecycle, signals, and application framework.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>&#64;angular/common</code></td>
+                <td><code>^21.0.0</code></td>
+                <td>
+                    Common Angular directives, pipes, and browser application utilities.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>&#64;angular/forms</code></td>
+                <td><code>^21.0.0</code></td>
+                <td>
+                    Template-driven and reactive form support.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>&#64;angular/router</code></td>
+                <td><code>^21.0.0</code></td>
+                <td>
+                    Client-side routing, route parameters, guards,
+                    and lazy route loading.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>&#64;angular/platform-browser</code></td>
+                <td><code>^21.0.0</code></td>
+                <td>
+                    Browser runtime and application bootstrapping support.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>bootstrap</code></td>
+                <td><code>^5.3.3</code></td>
+                <td>
+                    Responsive visual layout and component styling.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>rxjs</code></td>
+                <td><code>~7.8.0</code></td>
+                <td>
+                    Reactive streams used heavily by Angular HTTP,
+                    asynchronous processing, and event composition.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>zone.js</code></td>
+                <td><code>~0.15.0</code></td>
+                <td>
+                    Runtime dependency included in this project for Angular
+                    asynchronous execution/change-detection integration.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>&#64;angular/cli</code></td>
+                <td><code>^21.0.0</code></td>
+                <td>
+                    Provides Angular CLI commands such as
+                    <code>ng serve</code> and <code>ng build</code>.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>&#64;angular/build</code></td>
+                <td><code>^21.0.0</code></td>
+                <td>
+                    Provides the modern Angular application build pipeline.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>typescript</code></td>
+                <td><code>^5.9.0</code></td>
+                <td>
+                    Compiles the strongly typed application source to JavaScript.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         TYPESCRIPT CONFIGURATION
+         ============================================================ -->
+
+    <h2 id="typescript">TypeScript configuration</h2>
+
+    <p>
+        The project uses two TypeScript configuration layers:
+        a root configuration containing shared compiler policy and an
+        application configuration identifying how this Angular application
+        should be compiled.
+    </p>
+
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        <code>tsconfig.json</code>
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Defines the base compiler rules for the workspace.
+                    </p>
+
+                    <table class="table table-striped training-table mb-0">
+
+                        <tbody>
+
+                        <tr>
+                            <th>Strict mode</th>
+                            <td><code>true</code></td>
+                        </tr>
+
+                        <tr>
+                            <th>Target</th>
+                            <td><code>ES2022</code></td>
+                        </tr>
+
+                        <tr>
+                            <th>Module</th>
+                            <td><code>ES2022</code></td>
+                        </tr>
+
+                        <tr>
+                            <th>Resolution</th>
+                            <td><code>bundler</code></td>
+                        </tr>
+
+                        <tr>
+                            <th>Source Maps</th>
+                            <td>Enabled</td>
+                        </tr>
+
+                        <tr>
+                            <th>Strict Templates</th>
+                            <td>Enabled</td>
+                        </tr>
+
+                        <tr>
+                            <th>Strict DI</th>
+                            <td>Enabled</td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        <code>tsconfig.app.json</code>
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Extends the workspace configuration specifically for
+                        the browser application.
+                    </p>
+
+                    <pre class="code-block"><code>&#123;
+  "extends": "./tsconfig.json",
+  "compilerOptions": &#123;
+    "outDir": "./out-tsc/app",
+    "types": []
+  &#125;,
+  "files": [
+    "src/main.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+&#125;</code></pre>
+
+                    <p class="mb-0">
+                        The important architectural point is that
+                        <code>src/main.ts</code> is the browser application
+                        entry point.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         WHY STRICT MODE
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                Why strict TypeScript and strict Angular templates matter
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                The project enables both TypeScript strictness and Angular
+                template strictness.
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped training-table mb-0">
+
+                    <thead>
+                    <tr>
+                        <th>Setting</th>
+                        <th>Benefit</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td><code>strict</code></td>
+                        <td>
+                            Detects unsafe TypeScript assumptions during compilation.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>noImplicitReturns</code></td>
+                        <td>
+                            Detects functions that fail to return consistently.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>noFallthroughCasesInSwitch</code></td>
+                        <td>
+                            Detects accidental switch-case fallthrough.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>strictInjectionParameters</code></td>
+                        <td>
+                            Applies stricter checks to Angular dependency injection.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>strictTemplates</code></td>
+                        <td>
+                            Type-checks Angular HTML templates rather than treating
+                            template bindings loosely.
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         ROUTES
+         ============================================================ -->
+
+    <h2 id="routes">Application routes</h2>
+
+    <p>
+        Routes organize the dashboard around the business capability the user
+        wants to inspect or act upon.
+    </p>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 30%">Route</th>
+                <th>Purpose</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><code>/</code></td>
+                <td>
+                    Displays recent agent runs.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>/runs/:id</code></td>
+                <td>
+                    Displays the decision trace, LLM cost, and LLM call log
+                    for one autonomous agent execution.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>/orders</code><br>
+                    <code>/orders/:id</code>
+                </td>
+                <td>
+                    Displays replenishment orders and supports manager
+                    approve/cancel Human-in-the-Loop actions.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>/escalations</code></td>
+                <td>
+                    Displays shortage escalations and supports acknowledgement
+                    and resolution.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>/inventory</code></td>
+                <td>
+                    Displays the current low-stock worklist as a read-only view.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>/training/*</code></td>
+                <td>
+                    Provides the educational pages describing the POC architecture,
+                    database, IAM, backend, Angular frontend, and agent implementation.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         FEATURE STRUCTURE
+         ============================================================ -->
+
+    <h2>Feature-oriented organization</h2>
+
+    <p>
+        Your <code>features/</code> directory organizes the UI around user
+        capabilities rather than around generic technical file types.
+    </p>
+
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-body">
+
+            <pre class="code-block mb-0"><code>features/
+├── agent-run-detail/
+├── agent-run-list/
+├── auth-callback/
+├── escalations-list/
+├── inventory-low-stock/
+├── order-detail/
+├── orders-list/
+└── training/
+    ├── angular-dashboard/
+    ├── architecture/
+    ├── keycloak/
+    ├── mysql/
+    ├── python-agent/
+    ├── setup-guide/
+    └── spring-boot/</code></pre>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         CORE
+         ============================================================ -->
+
+    <h2>The core/ package</h2>
+
+    <p>
+        <code>core/</code> contains cross-cutting application infrastructure
+        that is used across multiple business features.
+    </p>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 30%">File</th>
+                <th>Role</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>
+                    <code>auth.service.ts</code>
+                </td>
+
+                <td>
+                    Owns the Keycloak browser authentication lifecycle:
+                    login, authorization-code callback handling,
+                    token storage, logout, and authenticated-session behavior.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>pkce.util.ts</code>
+                </td>
+
+                <td>
+                    Implements PKCE cryptographic utilities such as generation
+                    of the code verifier and SHA-256 code challenge.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>auth.guard.ts</code>
+                </td>
+
+                <td>
+                    Protects application routes and initiates authentication
+                    when an authenticated session is unavailable.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>auth.interceptor.ts</code>
+                </td>
+
+                <td>
+                    Adds the access token to secured API requests and participates
+                    in handling authentication failures such as expired sessions.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>api.service.ts</code>
+                </td>
+
+                <td>
+                    Centralizes communication with the Spring Boot REST API so
+                    components do not repeatedly construct HTTP calls themselves.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>actor-name.service.ts</code>
+                </td>
+
+                <td>
+                    Maintains the session-scoped Human-in-the-Loop
+                    "acting as" identity used when recording manager actions.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         AUTH
+         ============================================================ -->
+
+    <h2 id="auth">Authentication with Authorization Code + PKCE</h2>
+
+    <p>
+        The dashboard implements Authorization Code + PKCE using the browser's
+        Web Crypto API through
+        <code>core/pkce.util.ts</code> and
+        <code>core/auth.service.ts</code>.
+    </p>
+
+
+    <div class="accordion shadow-sm mb-5" id="angularAuthAccordion">
+
+
+        <!-- STEP 1 -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="angularAuthHeadingOne">
+
+                <button
+                        class="accordion-button"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#angularAuthOne"
+                        aria-expanded="true"
+                        aria-controls="angularAuthOne"
+                >
+                    <strong class="me-2">Step 1.</strong>
+                    Generate the PKCE verifier and challenge
+                </button>
+
+            </h3>
+
+            <div
+                    id="angularAuthOne"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="angularAuthHeadingOne"
+                    data-bs-parent="#angularAuthAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        <code>login()</code> generates a random PKCE code verifier.
+                    </p>
+
+                    <p>
+                        The browser hashes that verifier using SHA-256 and produces
+                        the code challenge.
+                    </p>
+
+                    <pre class="code-block mb-0"><code>code_challenge_method=S256</code></pre>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEP 2 -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="angularAuthHeadingTwo">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#angularAuthTwo"
+                        aria-expanded="false"
+                        aria-controls="angularAuthTwo"
+                >
+                    <strong class="me-2">Step 2.</strong>
+                    Redirect the browser to Keycloak
+                </button>
+
+            </h3>
+
+            <div
+                    id="angularAuthTwo"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="angularAuthHeadingTwo"
+                    data-bs-parent="#angularAuthAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        Angular redirects the browser to Keycloak's authorization
+                        endpoint.
+                    </p>
+
+                    <p class="mb-0">
+                        The code challenge travels with the authorization request,
+                        but the original verifier remains with the browser.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEP 3 -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="angularAuthHeadingThree">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#angularAuthThree"
+                        aria-expanded="false"
+                        aria-controls="angularAuthThree"
+                >
+                    <strong class="me-2">Step 3.</strong>
+                    Receive the authorization code
+                </button>
+
+            </h3>
+
+            <div
+                    id="angularAuthThree"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="angularAuthHeadingThree"
+                    data-bs-parent="#angularAuthAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        After authentication, Keycloak redirects the browser to:
+                    </p>
+
+                    <pre class="code-block"><code>/callback</code></pre>
+
+                    <p class="mb-0">
+                        The redirect contains the short-lived authorization code.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEP 4 -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="angularAuthHeadingFour">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#angularAuthFour"
+                        aria-expanded="false"
+                        aria-controls="angularAuthFour"
+                >
+                    <strong class="me-2">Step 4.</strong>
+                    Exchange code + verifier for tokens
+                </button>
+
+            </h3>
+
+            <div
+                    id="angularAuthFour"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="angularAuthHeadingFour"
+                    data-bs-parent="#angularAuthAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        <code>handleCallback()</code> sends the authorization code
+                        and the original verifier to Keycloak's token endpoint.
+                    </p>
+
+                    <p>
+                        Keycloak validates that the verifier corresponds to the
+                        earlier SHA-256 challenge.
+                    </p>
+
+                    <p class="mb-0">
+                        The returned <code>access_token</code> and
+                        <code>id_token</code> are stored in
+                        <code>sessionStorage</code>.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEP 5 -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="angularAuthHeadingFive">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#angularAuthFive"
+                        aria-expanded="false"
+                        aria-controls="angularAuthFive"
+                >
+                    <strong class="me-2">Step 5.</strong>
+                    Call the Spring Boot API
+                </button>
+
+            </h3>
+
+            <div
+                    id="angularAuthFive"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="angularAuthHeadingFive"
+                    data-bs-parent="#angularAuthAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        Secured API calls use:
+                    </p>
+
+                    <pre class="code-block mb-0"><code>Authorization: Bearer &lt;access_token&gt;</code></pre>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEP 6 -->
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="angularAuthHeadingSix">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#angularAuthSix"
+                        aria-expanded="false"
+                        aria-controls="angularAuthSix"
+                >
+                    <strong class="me-2">Step 6.</strong>
+                    Logout from Keycloak
+                </button>
+
+            </h3>
+
+            <div
+                    id="angularAuthSix"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="angularAuthHeadingSix"
+                    data-bs-parent="#angularAuthAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <p>
+                        <code>logout()</code> invokes Keycloak's logout endpoint
+                        and supplies:
+                    </p>
+
+                    <pre class="code-block"><code>id_token_hint=&lt;id_token&gt;</code></pre>
+
+                    <p class="mb-0">
+                        Without the required logout context, Keycloak can reject
+                        the logout request rather than ending the SSO session correctly.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         AUTH LESSONS
+         ============================================================ -->
+
+    <h2>Two authentication bugs worth teaching</h2>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 border-warning shadow-sm">
+
+                <div class="card-header">
+
+                    <h3 class="h5 mb-0">
+                        1. Async route-guard redirect loop
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        The route guard must respect the asynchronous nature
+                        of PKCE generation.
+                    </p>
+
+                    <p>
+                        Calling <code>auth.login()</code> without awaiting the
+                        cryptographic work and then immediately returning another
+                        redirect can trigger a navigation loop.
+                    </p>
+
+                    <p class="mb-0">
+                        A visible symptom is a Network tab filled with repeated
+                        canceled Keycloak authorization requests.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 border-warning shadow-sm">
+
+                <div class="card-header">
+
+                    <h3 class="h5 mb-0">
+                        2. Access-token expiry
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Successful initial authentication does not solve the
+                        complete session lifecycle.
+                    </p>
+
+                    <p>
+                        Access tokens expire. The HTTP layer therefore needs to
+                        recognize authentication failures and route the user back
+                        through the authentication flow.
+                    </p>
+
+                    <p class="mb-0">
+                        Without this behavior, screens eventually degrade into
+                        generic API errors after the token expires.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         ROUTE GUARD / INTERCEPTOR
+         ============================================================ -->
+
+    <h2>Guard versus interceptor</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th>Component</th>
+                <th>When it runs</th>
+                <th>Responsibility</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <td>
+                    <code>authGuard</code>
+                </td>
+
+                <td>
+                    During Angular navigation
+                </td>
+
+                <td>
+                    Prevents unauthenticated users from entering protected
+                    application routes.
+                </td>
+
+            </tr>
+
+
+            <tr>
+
+                <td>
+                    <code>auth.interceptor</code>
+                </td>
+
+                <td>
+                    During outgoing / incoming HTTP processing
+                </td>
+
+                <td>
+                    Attaches the access token to API calls and provides a
+                    centralized point for handling authentication-related
+                    HTTP failures.
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         API SERVICE
+         ============================================================ -->
+
+    <h2>API service pattern</h2>
+
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-body">
+
+            <p>
+                Feature components should not scatter raw HTTP URLs and
+                request construction throughout the application.
+            </p>
+
+            <p>
+                <code>api.service.ts</code> provides a central integration
+                boundary between Angular and the Spring Boot backend.
+            </p>
+
+            <div class="alert alert-info mb-0">
+
+                <strong>Architectural benefit:</strong>
+
+                <div class="mt-2">
+                    UI components focus on presentation and interaction while the
+                    API service owns transport-level communication with the backend.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         HITL
+         ============================================================ -->
+
+    <h2 id="hitl">Human-in-the-Loop screens</h2>
+
+    <p>
+        The dashboard contains both read-only observability pages and screens
+        where an authorized manager can intervene in agent-driven workflows.
+    </p>
+
+
+    <div class="table-responsive mb-4">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th>Feature</th>
+                <th>Human Action</th>
+                <th>Security Intent</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>Replenishment Orders</td>
+                <td>Approve or cancel an order</td>
+                <td>
+                    Manager decision over recommendations not automatically
+                    executed by the agent.
+                </td>
+            </tr>
+
+            <tr>
+                <td>Shortage Escalations</td>
+                <td>Acknowledge escalation</td>
+                <td>
+                    Human confirms that the business exception has been reviewed.
+                </td>
+            </tr>
+
+            <tr>
+                <td>Shortage Escalations</td>
+                <td>Resolve escalation</td>
+                <td>
+                    Manager records a resolution note and closes the exception.
+                </td>
+            </tr>
+
+            <tr>
+                <td>Inventory</td>
+                <td>Read only</td>
+                <td>
+                    Provides visibility without creating an alternate mutation path.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         FRONTEND VS BACKEND AUTH
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                Frontend role checks are not a security boundary
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                The Angular application reads
+                <code>realm_access.roles</code> from the JWT so the UI can
+                adapt to the authenticated user.
+            </p>
+
+            <p>
+                For example, a read-only viewer should not be shown a button
+                that invokes a manager-only operation.
+            </p>
+
+            <p>
+                But hiding that button does not secure the operation.
+            </p>
+
+            <div class="alert alert-info mb-0">
+
+                <strong>The real authorization boundary is Spring Boot.</strong>
+
+                <div class="mt-2">
+                    Even if a user manually constructs the HTTP request,
+                    the API independently validates the token and required role.
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         ACTOR NAME
+         ============================================================ -->
+
+    <h2>ActorNameService and audit context</h2>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-5">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        "Acting as"
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        <code>ActorNameService</code> maintains a small
+                        session-scoped display identity.
+                    </p>
+
+                    <p class="mb-0">
+                        The value is visible in the navigation bar so the user
+                        does not have to re-enter it for every HITL action.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-7">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        HITL audit context
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Manager actions such as order approval and escalation
+                        resolution can carry meaningful human context alongside
+                        the authenticated identity.
+                    </p>
+
+                    <p>
+                        Escalation resolution additionally requires a short note
+                        before submission.
+                    </p>
+
+                    <p class="mb-0">
+                        This separates authentication identity from the
+                        human-readable operational context presented in the demo.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         BROWSER TO API FLOW
+         ============================================================ -->
+
+    <h2>End-to-end browser request flow</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 10%">Step</th>
+                <th style="width: 30%">Component</th>
+                <th>What happens</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><span class="badge bg-primary">1</span></td>
+                <td>Angular Router</td>
+                <td>
+                    User navigates to a protected feature route.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">2</span></td>
+                <td>authGuard</td>
+                <td>
+                    Confirms that an authenticated session exists.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">3</span></td>
+                <td>AuthService / Keycloak</td>
+                <td>
+                    If necessary, redirects through Authorization Code + PKCE.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">4</span></td>
+                <td>Feature Component</td>
+                <td>
+                    Requests data through the application's API abstraction.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">5</span></td>
+                <td>HTTP Interceptor</td>
+                <td>
+                    Adds the Bearer access token to the backend request.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">6</span></td>
+                <td>Spring Boot API</td>
+                <td>
+                    Validates the JWT, checks roles, and executes business logic.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">7</span></td>
+                <td>Angular Component</td>
+                <td>
+                    Renders the resulting authoritative API state.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         ANGULAR DESIGN PRINCIPLES
+         ============================================================ -->
+
+    <h2>Key Angular design principles in this POC</h2>
+
+    <div class="row g-3 mb-5">
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        1. Organize by feature
+                    </h3>
+
+                    <p class="mb-0">
+                        Business capabilities such as orders, inventory,
+                        escalations, and training are independently organized.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        2. Keep cross-cutting logic in core
+                    </h3>
+
+                    <p class="mb-0">
+                        Authentication, route guards, API access, PKCE,
+                        and interceptors are centralized rather than duplicated.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        3. Use standalone components
+                    </h3>
+
+                    <p class="mb-0">
+                        Modern Angular configuration reduces dependence on
+                        large centralized NgModule structures.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        4. Treat the API as authoritative
+                    </h3>
+
+                    <p class="mb-0">
+                        Angular displays and requests business state but does
+                        not become the authoritative business system.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        5. Security stays server-side
+                    </h3>
+
+                    <p class="mb-0">
+                        UI role checks improve usability, while Spring Boot
+                        remains responsible for actual authorization.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        6. Authentication has a lifecycle
+                    </h3>
+
+                    <p class="mb-0">
+                        Login, callback handling, API token propagation,
+                        expiration, and logout all require explicit design.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         RESPONSIBILITY BOUNDARIES
+         ============================================================ -->
+
+    <h2>Angular responsibility boundaries</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 28%">Concern</th>
+                <th style="width: 26%">Primary Owner</th>
+                <th>Explanation</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>Screen rendering</td>
+                <td>Angular</td>
+                <td>
+                    Components render application state and user interactions.
+                </td>
+            </tr>
+
+            <tr>
+                <td>Browser routing</td>
+                <td>Angular Router</td>
+                <td>
+                    Maps URLs to standalone feature components.
+                </td>
+            </tr>
+
+            <tr>
+                <td>Human login initiation</td>
+                <td>Angular + Keycloak</td>
+                <td>
+                    Browser initiates Authorization Code + PKCE.
+                </td>
+            </tr>
+
+            <tr>
+                <td>Credential verification</td>
+                <td>Keycloak</td>
+                <td>
+                    Angular does not validate user passwords.
+                </td>
+            </tr>
+
+            <tr>
+                <td>JWT transport</td>
+                <td>Angular HTTP layer</td>
+                <td>
+                    Sends the access token with secured API requests.
+                </td>
+            </tr>
+
+            <tr>
+                <td>JWT validation</td>
+                <td>Spring Boot</td>
+                <td>
+                    The backend validates the Keycloak-issued token.
+                </td>
+            </tr>
+
+            <tr>
+                <td>Business authorization</td>
+                <td>Spring Boot</td>
+                <td>
+                    Backend role checks determine whether an action is allowed.
+                </td>
+            </tr>
+
+            <tr>
+                <td>Authoritative state</td>
+                <td>Spring Boot + MySQL</td>
+                <td>
+                    The browser displays state but does not become its system of record.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         FINAL TAKEAWAY
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-4">
+
+        <div class="card-header bg-primary text-white">
+            <strong>Angular architecture takeaway</strong>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                The Angular dashboard is the human interaction layer of the
+                Agentic AI system.
+            </p>
+
+            <p>
+                It handles navigation, presentation, PKCE browser authentication,
+                API integration, session behavior, role-aware user experience,
+                and Human-in-the-Loop interactions.
+            </p>
+
+            <p>
+                But it deliberately does not become the security authority,
+                business-logic authority, or system of record.
+            </p>
+
+            <p class="mb-0">
+
+                <strong>
+                    Angular provides the experience; Keycloak establishes identity;
+                    Spring Boot enforces business security; MySQL preserves
+                    authoritative state.
+                </strong>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
