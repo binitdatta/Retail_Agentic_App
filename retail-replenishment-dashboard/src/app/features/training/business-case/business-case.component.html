@@ -44,9 +44,9 @@
                 Prepared by: Binit Datta
             </span>
 
-            <span class="badge bg-light text-dark border px-3 py-2">
-                Director of Enterprise Architecture
-            </span>
+<!--            <span class="badge bg-light text-dark border px-3 py-2">-->
+<!--                Hands Enterprise Architecture-->
+<!--            </span>-->
 
             <span class="badge bg-light text-dark border px-3 py-2">
                 September 2026
@@ -273,6 +273,12 @@
         <div class="row g-2">
 
             <div class="col-md-6">
+                <a routerLink="." fragment="inventory-economics">
+                    0. Why inventory optimization matters
+                </a>
+            </div>
+
+            <div class="col-md-6">
                 <a routerLink="." fragment="exec-summary">
                     1. Executive summary
                 </a>
@@ -359,6 +365,1832 @@
         </div>
 
     </div>
+
+
+    <!-- ============================================================
+         0 WHY INVENTORY OPTIMIZATION MATTERS
+         ============================================================ -->
+
+    <section id="inventory-economics" class="mb-5">
+
+        <div class="card border-primary shadow-sm mb-4">
+
+            <div class="card-header bg-primary text-white py-3">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                    <strong>
+                        Why Inventory Optimization Is a Double-Edged Sword
+                    </strong>
+
+                    <span class="badge bg-light text-primary">
+                        Business Context
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-4 align-items-center">
+
+                    <div class="col-lg-8">
+
+                        <h2 class="h3 text-primary fw-bold border-0 p-0 mt-0 mb-3">
+                            Inventory Is Both a Revenue-Enabling Asset and a Capital-Consuming Liability
+                        </h2>
+
+                        <p>
+                            Retail inventory management is fundamentally a balancing problem.
+                            A retailer must hold enough merchandise to satisfy customer demand,
+                            but not so much that unnecessary inventory absorbs working capital,
+                            warehouse capacity, financing cost, and margin.
+                        </p>
+
+                        <p>
+                            Move too far in one direction and the retailer creates
+                            <strong>overstock</strong>.
+                            Move too far in the other direction and the retailer creates
+                            <strong>stockouts</strong>.
+                        </p>
+
+                        <p class="mb-0">
+                            Effective inventory optimization therefore is not simply about
+                            minimizing inventory. It is about maintaining the
+                            <strong>
+                                right product, at the right location, in the right quantity,
+                                at the right time
+                            </strong>
+                            while continuously balancing customer experience against the
+                            financial cost of holding stock.
+                        </p>
+
+                    </div>
+
+
+                    <div class="col-lg-4">
+
+                        <div class="card bg-light border-0">
+
+                            <div class="card-body">
+
+                                <div class="text-muted small text-uppercase fw-bold mb-2">
+                                    The Fundamental Retail Equation
+                                </div>
+
+                                <div class="text-center py-2">
+
+                                    <div class="h5 text-primary fw-bold mb-2">
+                                        Too Much Inventory
+                                    </div>
+
+                                    <div class="text-muted mb-3">
+                                        Working Capital + Carrying Cost
+                                    </div>
+
+                                    <div class="fw-bold text-primary mb-3">
+                                        vs.
+                                    </div>
+
+                                    <div class="h5 text-primary fw-bold mb-2">
+                                        Too Little Inventory
+                                    </div>
+
+                                    <div class="text-muted">
+                                        Lost Sales + Lost Customers
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- INDUSTRY DATA -->
+
+        <h2>Inventory distortion is already a trillion-dollar retail problem</h2>
+
+        <p>
+            Industry research demonstrates that the economic consequences of
+            inventory imbalance are not theoretical.
+        </p>
+
+
+        <div class="row g-3 mb-5">
+
+            <div class="col-md-6 col-xl-3">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="text-primary fw-bold small text-uppercase mb-2">
+                            Global Inventory Distortion
+                        </div>
+
+                        <div class="display-6 fw-bold text-primary mb-2">
+                            $1.7T
+                        </div>
+
+                        <p class="mb-2">
+                            Estimated annual worldwide cost of retail
+                            out-of-stocks and overstocks.
+                        </p>
+
+                        <div class="small text-muted">
+                            Source [1]: IHL Group, 2026 Inventory Distortion Study
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-xl-3">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="text-primary fw-bold small text-uppercase mb-2">
+                            Share of Retail Sales
+                        </div>
+
+                        <div class="display-6 fw-bold text-primary mb-2">
+                            6.2%
+                        </div>
+
+                        <p class="mb-2">
+                            IHL estimates inventory distortion represents
+                            approximately 6.2% of worldwide retail sales.
+                        </p>
+
+                        <div class="small text-muted">
+                            Source [1]: IHL Group
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-xl-3">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="text-primary fw-bold small text-uppercase mb-2">
+                            Out-of-Stock Share
+                        </div>
+
+                        <div class="display-6 fw-bold text-primary mb-2">
+                            65.6%
+                        </div>
+
+                        <p class="mb-2">
+                            Out-of-stocks represent the majority of the
+                            inventory-distortion problem measured by IHL.
+                        </p>
+
+                        <div class="small text-muted">
+                            Source [1]: IHL Group
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-xl-3">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="text-primary fw-bold small text-uppercase mb-2">
+                            Real-Time Visibility Challenge
+                        </div>
+
+                        <div class="display-6 fw-bold text-primary mb-2">
+                            84%
+                        </div>
+
+                        <p class="mb-2">
+                            Retail decision-makers reporting that maintaining
+                            real-time visibility of stock levels is a challenge.
+                        </p>
+
+                        <div class="small text-muted">
+                            Source [2]: Zebra Global Shopper Study
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DOUBLE EDGED SWORD -->
+
+        <h2>The two sides of the inventory problem</h2>
+
+        <div class="row g-4 mb-5">
+
+            <div class="col-lg-6">
+
+                <div class="card h-100 shadow-sm border-warning">
+
+                    <div class="card-header">
+
+                        <div class="d-flex justify-content-between align-items-center gap-2">
+
+                            <h3 class="h5 mb-0">
+                                Side 1 — Overstock
+                            </h3>
+
+                            <span class="badge bg-warning text-dark">
+                                Capital Risk
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <p>
+                            Inventory sitting on a shelf is not financially free.
+                            The retailer has already paid—or committed to pay—for
+                            products that may not generate cash until weeks or months later.
+                        </p>
+
+                        <div class="table-responsive mb-3">
+
+                            <table class="table table-striped training-table mb-0">
+
+                                <tbody>
+
+                                <tr>
+                                    <th style="width: 38%">
+                                        Working Capital
+                                    </th>
+
+                                    <td>
+                                        Cash becomes trapped in unsold merchandise
+                                        rather than being available for payroll,
+                                        expansion, technology, debt reduction,
+                                        or other investments.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>
+                                        Financing Cost
+                                    </th>
+
+                                    <td>
+                                        Where inventory is financed through revolving
+                                        credit or other borrowing, higher interest
+                                        rates increase the cost of carrying inventory.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>
+                                        Warehouse Cost
+                                    </th>
+
+                                    <td>
+                                        Excess inventory consumes distribution-center,
+                                        back-room, and shelf capacity.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>
+                                        Markdown Risk
+                                    </th>
+
+                                    <td>
+                                        Products that cannot sell at full price may
+                                        eventually require discounting, directly
+                                        reducing gross margin.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>
+                                        Spoilage / Obsolescence
+                                    </th>
+
+                                    <td>
+                                        Food, fashion, seasonal goods, electronics,
+                                        and other time-sensitive categories may lose
+                                        value completely.
+                                    </td>
+                                </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <div class="alert alert-warning mb-0">
+
+                            <strong>Business effect:</strong>
+
+                            <div class="mt-2">
+                                Overstock converts cash into slow-moving assets while
+                                simultaneously creating financing, handling,
+                                storage, markdown, and obsolescence costs.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-6">
+
+                <div class="card h-100 shadow-sm border-danger">
+
+                    <div class="card-header">
+
+                        <div class="d-flex justify-content-between align-items-center gap-2">
+
+                            <h3 class="h5 mb-0">
+                                Side 2 — Stockout
+                            </h3>
+
+                            <span class="badge bg-danger">
+                                Revenue + Customer Risk
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <p>
+                            Reducing inventory too aggressively produces the opposite
+                            failure: the customer is ready to buy, but the retailer
+                            cannot fulfill the demand.
+                        </p>
+
+                        <div class="table-responsive mb-3">
+
+                            <table class="table table-striped training-table mb-0">
+
+                                <tbody>
+
+                                <tr>
+                                    <th style="width: 38%">
+                                        Lost Sale
+                                    </th>
+
+                                    <td>
+                                        The retailer loses revenue at the exact moment
+                                        a customer has demonstrated willingness to buy.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>
+                                        Competitor Substitution
+                                    </th>
+
+                                    <td>
+                                        The customer may buy the same or equivalent
+                                        product from another retailer.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>
+                                        Lower CSAT
+                                    </th>
+
+                                    <td>
+                                        Repeated inability to fulfill demand weakens
+                                        confidence that the retailer can reliably
+                                        meet customer needs.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>
+                                        Loyalty Erosion
+                                    </th>
+
+                                    <td>
+                                        A competitor that repeatedly has the product
+                                        available can become the customer's new
+                                        preferred shopping destination.
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>
+                                        Brand Reputation
+                                    </th>
+
+                                    <td>
+                                        Persistent availability problems can change
+                                        perception from an isolated stock issue into
+                                        a reliability problem associated with the brand.
+                                    </td>
+                                </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <div class="alert alert-danger mb-0">
+
+                            <strong>Business effect:</strong>
+
+                            <div class="mt-2">
+                                A stockout is not merely an inventory event.
+                                It can become a revenue event, customer-experience event,
+                                competitive event, and ultimately a brand event.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ECONOMIC CHAIN -->
+
+        <h2>How inventory problems propagate through the business</h2>
+
+        <div class="table-responsive mb-5">
+
+            <table class="table table-striped table-hover training-table align-middle">
+
+                <thead>
+
+                <tr>
+                    <th style="width: 10%">Stage</th>
+                    <th style="width: 25%">Inventory Failure</th>
+                    <th>Business Consequence</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr>
+                    <td>
+                        <span class="badge bg-primary">1</span>
+                    </td>
+
+                    <td>
+                        Inventory signal is wrong or late
+                    </td>
+
+                    <td>
+                        Enterprise systems make decisions using an inaccurate
+                        representation of physical inventory.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span class="badge bg-primary">2</span>
+                    </td>
+
+                    <td>
+                        Replenishment action is delayed or incorrect
+                    </td>
+
+                    <td>
+                        Too much or too little inventory is positioned at the store.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span class="badge bg-primary">3</span>
+                    </td>
+
+                    <td>
+                        Shelf availability deteriorates
+                    </td>
+
+                    <td>
+                        Customer demand cannot consistently be fulfilled.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span class="badge bg-primary">4</span>
+                    </td>
+
+                    <td>
+                        Customer experience deteriorates
+                    </td>
+
+                    <td>
+                        More customer effort, abandoned purchases,
+                        substitutions, complaints, and competitor switching.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span class="badge bg-primary">5</span>
+                    </td>
+
+                    <td>
+                        Financial performance deteriorates
+                    </td>
+
+                    <td>
+                        Revenue, gross margin, inventory turns,
+                        working-capital efficiency, and operating cost can suffer.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <span class="badge bg-primary">6</span>
+                    </td>
+
+                    <td>
+                        Persistent operational weakness becomes visible
+                    </td>
+
+                    <td>
+                        Repeated material supply-chain failures can eventually
+                        affect management credibility, investor expectations,
+                        shareholder value, and brand reputation.
+                    </td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- SHAREHOLDER VALUE -->
+
+        <div class="card border-primary shadow-sm mb-5">
+
+            <div class="card-header">
+                <h3 class="h5 mb-0">
+                    From Operational Failure to Shareholder Value
+                </h3>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-4">
+
+                    <div class="col-lg-4">
+
+                        <div class="text-center">
+
+                            <div class="display-6 fw-bold text-primary mb-2">
+                                519
+                            </div>
+
+                            <div class="text-muted">
+                                Publicly announced supply-chain glitches examined
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-4">
+
+                        <div class="text-center">
+
+                            <div class="display-6 fw-bold text-primary mb-2">
+                                10.28%
+                            </div>
+
+                            <div class="text-muted">
+                                Abnormal decrease in shareholder value associated
+                                with the announcements in the study
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-lg-4">
+
+                        <div class="text-center">
+
+                            <div class="h4 fw-bold text-primary mb-2">
+                                Capital Markets Notice
+                            </div>
+
+                            <div class="text-muted">
+                                Material supply-chain execution failures can move
+                                beyond operations and become shareholder-value events.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <p>
+                    A classic Journal of Operations Management event study by
+                    Hendricks and Singhal examined 519 publicly announced
+                    supply-chain glitches and found an associated abnormal decrease
+                    in shareholder value of approximately 10.28%.
+                </p>
+
+                <div class="alert alert-light border mb-0">
+
+                    <strong>Important interpretation:</strong>
+
+                    <div class="mt-2">
+                        This does not mean that one empty shelf causes a company's
+                        stock price to fall 10%. The study examined material,
+                        publicly announced supply-chain failures. It demonstrates
+                        the broader principle that serious and persistent operational
+                        execution failures can eventually become financial-market
+                        problems, not merely supply-chain problems.
+                    </div>
+
+                </div>
+
+                <div class="small text-muted mt-3">
+                    Source [4]: Hendricks &amp; Singhal,
+                    Journal of Operations Management.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STALE INVENTORY -->
+
+        <h2>
+            The invisible problem: stale inventory data
+        </h2>
+
+        <p>
+            A retailer can physically possess inventory and still provide a poor
+            customer experience if its digital representation of that inventory
+            is inaccurate or delayed.
+        </p>
+
+        <p>
+            Modern retail therefore requires more than a central inventory database.
+            It requires a timely inventory-information pipeline connecting what
+            physically happens at individual outlets with the central enterprise
+            inventory view.
+        </p>
+
+
+        <!-- STORE TO CENTRAL FLOW -->
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                    <h3 class="h5 mb-0">
+                        Physical Store Activity Must Reach the Central Inventory System Quickly
+                    </h3>
+
+                    <span class="badge bg-primary">
+                        Inventory Synchronization
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped training-table align-middle mb-0">
+
+                        <thead>
+
+                        <tr>
+                            <th style="width: 10%">Step</th>
+                            <th style="width: 27%">Retail Event</th>
+                            <th>Inventory Consequence</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr>
+                            <td><span class="badge bg-primary">1</span></td>
+                            <td>POS sale</td>
+                            <td>
+                                Available inventory must decrease quickly enough
+                                for replenishment and digital channels to see it.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="badge bg-primary">2</span></td>
+                            <td>Receiving</td>
+                            <td>
+                                Newly delivered merchandise must become visible
+                                to the enterprise inventory picture.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="badge bg-primary">3</span></td>
+                            <td>Customer return</td>
+                            <td>
+                                Returned merchandise must be reconciled as
+                                sellable, damaged, or otherwise unavailable.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="badge bg-primary">4</span></td>
+                            <td>Damage / spoilage</td>
+                            <td>
+                                Physically unusable units must stop appearing
+                                as customer-available stock.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="badge bg-primary">5</span></td>
+                            <td>Store transfer</td>
+                            <td>
+                                Inventory must leave one location and become
+                                visible at another without creating phantom stock.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span class="badge bg-primary">6</span></td>
+                            <td>Online reservation / pickup</td>
+                            <td>
+                                Reserved units must no longer be presented to
+                                another customer as freely available inventory.
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PHANTOM INVENTORY -->
+
+        <div class="row g-4 mb-5">
+
+            <div class="col-lg-6">
+
+                <div class="card h-100 shadow-sm border-danger">
+
+                    <div class="card-header">
+                        <h3 class="h5 mb-0">
+                            Phantom Inventory
+                        </h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <p>
+                            The central system says:
+                        </p>
+
+                        <div class="alert alert-light border text-center">
+                            <strong>10 units available</strong>
+                        </div>
+
+                        <p>
+                            But the store may physically have only two usable units
+                            because sales, damage, theft, misplaced merchandise,
+                            reservations, or returns have not been reconciled correctly.
+                        </p>
+
+                        <p class="mb-0">
+                            The replenishment engine can therefore suppress a needed
+                            order because the system falsely believes adequate inventory exists.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-6">
+
+                <div class="card h-100 shadow-sm border-warning">
+
+                    <div class="card-header">
+                        <h3 class="h5 mb-0">
+                            False Stockout
+                        </h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <p>
+                            The opposite can occur as well.
+                        </p>
+
+                        <div class="alert alert-light border text-center">
+                            <strong>System says 0 — store actually has stock</strong>
+                        </div>
+
+                        <p>
+                            The enterprise system may initiate unnecessary replenishment
+                            even though usable product is already physically present.
+                        </p>
+
+                        <p class="mb-0">
+                            The result can be avoidable purchasing, additional freight,
+                            excess inventory, and another contribution to overstock.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STALE INVENTORY / CSAT -->
+
+        <div class="card border-primary shadow-sm mb-5">
+
+            <div class="card-header bg-primary text-white py-3">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                    <strong>
+                        Why Stale Inventory Becomes a Customer Satisfaction Problem
+                    </strong>
+
+                    <span class="badge bg-light text-primary">
+                        CSAT
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <p>
+                    Customers do not distinguish between an inventory-database problem,
+                    a store-process problem, an integration delay, and a replenishment problem.
+                </p>
+
+                <p>
+                    They experience only the final outcome:
+                </p>
+
+                <div class="table-responsive mb-4">
+
+                    <table class="table table-striped training-table align-middle">
+
+                        <thead>
+
+                        <tr>
+                            <th>System Experience</th>
+                            <th>Customer Experience</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr>
+                            <td>
+                                Website says item is in stock.
+                            </td>
+                            <td>
+                                Customer drives to the store and cannot find it.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Pickup order is accepted.
+                            </td>
+                            <td>
+                                Store later cancels because physical stock does not exist.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Associate terminal says inventory exists.
+                            </td>
+                            <td>
+                                Associate and customer spend time searching for
+                                merchandise that cannot be located.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Central inventory looks healthy.
+                            </td>
+                            <td>
+                                Replenishment occurs too late and the shelf becomes empty.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Inventory update is delayed.
+                            </td>
+                            <td>
+                                The customer receives an availability promise based
+                                on information that was true hours ago rather than now.
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 bg-light border-0">
+
+                            <div class="card-body text-center">
+
+                                <div class="display-6 fw-bold text-primary mb-2">
+                                    84%
+                                </div>
+
+                                <p class="mb-2">
+                                    of retail decision-makers in Zebra's study said
+                                    maintaining real-time stock visibility is a challenge.
+                                </p>
+
+                                <div class="small text-muted">
+                                    Source [2]: Zebra
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 bg-light border-0">
+
+                            <div class="card-body text-center">
+
+                                <div class="display-6 fw-bold text-primary mb-2">
+                                    85%
+                                </div>
+
+                                <p class="mb-2">
+                                    of retail associates agreed that real-time
+                                    inventory visibility tools can significantly
+                                    improve efficiency and customer service.
+                                </p>
+
+                                <div class="small text-muted">
+                                    Source [2]: Zebra
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- DATA FLOW -->
+
+        <h2>
+            Inventory accuracy must flow from the outlet to enterprise decision-making
+        </h2>
+
+        <div class="table-responsive mb-5">
+
+            <table class="table table-striped table-hover training-table align-middle">
+
+                <thead>
+
+                <tr>
+                    <th style="width: 10%">Step</th>
+                    <th style="width: 28%">Layer</th>
+                    <th>Responsibility</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr>
+                    <td><span class="badge bg-primary">1</span></td>
+                    <td>Physical Retail Outlet</td>
+                    <td>
+                        Sale, receipt, return, reservation, damage,
+                        transfer, spoilage, and adjustment occur.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><span class="badge bg-primary">2</span></td>
+                    <td>Store Systems</td>
+                    <td>
+                        Capture the operational event close to where
+                        physical inventory actually changes.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><span class="badge bg-primary">3</span></td>
+                    <td>Integration / Event Pipeline</td>
+                    <td>
+                        Move the inventory change to enterprise systems
+                        with sufficiently low latency and reliable delivery.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><span class="badge bg-primary">4</span></td>
+                    <td>Central Inventory System</td>
+                    <td>
+                        Maintain the authoritative enterprise view
+                        of location-level inventory availability.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><span class="badge bg-primary">5</span></td>
+                    <td>Replenishment Platform</td>
+                    <td>
+                        Detect inventory risk and calculate the need
+                        for replenishment using current information.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><span class="badge bg-primary">6</span></td>
+                    <td>AI / Agentic Decision Layer</td>
+                    <td>
+                        Apply contextual judgment only after receiving
+                        trustworthy inventory, demand, and supplier data.
+                    </td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- AI DATA QUALITY -->
+
+        <div class="card border-danger shadow-sm mb-5">
+
+            <div class="card-header">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                    <h3 class="h5 mb-0">
+                        AI Cannot Repair a Stale System of Record
+                    </h3>
+
+                    <span class="badge bg-danger">
+                        Critical Architecture Principle
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <p>
+                    Adding Agentic AI on top of inaccurate inventory data does
+                    not solve the underlying problem.
+                </p>
+
+                <p>
+                    If the central inventory platform believes a store has
+                    25 units when only 3 usable units physically exist,
+                    an AI agent receiving that value has been given the wrong
+                    business reality.
+                </p>
+
+                <p>
+                    The model may reason perfectly over incorrect data and still
+                    produce the wrong replenishment decision.
+                </p>
+
+                <div class="alert alert-danger mb-0">
+
+                    <strong>
+                        Enterprise AI Principle:
+                    </strong>
+
+                    <div class="mt-2">
+                        Accurate, timely operational data is a prerequisite for
+                        intelligent automation. AI can improve judgment; it cannot
+                        compensate for an enterprise data pipeline that consistently
+                        delivers stale or incorrect inventory.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FINANCIAL + CUSTOMER + AI VIEW -->
+
+        <h2>Why inventory optimization is an enterprise concern</h2>
+
+        <div class="row g-4 mb-5">
+
+            <div class="col-lg-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="text-primary fw-bold small text-uppercase mb-2">
+                            CFO Perspective
+                        </div>
+
+                        <h3 class="h5 text-primary">
+                            Working Capital
+                        </h3>
+
+                        <p>
+                            Overstock absorbs cash and can increase borrowing,
+                            carrying, storage, and markdown costs.
+                        </p>
+
+                        <p class="mb-0">
+                            Inventory optimization directly affects capital
+                            efficiency and margin.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="text-primary fw-bold small text-uppercase mb-2">
+                            Customer Perspective
+                        </div>
+
+                        <h3 class="h5 text-primary">
+                            Availability + Trust
+                        </h3>
+
+                        <p>
+                            Customers expect the product promised digitally or
+                            physically to actually be available when they attempt
+                            to purchase it.
+                        </p>
+
+                        <p class="mb-0">
+                            Inventory accuracy is therefore part of the
+                            customer experience.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="text-primary fw-bold small text-uppercase mb-2">
+                            AI Perspective
+                        </div>
+
+                        <h3 class="h5 text-primary">
+                            Decision Quality
+                        </h3>
+
+                        <p>
+                            Forecasting and Agentic AI are downstream consumers
+                            of inventory data.
+                        </p>
+
+                        <p class="mb-0">
+                            Better reasoning does not compensate for stale inputs.
+                            Data quality determines the ceiling of AI decision quality.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- WHY THIS POC EXISTS -->
+
+        <div class="card border-primary shadow-sm mb-5">
+
+            <div class="card-header bg-primary text-white py-3">
+                <strong>Why This POC Matters</strong>
+            </div>
+
+            <div class="card-body">
+
+                <p>
+                    The business case for this Agentic Retail Replenishment POC
+                    therefore begins well before the LLM.
+                </p>
+
+                <p>
+                    The larger architecture must first establish:
+                </p>
+
+                <div class="table-responsive mb-3">
+
+                    <table class="table table-striped training-table">
+
+                        <tbody>
+
+                        <tr>
+                            <th style="width: 34%">
+                                Timely inventory updates
+                            </th>
+                            <td>
+                                Physical retail events must reach the enterprise
+                                inventory view quickly and reliably.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>
+                                Accurate demand history
+                            </th>
+                            <td>
+                                Forecasting must operate on trustworthy sales data.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>
+                                Reliable supplier information
+                            </th>
+                            <td>
+                                Replenishment recommendations require current
+                                supplier availability, lead time, and reliability.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>
+                                Governed business execution
+                            </th>
+                            <td>
+                                Orders and escalations must flow through secured,
+                                transactional enterprise APIs.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>
+                                Human oversight
+                            </th>
+                            <td>
+                                Higher-risk decisions remain reviewable and controllable.
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>
+                                Auditability
+                            </th>
+                            <td>
+                                The organization must be able to reconstruct
+                                why every important automated decision occurred.
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <p class="mb-0 fw-bold">
+                    Agentic AI becomes valuable only after this enterprise foundation
+                    allows it to reason over timely, accurate business reality.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SOURCES -->
+
+<!--        <div class="card shadow-sm mb-5">-->
+
+<!--            <div class="card-header">-->
+
+<!--                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">-->
+
+<!--                    <h3 class="h5 mb-0">-->
+<!--                        Industry Evidence &amp; References-->
+<!--                    </h3>-->
+
+<!--                    <span class="badge bg-light text-primary border">-->
+<!--                        External Research-->
+<!--                    </span>-->
+
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--            <div class="card-body">-->
+
+<!--                <div class="table-responsive">-->
+
+<!--                    <table class="table table-striped training-table align-middle mb-0">-->
+
+<!--                        <thead>-->
+
+<!--                        <tr>-->
+<!--                            <th style="width: 10%">Ref.</th>-->
+<!--                            <th style="width: 28%">Source</th>-->
+<!--                            <th>Evidence Used in This Business Case</th>-->
+<!--                        </tr>-->
+
+<!--                        </thead>-->
+
+<!--                        <tbody>-->
+
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <strong>[1]</strong>-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                IHL Group,-->
+<!--                                <em>2026 Inventory Distortion Study</em>-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                Estimates worldwide inventory distortion at approximately-->
+<!--                                $1.7 trillion annually, equal to 6.2% of global retail-->
+<!--                                sales, with out-of-stocks representing the majority-->
+<!--                                of the measured distortion.-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <strong>[2]</strong>-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                Zebra Technologies,-->
+<!--                                <em>-->
+<!--                                    Annual Global Shopper Study / Out-of-Stocks:-->
+<!--                                    A Hidden Crisis in Retail-->
+<!--                                </em>-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                Reports the importance of product availability to-->
+<!--                                shoppers, the customer and associate impact of-->
+<!--                                out-of-stocks, the difficulty retailers have-->
+<!--                                maintaining real-time visibility, and the expected-->
+<!--                                customer-service benefit of real-time inventory tools.-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <strong>[3]</strong>-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                McKinsey &amp; Company,-->
+<!--                                retail inventory research-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                Connects excess inventory with working-capital-->
+<!--                                requirements, markdown pressure, carrying cost,-->
+<!--                                warehouse constraints, and the additional burden-->
+<!--                                created by higher interest rates.-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <strong>[4]</strong>-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                Hendricks &amp; Singhal,-->
+<!--                                <em>Journal of Operations Management</em>-->
+<!--                            </td>-->
+
+<!--                            <td>-->
+<!--                                Event-study evidence connecting publicly announced-->
+<!--                                material supply-chain glitches with negative-->
+<!--                                shareholder-value effects.-->
+<!--                            </td>-->
+<!--                        </tr>-->
+
+<!--                        </tbody>-->
+
+<!--                    </table>-->
+
+<!--                </div>-->
+
+<!--                <p class="text-muted small mt-3 mb-0">-->
+<!--                    Industry figures reflect the scope, methodology, geography,-->
+<!--                    and measurement definitions used by the cited research.-->
+<!--                    They provide external context for the business problem and-->
+<!--                    are not presented as measured financial results from this POC.-->
+<!--                </p>-->
+
+<!--            </div>-->
+
+<!--        </div>-->
+
+        <!-- ============================================================
+     INDUSTRY EVIDENCE & REFERENCES
+     ============================================================ -->
+
+        <div class="card shadow-sm mb-5">
+
+            <div class="card-header">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                    <h3 class="h5 mb-0">
+                        Industry Evidence &amp; References
+                    </h3>
+
+                    <span class="badge bg-light text-primary border">
+                External Research
+            </span>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped table-hover training-table align-middle mb-0">
+
+                        <thead>
+
+                        <tr>
+                            <th style="width: 7%">Ref.</th>
+                            <th style="width: 27%">Source</th>
+                            <th>Evidence Used in This Business Case</th>
+                            <th style="width: 13%">Research</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <!-- ====================================================
+                             REFERENCE 1
+                             ==================================================== -->
+
+                        <tr>
+
+                            <td>
+                                <strong>[1]</strong>
+                            </td>
+
+                            <td>
+
+                                <strong>IHL Group</strong>
+
+                                <div class="mt-1">
+                                    <em>
+                                        The 2026 Inventory Distortion Study
+                                    </em>
+                                </div>
+
+                            </td>
+
+                            <td>
+                                Estimates worldwide inventory distortion at approximately
+                                <strong>$1.7 trillion annually</strong>, equal to
+                                <strong>6.2% of global retail sales</strong>.
+
+                                IHL also reports that out-of-stocks represent
+                                <strong>65.6%</strong> of total inventory distortion.
+                            </td>
+
+                            <td>
+
+                                <a
+                                        href="https://www.ihlservices.com/product/inventory-distortion-study-2026/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="btn btn-sm btn-outline-primary"
+                                >
+                                    View Study
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- ====================================================
+                             REFERENCE 2
+                             ==================================================== -->
+
+                        <tr>
+
+                            <td>
+                                <strong>[2]</strong>
+                            </td>
+
+                            <td>
+
+                                <strong>Zebra Technologies</strong>
+
+                                <div class="mt-1">
+                                    <em>
+                                        Out-of-Stocks: A Hidden Crisis in Retail
+                                    </em>
+                                </div>
+
+                                <div class="small text-muted mt-1">
+                                    Based on Zebra's Global Shopper Study
+                                </div>
+
+                            </td>
+
+                            <td>
+                                Reports that <strong>84% of retail decision-makers</strong>
+                                surveyed said maintaining real-time visibility of stock
+                                levels is a challenge.
+
+                                Zebra also reports that <strong>85% of retail associates</strong>
+                                agreed real-time inventory visibility tools can significantly
+                                improve efficiency and customer service.
+                            </td>
+
+                            <td>
+
+                                <a
+                                        href="https://www.zebra.com/us/en/blog/posts/2024/out-of-stocks-hidden-crisis-retail.html"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="btn btn-sm btn-outline-primary"
+                                >
+                                    View Research
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- ====================================================
+                             REFERENCE 3
+                             ==================================================== -->
+
+                        <tr>
+
+                            <td>
+                                <strong>[3]</strong>
+                            </td>
+
+                            <td>
+
+                                <strong>McKinsey &amp; Company</strong>
+
+                                <div class="mt-1">
+                                    <em>
+                                        Thinking Beyond Markdowns to Tackle
+                                        Retail's Inventory Glut
+                                    </em>
+                                </div>
+
+                            </td>
+
+                            <td>
+                                Connects excess inventory with working-capital pressure,
+                                markdowns, warehouse capacity, and inventory carrying costs.
+
+                                The analysis specifically notes that
+                                <strong>higher interest rates increase inventory carrying costs</strong>,
+                                strengthening the financial case for better inventory productivity.
+                            </td>
+
+                            <td>
+
+                                <a
+                                        href="https://www.mckinsey.com/industries/retail/our-insights/thinking-beyond-markdowns-to-tackle-retails-inventory-glut"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="btn btn-sm btn-outline-primary"
+                                >
+                                    View Article
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+
+                        <!-- ====================================================
+                             REFERENCE 4
+                             ==================================================== -->
+
+                        <tr>
+
+                            <td>
+                                <strong>[4]</strong>
+                            </td>
+
+                            <td>
+
+                                <strong>
+                                    Kevin B. Hendricks &amp; Vinod R. Singhal
+                                </strong>
+
+                                <div class="mt-1">
+                                    <em>
+                                        The Effect of Supply Chain Glitches
+                                        on Shareholder Wealth
+                                    </em>
+                                </div>
+
+                                <div class="small text-muted mt-1">
+                                    Journal of Operations Management,
+                                    Volume 21, Issue 5, 2003
+                                </div>
+
+                            </td>
+
+                            <td>
+                                Examined <strong>519 publicly announced supply-chain
+                                glitches</strong> occurring between 1989 and 2000.
+
+                                The study found that announcements were associated with an
+                                approximately <strong>10.28% abnormal decrease in shareholder
+                                value</strong>, demonstrating how significant supply-chain
+                                failures can move beyond operations into capital-market impact.
+                            </td>
+
+                            <td>
+
+                                <a
+                                        href="https://www.sciencedirect.com/science/article/pii/S0272696303000639"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="btn btn-sm btn-outline-primary"
+                                >
+                                    View Paper
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- ============================================================
+                     RESEARCH INTERPRETATION NOTE
+                     ============================================================ -->
+
+                <div class="alert alert-light border mt-4 mb-0">
+
+                    <strong>Research interpretation note</strong>
+
+                    <div class="mt-2 small">
+
+                        Industry figures reflect the scope, methodology, geography,
+                        population, and measurement definitions used by each cited source.
+
+                        These findings provide external evidence supporting the business
+                        problem addressed by this proof of concept. They are
+                        <strong>not presented as measured financial results from this POC</strong>.
+
+                        The Hendricks &amp; Singhal result should likewise not be interpreted
+                        as meaning that an individual store stockout causes a 10.28% decline
+                        in a company's stock price. Their study examined material,
+                        publicly announced supply-chain glitches and their associated
+                        abnormal stock-market reactions.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
 
 
     <!-- ============================================================
@@ -808,8 +2640,6 @@
     <h2 id="architecture">5. Solution architecture</h2>
 
 
-    <!-- ARCHITECTURE IMAGE -->
-
     <div class="card shadow-sm border-0 overflow-hidden mb-5">
 
         <div class="card-header py-3">
@@ -872,14 +2702,8 @@
             <tbody>
 
             <tr>
-                <td>
-                    <strong>Identity Provider</strong>
-                </td>
-
-                <td>
-                    Keycloak
-                </td>
-
+                <td><strong>Identity Provider</strong></td>
+                <td>Keycloak</td>
                 <td>
                     Source of truth for human and machine identity.
                     Issues short-lived role-carrying access tokens.
@@ -887,14 +2711,8 @@
             </tr>
 
             <tr>
-                <td>
-                    <strong>Operator Dashboard</strong>
-                </td>
-
-                <td>
-                    Angular
-                </td>
-
+                <td><strong>Operator Dashboard</strong></td>
+                <td>Angular</td>
                 <td>
                     Allows managers to inspect agent activity, approve or cancel
                     recommendations, and resolve escalations.
@@ -902,14 +2720,8 @@
             </tr>
 
             <tr>
-                <td>
-                    <strong>Replenishment Agent</strong>
-                </td>
-
-                <td>
-                    Python / LangGraph
-                </td>
-
+                <td><strong>Replenishment Agent</strong></td>
+                <td>Python / LangGraph</td>
                 <td>
                     Executes the autonomous workflow and calls the LLM only
                     where judgment is required.
@@ -917,14 +2729,8 @@
             </tr>
 
             <tr>
-                <td>
-                    <strong>Core Business API</strong>
-                </td>
-
-                <td>
-                    Spring Boot
-                </td>
-
+                <td><strong>Core Business API</strong></td>
+                <td>Spring Boot</td>
                 <td>
                     Owns deterministic business logic, authorization,
                     transactions, API contracts, and event publication.
@@ -932,14 +2738,8 @@
             </tr>
 
             <tr>
-                <td>
-                    <strong>System of Record</strong>
-                </td>
-
-                <td>
-                    MySQL 8
-                </td>
-
+                <td><strong>System of Record</strong></td>
+                <td>MySQL 8</td>
                 <td>
                     Persists inventory, orders, deliveries, escalations,
                     agent decisions, LLM activity, and cost information.
@@ -947,14 +2747,8 @@
             </tr>
 
             <tr>
-                <td>
-                    <strong>Event Bus</strong>
-                </td>
-
-                <td>
-                    RabbitMQ
-                </td>
-
+                <td><strong>Event Bus</strong></td>
+                <td>RabbitMQ</td>
                 <td>
                     Decouples supplier transmission, delivery processing,
                     notifications, and other asynchronous side effects.
@@ -962,14 +2756,8 @@
             </tr>
 
             <tr>
-                <td>
-                    <strong>Judgment Layer</strong>
-                </td>
-
-                <td>
-                    External LLM
-                </td>
-
+                <td><strong>Judgment Layer</strong></td>
+                <td>External LLM</td>
                 <td>
                     Provides bounded reasoning for the small number
                     of decisions requiring contextual judgment.
@@ -1004,9 +2792,7 @@
     <div class="row g-4 mb-5">
 
         <div class="col-md-6">
-
             <div class="card h-100 shadow-sm">
-
                 <div class="card-body">
 
                     <h3 class="h5 text-primary">
@@ -1019,16 +2805,12 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
 
         <div class="col-md-6">
-
             <div class="card h-100 shadow-sm">
-
                 <div class="card-body">
 
                     <h3 class="h5 text-primary">
@@ -1041,16 +2823,12 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
 
         <div class="col-md-6">
-
             <div class="card h-100 shadow-sm">
-
                 <div class="card-body">
 
                     <h3 class="h5 text-primary">
@@ -1063,16 +2841,12 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
 
         <div class="col-md-6">
-
             <div class="card h-100 shadow-sm">
-
                 <div class="card-body">
 
                     <h3 class="h5 text-primary">
@@ -1085,9 +2859,7 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
     </div>
@@ -1102,9 +2874,7 @@
     <div class="row g-4 mb-4">
 
         <div class="col-md-6 col-xl-3">
-
             <div class="card h-100 shadow-sm">
-
                 <div class="card-body">
 
                     <div class="text-primary fw-bold text-uppercase small mb-2">
@@ -1117,16 +2887,12 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
 
         <div class="col-md-6 col-xl-3">
-
             <div class="card h-100 shadow-sm">
-
                 <div class="card-body">
 
                     <div class="text-primary fw-bold text-uppercase small mb-2">
@@ -1139,16 +2905,12 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
 
         <div class="col-md-6 col-xl-3">
-
             <div class="card h-100 shadow-sm">
-
                 <div class="card-body">
 
                     <div class="text-primary fw-bold text-uppercase small mb-2">
@@ -1161,16 +2923,12 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
 
         <div class="col-md-6 col-xl-3">
-
             <div class="card h-100 shadow-sm">
-
                 <div class="card-body">
 
                     <div class="text-primary fw-bold text-uppercase small mb-2">
@@ -1183,9 +2941,7 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
     </div>
@@ -1226,59 +2982,43 @@
             <tbody>
 
             <tr>
-                <td>
-                    <strong>Infrastructure</strong>
-                </td>
-
+                <td><strong>Infrastructure</strong></td>
                 <td>
                     API hosting, relational database, message broker,
                     networking, monitoring.
                 </td>
-
                 <td>
                     Establishes realistic capacity and operating-cost assumptions.
                 </td>
             </tr>
 
             <tr>
-                <td>
-                    <strong>Identity Operations</strong>
-                </td>
-
+                <td><strong>Identity Operations</strong></td>
                 <td>
                     Keycloak hosting, administration, configuration,
                     access governance.
                 </td>
-
                 <td>
                     Tests reuse of enterprise IAM rather than app-specific identity.
                 </td>
             </tr>
 
             <tr>
-                <td>
-                    <strong>LLM Usage</strong>
-                </td>
-
+                <td><strong>LLM Usage</strong></td>
                 <td>
                     Metered model inference used only by judgment stages.
                 </td>
-
                 <td>
                     Generates an actual cost-per-decision baseline.
                 </td>
             </tr>
 
             <tr>
-                <td>
-                    <strong>Engineering</strong>
-                </td>
-
+                <td><strong>Engineering</strong></td>
                 <td>
                     Real supplier integration, observability, alerting,
                     resiliency, and production hardening.
                 </td>
-
                 <td>
                     Determines the gap between proven POC and production readiness.
                 </td>
@@ -1298,9 +3038,6 @@
     <h2 id="risks">9. Risks and mitigations</h2>
 
     <div class="accordion shadow-sm mb-5" id="businessRiskAccordion">
-
-
-        <!-- RISK 1 -->
 
         <div class="accordion-item">
 
@@ -1366,8 +3103,6 @@
         </div>
 
 
-        <!-- RISK 2 -->
-
         <div class="accordion-item">
 
             <h3 class="accordion-header" id="riskHeadingTwo">
@@ -1430,8 +3165,6 @@
 
         </div>
 
-
-        <!-- RISK 3 -->
 
         <div class="accordion-item">
 
@@ -1496,8 +3229,6 @@
         </div>
 
 
-        <!-- RISK 4 -->
-
         <div class="accordion-item">
 
             <h3 class="accordion-header" id="riskHeadingFour">
@@ -1560,8 +3291,6 @@
 
         </div>
 
-
-        <!-- RISK 5 -->
 
         <div class="accordion-item">
 
@@ -1655,70 +3384,40 @@
             <tbody>
 
             <tr>
-                <td>
-                    <strong>Critical-SKU stockout rate</strong>
-                </td>
-
-                <td>
-                    To be measured
-                </td>
-
+                <td><strong>Critical-SKU stockout rate</strong></td>
+                <td>To be measured</td>
                 <td>
                     Establish baseline and define improvement target.
                 </td>
             </tr>
 
             <tr>
-                <td>
-                    <strong>Detection-to-order time</strong>
-                </td>
-
-                <td>
-                    To be measured
-                </td>
-
+                <td><strong>Detection-to-order time</strong></td>
+                <td>To be measured</td>
                 <td>
                     Demonstrate material improvement over the current manual cycle.
                 </td>
             </tr>
 
             <tr>
-                <td>
-                    <strong>Auto-approved vs. human-reviewed orders</strong>
-                </td>
-
-                <td>
-                    New metric
-                </td>
-
+                <td><strong>Auto-approved vs. human-reviewed orders</strong></td>
+                <td>New metric</td>
                 <td>
                     Demonstrate behavior remains inside policy-defined thresholds.
                 </td>
             </tr>
 
             <tr>
-                <td>
-                    <strong>LLM cost per replenishment decision</strong>
-                </td>
-
-                <td>
-                    Platform already measures it
-                </td>
-
+                <td><strong>LLM cost per replenishment decision</strong></td>
+                <td>Platform already measures it</td>
                 <td>
                     Establish actual operating-cost distribution and trend.
                 </td>
             </tr>
 
             <tr>
-                <td>
-                    <strong>Escalation time-to-resolution</strong>
-                </td>
-
-                <td>
-                    To be measured
-                </td>
-
+                <td><strong>Escalation time-to-resolution</strong></td>
+                <td>To be measured</td>
                 <td>
                     Establish baseline and future improvement target.
                 </td>
@@ -1738,8 +3437,6 @@
     <h2 id="roadmap">11. Implementation roadmap</h2>
 
     <div class="row g-4 mb-5">
-
-        <!-- PHASE 0 -->
 
         <div class="col-lg-6">
 
@@ -1785,8 +3482,6 @@
         </div>
 
 
-        <!-- PHASE 1 -->
-
         <div class="col-lg-6">
 
             <div class="card h-100 shadow-sm">
@@ -1831,8 +3526,6 @@
         </div>
 
 
-        <!-- PHASE 2 -->
-
         <div class="col-lg-6">
 
             <div class="card h-100 shadow-sm">
@@ -1866,8 +3559,6 @@
 
         </div>
 
-
-        <!-- PHASE 3 -->
 
         <div class="col-lg-6">
 
@@ -1926,15 +3617,11 @@
             <tbody>
 
             <tr>
-                <td>
-                    <strong>Supply Chain Manager</strong>
-                </td>
-
+                <td><strong>Supply Chain Manager</strong></td>
                 <td>
                     Approve or cancel recommendations and acknowledge
                     or resolve shortage escalations.
                 </td>
-
                 <td>
                     Keycloak human identity plus
                     <code>SUPPLY_CHAIN_MANAGER</code> role,
@@ -1943,15 +3630,11 @@
             </tr>
 
             <tr>
-                <td>
-                    <strong>Replenishment Agent</strong>
-                </td>
-
+                <td><strong>Replenishment Agent</strong></td>
                 <td>
                     Execute the autonomous pipeline within explicitly
                     permitted machine authority.
                 </td>
-
                 <td>
                     Keycloak service identity plus
                     <code>REPLENISHMENT_AGENT</code> role,
@@ -1960,15 +3643,11 @@
             </tr>
 
             <tr>
-                <td>
-                    <strong>Dashboard Viewer</strong>
-                </td>
-
+                <td><strong>Dashboard Viewer</strong></td>
                 <td>
                     Observe runs, inventory, orders, and escalations
                     without modification authority.
                 </td>
-
                 <td>
                     <code>DASHBOARD_VIEWER</code> role and read-only API access.
                 </td>
@@ -1981,16 +3660,10 @@
     </div>
 
 
-    <!-- ============================================================
-         GOVERNANCE PRINCIPLES
-         ============================================================ -->
-
     <div class="row g-3 mb-5">
 
         <div class="col-md-6 col-xl-3">
-
             <div class="card h-100">
-
                 <div class="card-body">
 
                     <h3 class="h5 text-primary">
@@ -2003,16 +3676,12 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
 
         <div class="col-md-6 col-xl-3">
-
             <div class="card h-100">
-
                 <div class="card-body">
 
                     <h3 class="h5 text-primary">
@@ -2025,16 +3694,12 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
 
         <div class="col-md-6 col-xl-3">
-
             <div class="card h-100">
-
                 <div class="card-body">
 
                     <h3 class="h5 text-primary">
@@ -2047,16 +3712,12 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
 
         <div class="col-md-6 col-xl-3">
-
             <div class="card h-100">
-
                 <div class="card-body">
 
                     <h3 class="h5 text-primary">
@@ -2069,9 +3730,7 @@
                     </p>
 
                 </div>
-
             </div>
-
         </div>
 
     </div>

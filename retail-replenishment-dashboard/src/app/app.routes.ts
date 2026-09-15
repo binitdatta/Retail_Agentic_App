@@ -57,6 +57,12 @@ export const routes: Routes = [
       import('./features/training/business-case/business-case.component').then((m) => m.TrainingBusinessCaseComponent)
   },
   {
+    path: 'audit',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/audit-log/audit-log.component').then((m) => m.AuditLogComponent)
+  },
+  {
     path: 'training/architecture',
     canActivate: [authGuard],
     loadComponent: () =>
@@ -85,6 +91,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () =>
       import('./features/training/angular-dashboard/angular-dashboard.component').then((m) => m.TrainingAngularDashboardComponent)
+  },
+  {
+    path: 'training/python-agent-reference',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/training/python-agent-reference/python-agent-reference.component').then((m) => m.TrainingPythonAgentReferenceComponent)
   },
   {
     path: 'training/python-agent',

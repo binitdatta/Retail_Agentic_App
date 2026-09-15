@@ -1,0 +1,174 @@
+<h4 class="mb-1">Audit log</h4>
+<p class="text-muted small mb-3">
+  Decisions and LLM calls across every agent run, not just one — for when you don't already know which run
+  to open. Click any row to jump to its parent run for full context (raw HTTP trace included).
+</p>
+
+@if (cost(); as c) {
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-2">
+      <div class="card stat-card p-3">
+        <div class="stat-label">LLM calls (all-time)</div>
+        <div class="stat-value">{{ c.callCount }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="card stat-card p-3">
+        <div class="stat-label">Prompt tokens</div>
+        <div class="stat-value">{{ c.totalPromptTokens }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="card stat-card p-3">
+        <div class="stat-label">Completion tokens</div>
+        <div class="stat-value">{{ c.totalCompletionTokens }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="card stat-card p-3">
+        <div class="stat-label">Est. cost (USD)</div>
+        <div class="stat-value">{{ c.totalEstimatedCostUsd | number: '1.4-4' }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="card stat-card p-3">
+        <div class="stat-label">Avg latency</div>
+        <div class="stat-value">{{ c.avgLatencyMs | number: '1.0-0' }} ms</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-2">
+      <div class="card stat-card p-3">
+        <div class="stat-label">Errors</div>
+        <div class="stat-value" [class.text-danger]="c.errorCount > 0">{{ c.errorCount }}</div>
+      </div>
+    </div>
+  </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+  <h5 class="mb-0">Decisions <span class="text-muted small">(most recent 200)</span></h5>
+  <select class="form-select form-select-sm w-auto" [value]="stageFilter()"
+          (change)="onStageFilterChange($any($event.target).value)">
+    <option value="">All stages</option>
+    @for (s of stageOptions.slice(1); track s) {
+      <option [value]="s">{{ s }}</option>
+    }
+  </select>
+</div>
+
+@if (decisionsLoading()) {
+  <p class="text-muted">Loading…</p>
+} @else if (decisionsError()) {
+  <div class="alert alert-danger">{{ decisionsError() }}</div>
+} @else if (decisions().length === 0) {
+  <p class="text-muted">No decisions match this filter.</p>
+} @else {
+  <div class="table-responsive mb-4">
+    <table class="table table-hover align-middle bg-white">
+      <thead>
+        <tr>
+          <th>Run</th>
+          <th>Stage</th>
+          <th>Store / SKU</th>
+          <th>LLM model</th>
+          <th>Executed at</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (d of decisions(); track d.decisionId) {
+          <tr (click)="toggleDecision(d.decisionId)">
+            <td><a [routerLink]="['/runs', d.agentRunId]" (click)="$event.stopPropagation()">#{{ d.agentRunId }}</a></td>
+            <td>{{ d.stageName }}</td>
+            <td>{{ d.storeCode ?? '—' }} / {{ d.skuCode ?? '—' }}</td>
+            <td>{{ d.llmModel ?? 'deterministic' }}</td>
+            <td>{{ d.executedAt | date: 'MMM d, HH:mm:ss' }}</td>
+          </tr>
+          @if (expandedDecisionId() === d.decisionId) {
+            <tr>
+              <td colspan="5" class="bg-light">
+                <div class="p-2">
+                  @if (d.llmRationale) {
+                    <p class="mb-2"><strong>Rationale:</strong> {{ d.llmRationale }}</p>
+                  }
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="text-muted small mb-1">Input snapshot</div>
+                      <pre class="small bg-white p-2 rounded border">{{ pretty(d.inputSnapshot) }}</pre>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="text-muted small mb-1">Output decision</div>
+                      <pre class="small bg-white p-2 rounded border">{{ pretty(d.outputDecision) }}</pre>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+  <h5 class="mb-0">LLM calls <span class="text-muted small">(most recent 200)</span></h5>
+  <div class="d-flex gap-2">
+    <select class="form-select form-select-sm w-auto" [value]="providerFilter()"
+            (change)="onProviderFilterChange($any($event.target).value)">
+      <option value="">All providers</option>
+      <option value="ANTHROPIC">ANTHROPIC</option>
+      <option value="AZURE_AI_FOUNDRY">AZURE_AI_FOUNDRY</option>
+    </select>
+    <select class="form-select form-select-sm w-auto" [value]="successFilter()"
+            (change)="onSuccessFilterChange($any($event.target).value)">
+      <option value="">All results</option>
+      <option value="true">Success only</option>
+      <option value="false">Failures only</option>
+    </select>
+  </div>
+</div>
+
+@if (llmCallsLoading()) {
+  <p class="text-muted">Loading…</p>
+} @else if (llmCallsError()) {
+  <div class="alert alert-danger">{{ llmCallsError() }}</div>
+} @else if (llmCalls().length === 0) {
+  <p class="text-muted">No LLM calls match this filter.</p>
+} @else {
+  <div class="table-responsive">
+    <table class="table align-middle bg-white">
+      <thead>
+        <tr>
+          <th>Run</th>
+          <th>Provider</th>
+          <th>Model</th>
+          <th>Prompt / Completion tokens</th>
+          <th>Cost (USD)</th>
+          <th>Latency</th>
+          <th>Result</th>
+          <th>Requested at</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (c of llmCalls(); track c.llmCallId) {
+          <tr>
+            <td><a [routerLink]="['/runs', c.agentRunId]">#{{ c.agentRunId }}</a></td>
+            <td>{{ c.providerCode }}</td>
+            <td>{{ c.modelName }}</td>
+            <td>{{ c.promptTokens ?? 0 }} / {{ c.completionTokens ?? 0 }}</td>
+            <td>{{ c.estimatedCostUsd != null ? (c.estimatedCostUsd | number: '1.4-6') : '—' }}</td>
+            <td>{{ c.latencyMs ? c.latencyMs + ' ms' : '—' }}</td>
+            <td>
+              @if (c.success) {
+                <span class="badge bg-success">OK</span>
+              } @else {
+                <span class="badge bg-danger">Error</span>
+              }
+            </td>
+            <td>{{ c.requestedAt | date: 'MMM d, HH:mm:ss' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

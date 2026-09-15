@@ -44,6 +44,33 @@ export class ApiService {
     return this.http.get<LlmHttpTrace[]>(`${this.base}/agent-runs/${agentRunId}/http-traces`);
   }
 
+  // Manager-only, and only works if the backend has app.demo-reset.enabled
+  // set — see DemoResetService. Returns the post-reset low-stock list so
+  // the caller can confirm it actually worked.
+  resetDemoScenario(): Observable<LowStockItem[]> {
+    return this.http.post<LowStockItem[]>(`${this.base}/admin/demo-reset`, {});
+  }
+
+  // -- global audit (across every run, not scoped to one) -------------------
+
+  getAllDecisions(stageName?: string, storeId?: number, limit = 200): Observable<DecisionLog[]> {
+    let params = new HttpParams().set('limit', limit);
+    if (stageName) params = params.set('stageName', stageName);
+    if (storeId != null) params = params.set('storeId', storeId);
+    return this.http.get<DecisionLog[]>(`${this.base}/audit/decisions`, { params });
+  }
+
+  getAllLlmCalls(providerCode?: string, success?: boolean, limit = 200): Observable<LlmCallLog[]> {
+    let params = new HttpParams().set('limit', limit);
+    if (providerCode) params = params.set('providerCode', providerCode);
+    if (success != null) params = params.set('success', success);
+    return this.http.get<LlmCallLog[]>(`${this.base}/audit/llm-calls`, { params });
+  }
+
+  getGlobalLlmCost(): Observable<LlmCostRollup> {
+    return this.http.get<LlmCostRollup>(`${this.base}/audit/llm-cost`);
+  }
+
   // -- inventory (read-only) ------------------------------------------------
 
   getLowStock(storeId?: number): Observable<LowStockItem[]> {

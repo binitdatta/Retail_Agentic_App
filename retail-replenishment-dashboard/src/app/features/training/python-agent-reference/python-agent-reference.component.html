@@ -1,0 +1,3161 @@
+<div class="training-content">
+
+    <!-- ============================================================
+         PAGE HEADER
+         ============================================================ -->
+
+    <div class="mb-4">
+
+        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+
+            <span class="badge bg-primary px-3 py-2">
+                Agent Orchestration
+            </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+                Python 3.12
+            </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+                LangGraph
+            </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+                Anthropic
+            </span>
+
+            <span class="badge bg-light text-primary border px-3 py-2">
+                OAuth2 Client Credentials
+            </span>
+
+        </div>
+
+        <h1 class="display-6 fw-bold mb-2">
+            6. Python LangGraph Agent — Code Reference
+        </h1>
+
+        <p class="lead text-muted mb-0">
+            Follow the Python agent from the exact command that starts it —
+            <code>python -m agent.main</code> — through configuration loading,
+            Keycloak machine authentication, REST-client construction,
+            LangGraph compilation, per-item state creation, graph execution,
+            Anthropic judgment calls, order or escalation creation,
+            delivery monitoring, auditing, and final process exit.
+        </p>
+
+    </div>
+
+
+    <!-- ============================================================
+         PROJECT OVERVIEW
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-5" id="overview">
+
+        <div class="card-header bg-primary text-white py-3">
+            <strong>Python Agent Project Overview</strong>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row g-4">
+
+                <div class="col-lg-7">
+
+                    <div class="text-muted small text-uppercase fw-bold mb-1">
+                        Project
+                    </div>
+
+                    <h3 class="h4 text-primary fw-bold mb-3">
+                        <code>retail-replenishment-agent</code>
+                    </h3>
+
+                    <p>
+                        This application is the autonomous orchestration layer of
+                        the Retail Replenishment POC.
+                    </p>
+
+                    <p>
+                        It does not access MySQL directly and does not publish
+                        RabbitMQ events directly. Instead, it operates through
+                        the secured Spring Boot business API using its own
+                        Keycloak service-account identity.
+                    </p>
+
+                    <p class="mb-0">
+                        LangGraph coordinates the workflow. Deterministic stages
+                        call enterprise APIs, while Anthropic is invoked only for
+                        the two stages requiring contextual judgment.
+                    </p>
+
+                </div>
+
+
+                <div class="col-lg-5">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped training-table mb-0">
+
+                            <tbody>
+
+                            <tr>
+                                <th>Runtime</th>
+                                <td>Python 3.12</td>
+                            </tr>
+
+                            <tr>
+                                <th>Orchestration</th>
+                                <td>LangGraph</td>
+                            </tr>
+
+                            <tr>
+                                <th>LLM</th>
+                                <td>Anthropic</td>
+                            </tr>
+
+                            <tr>
+                                <th>Authentication</th>
+                                <td>OAuth2 Client Credentials</td>
+                            </tr>
+
+                            <tr>
+                                <th>Business API</th>
+                                <td>Spring Boot</td>
+                            </tr>
+
+                            <tr>
+                                <th>Agent State</th>
+                                <td><code>ItemState</code></td>
+                            </tr>
+
+                            <tr>
+                                <th>Execution Model</th>
+                                <td>One graph invocation per low-stock item</td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         AT A GLANCE
+         ============================================================ -->
+
+    <h2>Python agent at a glance</h2>
+
+    <div class="row g-3 mb-5">
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Entry Point
+                    </div>
+
+                    <h3 class="h5 fw-bold text-primary">
+                        main.py
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Parses CLI options, loads settings, configures logging,
+                        and starts one agent run.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Run Orchestration
+                    </div>
+
+                    <h3 class="h5 fw-bold text-primary">
+                        runner.py
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Constructs dependencies, builds the graph, fans out over
+                        low-stock items, and monitors deliveries.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Workflow
+                    </div>
+
+                    <h3 class="h5 fw-bold text-primary">
+                        graph.py
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Builds the LangGraph StateGraph and connects deterministic
+                        and judgment stages.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Business Stages
+                    </div>
+
+                    <h3 class="h5 fw-bold text-primary">
+                        nodes.py
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Contains the actual callable functions LangGraph invokes
+                        for each workflow stage.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         FILE STRUCTURE
+         ============================================================ -->
+
+    <h2>Agent package structure</h2>
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <strong>Python package layout</strong>
+        </div>
+
+        <div class="card-body">
+
+            <pre class="code-block mb-0"><code>retail-replenishment-agent/
+└── agent/
+    ├── __init__.py
+    ├── main.py
+    ├── runner.py
+    ├── graph.py
+    ├── nodes.py
+    ├── state.py
+    ├── api_client.py
+    ├── auth.py
+    ├── config.py
+    └── llm_clients.py</code></pre>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+
+            <tr>
+                <th style="width: 21%">File</th>
+                <th style="width: 28%">Primary Responsibility</th>
+                <th>Design Intent</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><code>main.py</code></td>
+                <td>CLI entry point</td>
+                <td>
+                    Translates a shell command into one controlled agent execution.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>runner.py</code></td>
+                <td>Run orchestration</td>
+                <td>
+                    Creates dependencies, builds the graph, processes all items,
+                    watches deliveries, and closes the run.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>graph.py</code></td>
+                <td>LangGraph topology</td>
+                <td>
+                    Defines nodes, edges, branches, entry point, and termination.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>nodes.py</code></td>
+                <td>Workflow stages</td>
+                <td>
+                    Implements the business behavior executed by LangGraph.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>state.py</code></td>
+                <td>Graph state contract</td>
+                <td>
+                    Defines the typed data structure passed between nodes.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>api_client.py</code></td>
+                <td>Spring Boot REST integration</td>
+                <td>
+                    Keeps transport, authentication headers, retries, and HTTP
+                    errors out of graph-node code.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>auth.py</code></td>
+                <td>Machine authentication</td>
+                <td>
+                    Maintains a valid Keycloak client-credentials access token.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>config.py</code></td>
+                <td>Configuration</td>
+                <td>
+                    Converts environment variables into one immutable Settings object.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>llm_clients.py</code></td>
+                <td>Anthropic integration</td>
+                <td>
+                    Isolates LLM invocation, raw HTTP capture, token usage,
+                    estimated cost, redaction, and JSON parsing.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         COMMAND TO EXECUTION
+         ============================================================ -->
+
+    <h2 id="command">
+        From <code>python -m agent.main</code> to a running LangGraph agent
+    </h2>
+
+    <div class="card border-primary shadow-sm mb-4">
+
+        <div class="card-header bg-primary text-white py-3">
+            <strong>The Command That Starts Everything</strong>
+        </div>
+
+        <div class="card-body">
+
+            <pre class="code-block"><code>python -m agent.main</code></pre>
+
+            <p>
+                This command contains three important parts.
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped training-table mb-0">
+
+                    <thead>
+                    <tr>
+                        <th style="width: 20%">Part</th>
+                        <th>Meaning</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td><code>python</code></td>
+                        <td>
+                            Start the Python interpreter from the current virtual environment.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>-m</code></td>
+                        <td>
+                            Run a Python module as the application's executable module.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><code>agent.main</code></td>
+                        <td>
+                            Locate the <code>agent</code> package and execute
+                            <code>main.py</code> as the program entry module.
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         PYTHON MODULE SEMANTICS
+         ============================================================ -->
+
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-header">
+
+            <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+
+                <h3 class="h5 mb-0">
+                    Why the bottom of main.py matters
+                </h3>
+
+                <span class="badge bg-primary">
+                    Python Entry Point
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <pre class="code-block"><code>if __name__ == "__main__":
+    sys.exit(main())</code></pre>
+
+            <p>
+                Because <code>agent.main</code> is being executed with
+                <code>-m</code>, Python treats that module as the running program.
+            </p>
+
+            <p>
+                The condition becomes true, so:
+            </p>
+
+            <pre class="code-block"><code>main()</code></pre>
+
+            <p>
+                is called, and the integer returned by <code>main()</code> is
+                handed to:
+            </p>
+
+            <pre class="code-block mb-0"><code>sys.exit(...)</code></pre>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         FULL EXECUTION CHAIN
+         ============================================================ -->
+
+    <h2>The full execution chain</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+
+            <tr>
+                <th style="width: 9%">Step</th>
+                <th style="width: 29%">Code</th>
+                <th>What happens</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><span class="badge bg-primary">1</span></td>
+                <td><code>python -m agent.main</code></td>
+                <td>
+                    Python executes <code>agent/main.py</code>.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">2</span></td>
+                <td><code>main()</code></td>
+                <td>
+                    CLI arguments are parsed.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">3</span></td>
+                <td><code>load_settings()</code></td>
+                <td>
+                    Environment variables become one immutable Settings object.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">4</span></td>
+                <td><code>run_once(settings, ...)</code></td>
+                <td>
+                    Overall agent orchestration begins.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">5</span></td>
+                <td><code>KeycloakTokenProvider(settings)</code></td>
+                <td>
+                    Machine-authentication capability is constructed.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">6</span></td>
+                <td><code>ReplenishmentApiClient(...)</code></td>
+                <td>
+                    Secured Spring Boot REST client is constructed.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">7</span></td>
+                <td><code>AnthropicJudgment(settings)</code></td>
+                <td>
+                    Bounded LLM judgment capability is constructed.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">8</span></td>
+                <td><code>build_graph(...)</code></td>
+                <td>
+                    LangGraph workflow topology is constructed and compiled.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">9</span></td>
+                <td><code>api.start_agent_run(...)</code></td>
+                <td>
+                    Persistent audit record for this execution is created.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">10</span></td>
+                <td><code>api.get_low_stock(...)</code></td>
+                <td>
+                    Spring Boot returns low-stock items.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">11</span></td>
+                <td><code>_item_state_from_dto(...)</code></td>
+                <td>
+                    One API DTO becomes one LangGraph <code>ItemState</code>.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">12</span></td>
+                <td><code>graph.invoke(state)</code></td>
+                <td>
+                    The compiled graph actually executes for that item.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">13</span></td>
+                <td><code>watch_list</code></td>
+                <td>
+                    Created orders are collected for delivery monitoring.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">14</span></td>
+                <td><code>_monitor_deliveries(...)</code></td>
+                <td>
+                    Created orders are polled until terminal delivery state
+                    or timeout.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">15</span></td>
+                <td><code>complete_agent_run(...)</code></td>
+                <td>
+                    Run status and summary are persisted.
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="badge bg-primary">16</span></td>
+                <td><code>return 0</code></td>
+                <td>
+                    Successful process exits with operating-system exit code 0.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         BUILD VS RUN
+         ============================================================ -->
+
+    <h2>Building the agent versus running the agent</h2>
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm border-primary">
+
+                <div class="card-header">
+
+                    <h3 class="h5 mb-0">
+                        Phase A — Build the Agent
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        The agent is assembled inside <code>run_once()</code>.
+                    </p>
+
+                    <pre class="code-block"><code>token_provider = KeycloakTokenProvider(settings)
+
+api = ReplenishmentApiClient(
+    settings,
+    token_provider
+)
+
+anthropic_judge = AnthropicJudgment(settings)
+
+graph = build_graph(
+    api,
+    anthropic_judge,
+    settings,
+    dry_run=dry_run
+)</code></pre>
+
+                    <p class="mb-0">
+                        At this point the dependencies and graph topology exist,
+                        but no low-stock item has yet traversed the graph.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm border-primary">
+
+                <div class="card-header">
+
+                    <h3 class="h5 mb-0">
+                        Phase B — Run the Agent
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Actual graph execution begins later:
+                    </p>
+
+                    <pre class="code-block"><code>for item in items:
+
+    state = _item_state_from_dto(
+        item,
+        agent_run_id,
+        dry_run
+    )
+
+    result = graph.invoke(state)</code></pre>
+
+                    <p class="mb-0">
+                        <code>graph.invoke(state)</code> is the point where
+                        LangGraph begins executing nodes for one inventory item.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         IMPORTANT DISTINCTION
+         ============================================================ -->
+
+    <div class="alert alert-info mb-5">
+
+        <strong>Important distinction:</strong>
+
+        <div class="mt-2">
+            <code>build_graph()</code> defines and compiles the workflow.
+            <code>graph.invoke(state)</code> executes that compiled workflow.
+            Building the graph does not itself detect inventory, call Anthropic,
+            create orders, or create escalations.
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         MAIN.PY
+         ============================================================ -->
+
+    <h2 id="main">main.py — CLI entry point</h2>
+
+    <p>
+        <code>main.py</code> is intentionally small. Its responsibility is
+        process startup rather than business workflow logic.
+    </p>
+
+
+    <div class="table-responsive mb-4">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 32%">Operation</th>
+                <th>What it does</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><code>ArgumentParser(...)</code></td>
+                <td>
+                    Defines the agent's command-line interface.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>--store-id</code></td>
+                <td>
+                    Restricts the run to one store. Default is all stores.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>--dry-run</code></td>
+                <td>
+                    Executes detection, forecasting, supplier checking, and
+                    judgment without creating real orders or escalations.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>--trigger-type</code></td>
+                <td>
+                    Records whether execution was
+                    <code>SCHEDULED</code>,
+                    <code>EVENT</code>, or
+                    <code>MANUAL</code>.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>load_settings()</code></td>
+                <td>
+                    Validates and constructs runtime configuration.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>logging.basicConfig(...)</code></td>
+                <td>
+                    Configures log level and output format.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>run_once(...)</code></td>
+                <td>
+                    Transfers control into the agent orchestration layer.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>return 0 / return 1</code></td>
+                <td>
+                    Produces a meaningful operating-system exit code for
+                    shell scripts, cron, Kubernetes, CI/CD, or schedulers.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         MAIN CODE
+         ============================================================ -->
+
+    <div class="accordion shadow-sm mb-5" id="mainAccordion">
+
+        <div class="accordion-item">
+
+            <h3 class="accordion-header" id="mainHeading">
+
+                <button
+                        class="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainContent"
+                        aria-expanded="false"
+                        aria-controls="mainContent"
+                >
+                    View the important <code class="ms-2">main.py</code> execution path
+                </button>
+
+            </h3>
+
+            <div
+                    id="mainContent"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="mainHeading"
+                    data-bs-parent="#mainAccordion"
+            >
+
+                <div class="accordion-body">
+
+                    <pre class="code-block mb-0"><code>def main() -&gt; int:
+
+    parser = argparse.ArgumentParser(
+        description="Retail replenishment LangGraph agent"
+    )
+
+    parser.add_argument(
+        "--store-id",
+        type=int,
+        default=None
+    )
+
+    parser.add_argument(
+        "--dry-run",
+        action="store_true"
+    )
+
+    parser.add_argument(
+        "--trigger-type",
+        default="MANUAL",
+        choices=["SCHEDULED", "EVENT", "MANUAL"]
+    )
+
+    args = parser.parse_args()
+
+    settings = load_settings()
+
+    logging.basicConfig(
+        level=getattr(
+            logging,
+            settings.log_level.upper(),
+            logging.INFO
+        )
+    )
+
+    try:
+
+        run_once(
+            settings,
+            store_id=args.store_id,
+            dry_run=args.dry_run,
+            trigger_type=args.trigger_type
+        )
+
+        return 0
+
+    except Exception:
+
+        logging.exception("Agent run failed")
+
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())</code></pre>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         CONFIG
+         ============================================================ -->
+
+    <h2 id="config">config.py — runtime settings</h2>
+
+    <p>
+        Configuration is loaded before any agent dependency is created.
+        This keeps credentials, URLs, model selection, and timing parameters
+        outside the business code.
+    </p>
+
+
+    <div class="table-responsive mb-4">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 32%">Name</th>
+                <th>Responsibility</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>
+                    <code>_env(name, default, required)</code>
+                </td>
+                <td>
+                    Reads one environment variable and fails immediately when
+                    a required value is absent.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>Settings</code>
+                </td>
+                <td>
+                    Frozen dataclass containing API, Keycloak, Anthropic,
+                    forecasting, monitoring, and logging configuration.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>load_settings()</code>
+                </td>
+                <td>
+                    Creates the immutable Settings instance used by every
+                    downstream component.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                Required secrets fail early
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                Two environment values are explicitly required:
+            </p>
+
+            <pre class="code-block"><code>KEYCLOAK_CLIENT_SECRET
+ANTHROPIC_API_KEY</code></pre>
+
+            <p class="mb-0">
+                If either is missing, startup fails before the agent creates
+                an execution record or begins processing inventory.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         RUNNER DEPENDENCY CONSTRUCTION
+         ============================================================ -->
+
+    <h2 id="runner-build">runner.py — assembling the agent</h2>
+
+    <p>
+        The first lines of <code>run_once()</code> behave like a small,
+        explicit dependency-injection container.
+    </p>
+
+
+    <div class="table-responsive mb-4">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 30%">Object</th>
+                <th style="width: 30%">Depends On</th>
+                <th>Provides</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>
+                    <code>KeycloakTokenProvider</code>
+                </td>
+                <td>
+                    <code>Settings</code>
+                </td>
+                <td>
+                    OAuth2 machine access token.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>ReplenishmentApiClient</code>
+                </td>
+                <td>
+                    Settings + token provider
+                </td>
+                <td>
+                    Authenticated access to Spring Boot.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>AnthropicJudgment</code>
+                </td>
+                <td>
+                    Settings
+                </td>
+                <td>
+                    Bounded judgment calls plus token/cost/HTTP trace.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    compiled graph
+                </td>
+                <td>
+                    API client + judgment client + settings
+                </td>
+                <td>
+                    Executable LangGraph workflow.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         AUTH
+         ============================================================ -->
+
+    <h2 id="auth">auth.py — Keycloak machine identity</h2>
+
+    <p>
+        No human user participates in the agent's authentication flow.
+        The Python process authenticates as the confidential
+        <code>retail-replenishment-agent</code> client.
+    </p>
+
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        get_token()
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Every REST call eventually requests a token through:
+                    </p>
+
+                    <pre class="code-block"><code>token_provider.get_token()</code></pre>
+
+                    <p class="mb-0">
+                        If the cached token is still valid, it is reused.
+                        Otherwise a new access token is fetched.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        _fetch_token()
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <p>
+                        Sends the OAuth2 grant:
+                    </p>
+
+                    <pre class="code-block"><code>grant_type=client_credentials</code></pre>
+
+                    <p class="mb-0">
+                        Token expiry is intentionally shortened internally
+                        by 30 seconds so the agent does not attempt an API
+                        call using a token at the exact edge of expiration.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         API CLIENT
+         ============================================================ -->
+
+    <h2 id="api-client">api_client.py — secured Spring Boot client</h2>
+
+    <p>
+        The graph does not construct HTTP requests directly.
+        All calls pass through <code>ReplenishmentApiClient</code>.
+    </p>
+
+
+    <div class="card border-primary shadow-sm mb-4">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                The central _request() method
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                Every public API-client method eventually reaches:
+            </p>
+
+            <pre class="code-block"><code>headers["Authorization"] =
+    "Bearer " + token_provider.get_token()
+
+response = session.request(...)</code></pre>
+
+            <p class="mb-0">
+                This ensures every business API request carries a current
+                Keycloak access token.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 36%">Method</th>
+                <th>Backend Capability</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><code>get_low_stock()</code></td>
+                <td><code>GET /inventory/low-stock</code></td>
+            </tr>
+
+            <tr>
+                <td><code>get_product()</code></td>
+                <td><code>GET /products/&#123;id&#125;</code></td>
+            </tr>
+
+            <tr>
+                <td><code>compute_forecast()</code></td>
+                <td><code>POST /demand-forecasts</code></td>
+            </tr>
+
+            <tr>
+                <td><code>get_supplier_availability()</code></td>
+                <td><code>GET /suppliers/availability</code></td>
+            </tr>
+
+            <tr>
+                <td><code>create_replenishment_order()</code></td>
+                <td><code>POST /replenishment-orders</code></td>
+            </tr>
+
+            <tr>
+                <td><code>get_delivery_status()</code></td>
+                <td>
+                    <code>GET /replenishment-orders/&#123;id&#125;/delivery-status</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>create_escalation()</code></td>
+                <td><code>POST /escalations</code></td>
+            </tr>
+
+            <tr>
+                <td><code>start_agent_run()</code></td>
+                <td><code>POST /agent-runs</code></td>
+            </tr>
+
+            <tr>
+                <td><code>complete_agent_run()</code></td>
+                <td><code>PATCH /agent-runs/&#123;id&#125;</code></td>
+            </tr>
+
+            <tr>
+                <td><code>log_decision()</code></td>
+                <td>
+                    Persists one graph-stage decision.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>log_llm_call()</code></td>
+                <td>
+                    Persists logical model request/response, usage, and cost.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>log_llm_http_trace()</code></td>
+                <td>
+                    Persists redacted raw HTTP request/response details.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         GET RETRIES
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                Why only GET requests are automatically retried
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                The requests session configures retries for:
+            </p>
+
+            <pre class="code-block"><code>allowed_methods=["GET"]</code></pre>
+
+            <p>
+                That is deliberate.
+            </p>
+
+            <p class="mb-0">
+                Repeating an idempotent GET is generally safe. Automatically
+                retrying an uncertain POST could create a duplicate order,
+                escalation, decision log, or agent-run record.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         LLM CLIENT
+         ============================================================ -->
+
+    <h2 id="llm-clients">llm_clients.py — bounded Anthropic integration</h2>
+
+    <p>
+        This is the only module that directly communicates with Anthropic.
+    </p>
+
+
+    <div class="table-responsive mb-4">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 35%">Function / Class</th>
+                <th>Responsibility</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><code>_redact_headers()</code></td>
+                <td>
+                    Fully replaces credential-bearing headers such as
+                    <code>x-api-key</code> and
+                    <code>authorization</code> with
+                    <code>REDACTED</code>.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>_safe_json()</code></td>
+                <td>
+                    Attempts JSON parsing but preserves raw text when the body
+                    is not valid JSON.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>HttpTrace</code></td>
+                <td>
+                    Represents raw HTTP request and response evidence.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>LlmCallResult</code></td>
+                <td>
+                    Normalized result used by graph nodes regardless of
+                    whether the model call succeeded or failed.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>_estimate_cost()</code></td>
+                <td>
+                    Calculates estimated usage cost from configured per-token pricing.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>AnthropicJudgment.complete_json()</code></td>
+                <td>
+                    Makes the Anthropic request, measures latency,
+                    captures token usage, estimates cost, collects raw HTTP
+                    trace data, and returns one normalized result object.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>parse_json_response()</code></td>
+                <td>
+                    Safely converts model text into a Python dictionary and
+                    falls back to a controlled result when parsing fails.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         RAW TRACE
+         ============================================================ -->
+
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                Why with_raw_response is used
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                Instead of calling only the normal SDK method, the client calls:
+            </p>
+
+            <pre class="code-block"><code>messages.with_raw_response.create(...)</code></pre>
+
+            <p>
+                This makes the underlying HTTP request and response available,
+                allowing the POC to persist evidence such as:
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped training-table mb-0">
+
+                    <tbody>
+
+                    <tr>
+                        <th>HTTP method</th>
+                        <td>Actual method sent</td>
+                    </tr>
+
+                    <tr>
+                        <th>Request URL</th>
+                        <td>Actual endpoint</td>
+                    </tr>
+
+                    <tr>
+                        <th>Request headers</th>
+                        <td>Sensitive values redacted first</td>
+                    </tr>
+
+                    <tr>
+                        <th>Request body</th>
+                        <td>Actual serialized payload</td>
+                    </tr>
+
+                    <tr>
+                        <th>Status code</th>
+                        <td>Actual HTTP response status</td>
+                    </tr>
+
+                    <tr>
+                        <th>Response headers/body</th>
+                        <td>Actual response evidence</td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         STATE
+         ============================================================ -->
+
+    <h2 id="state">state.py — one item's LangGraph state</h2>
+
+    <p>
+        A single graph invocation processes exactly one low-stock item.
+    </p>
+
+
+    <div class="card border-primary shadow-sm mb-4">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                ItemState
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                <code>ItemState</code> starts with inventory information
+                returned by Spring Boot and is enriched as it passes through nodes.
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped training-table mb-0">
+
+                    <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Fields available</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td>Initial</td>
+                        <td>
+                            Store, product, SKU, critical flag, quantities,
+                            reorder point, reorder quantity, safety stock.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>After forecast</td>
+                        <td>
+                            Adds <code>forecast</code>.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>After supplier check</td>
+                        <td>
+                            Adds <code>suppliers</code>.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Order path</td>
+                        <td>
+                            Adds <code>order</code>.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Escalation path</td>
+                        <td>
+                            Adds <code>escalation</code>.
+                        </td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         DTO TO STATE
+         ============================================================ -->
+
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                _item_state_from_dto()
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                This helper is the translation boundary between the REST API
+                representation and LangGraph's internal representation.
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped training-table mb-0">
+
+                    <thead>
+                    <tr>
+                        <th>Spring Boot JSON</th>
+                        <th>Python ItemState</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td><code>storeId</code></td>
+                        <td><code>store_id</code></td>
+                    </tr>
+
+                    <tr>
+                        <td><code>skuCode</code></td>
+                        <td><code>sku_code</code></td>
+                    </tr>
+
+                    <tr>
+                        <td><code>onHandQty</code></td>
+                        <td><code>on_hand_qty</code></td>
+                    </tr>
+
+                    <tr>
+                        <td><code>reorderPoint</code></td>
+                        <td><code>reorder_point</code></td>
+                    </tr>
+
+                    <tr>
+                        <td><code>safetyStockQty</code></td>
+                        <td><code>safety_stock_qty</code></td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         GRAPH
+         ============================================================ -->
+
+    <h2 id="graph">graph.py — constructing the executable StateGraph</h2>
+
+    <p>
+        <code>build_graph()</code> receives fully constructed dependencies and
+        wires them into LangGraph.
+    </p>
+
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                Step 1 — Create the graph
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <pre class="code-block mb-0"><code>graph = StateGraph(ItemState)</code></pre>
+
+        </div>
+
+    </div>
+
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                Step 2 — Register executable nodes
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <pre class="code-block"><code>graph.add_node(
+    "detect_low_inventory",
+    make_detect_node(api)
+)
+
+graph.add_node(
+    "forecast_demand",
+    make_forecast_node(
+        api,
+        settings.forecast_lookback_days,
+        settings.forecast_horizon_days
+    )
+)
+
+graph.add_node(
+    "check_supplier_availability",
+    make_check_supplier_node(api)
+)
+
+graph.add_node(
+    "recommend_replenishment",
+    make_recommend_node(
+        api,
+        anthropic_judge,
+        dry_run
+    )
+)
+
+graph.add_node(
+    "monitor_delivery",
+    make_monitor_delivery_node(api)
+)
+
+graph.add_node(
+    "escalate_shortage",
+    make_escalate_node(
+        api,
+        anthropic_judge,
+        dry_run
+    )
+)</code></pre>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         WHY FACTORIES
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-4">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                Why make_*_node() factories exist
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                LangGraph expects each node to behave approximately like:
+            </p>
+
+            <pre class="code-block"><code>state -&gt; partial_state</code></pre>
+
+            <p>
+                But the node also needs dependencies such as:
+            </p>
+
+            <div class="d-flex gap-2 flex-wrap mb-3">
+
+                <span class="badge bg-light text-primary border">
+                    API client
+                </span>
+
+                <span class="badge bg-light text-primary border">
+                    Anthropic client
+                </span>
+
+                <span class="badge bg-light text-primary border">
+                    Forecast settings
+                </span>
+
+                <span class="badge bg-light text-primary border">
+                    Dry-run policy
+                </span>
+
+            </div>
+
+            <p class="mb-0">
+                The factory captures those dependencies in a Python closure
+                and returns the simpler callable that LangGraph invokes later.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         GRAPH TOPOLOGY
+         ============================================================ -->
+
+    <h2>Graph topology</h2>
+
+    <div class="table-responsive mb-4">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 12%">Step</th>
+                <th style="width: 31%">Node</th>
+                <th>Next Stage</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>1</td>
+                <td><code>detect_low_inventory</code></td>
+                <td><code>forecast_demand</code></td>
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td><code>forecast_demand</code></td>
+                <td><code>check_supplier_availability</code></td>
+            </tr>
+
+            <tr>
+                <td>3</td>
+                <td><code>check_supplier_availability</code></td>
+                <td>
+                    Conditional:
+                    recommend or escalate.
+                </td>
+            </tr>
+
+            <tr>
+                <td>4A</td>
+                <td><code>recommend_replenishment</code></td>
+                <td>
+                    Conditional:
+                    monitor delivery or end.
+                </td>
+            </tr>
+
+            <tr>
+                <td>4B</td>
+                <td><code>escalate_shortage</code></td>
+                <td>END</td>
+            </tr>
+
+            <tr>
+                <td>5</td>
+                <td><code>monitor_delivery</code></td>
+                <td>END</td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                The compiled graph
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <pre class="code-block"><code>return graph.compile()</code></pre>
+
+            <p>
+                Compilation turns the graph definition into the executable
+                object later stored in:
+            </p>
+
+            <pre class="code-block mb-0"><code>graph</code></pre>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         NODES
+         ============================================================ -->
+
+    <h2 id="nodes">nodes.py — what executes inside the graph</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+
+            <tr>
+                <th style="width: 29%">Node / Router</th>
+                <th style="width: 20%">Type</th>
+                <th>Behavior</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td><code>detect_low_inventory</code></td>
+                <td>
+                    Deterministic
+                </td>
+                <td>
+                    Records the already-detected inventory deficit as an auditable
+                    decision.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>forecast_demand</code></td>
+                <td>
+                    Deterministic
+                </td>
+                <td>
+                    Calls Spring Boot to calculate demand forecast and stores
+                    the result in state.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>check_supplier_availability</code></td>
+                <td>
+                    Deterministic
+                </td>
+                <td>
+                    Retrieves eligible suppliers and stores them in state.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>route_after_supplier_check</code></td>
+                <td>
+                    Router
+                </td>
+                <td>
+                    Supplier exists → recommendation.
+                    No supplier → escalation.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>recommend_replenishment</code></td>
+                <td>
+                    LLM judgment
+                </td>
+                <td>
+                    Uses deficit, forecast, criticality, and supplier data to
+                    decide CREATE_ORDER/HOLD, quantity, auto-approval, and rationale.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>route_after_recommend</code></td>
+                <td>
+                    Router
+                </td>
+                <td>
+                    Order exists → monitor stage.
+                    No order → END.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>monitor_delivery</code></td>
+                <td>
+                    Deterministic
+                </td>
+                <td>
+                    Per-item graph node records that the order was submitted and
+                    added to the run's watch list.
+                </td>
+            </tr>
+
+            <tr>
+                <td><code>escalate_shortage</code></td>
+                <td>
+                    LLM judgment
+                </td>
+                <td>
+                    Uses criticality, deficit, and optional shelf-life context
+                    to assign escalation severity.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         SUPPLIER BRANCH
+         ============================================================ -->
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm border-primary">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        Supplier Available
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <pre class="code-block"><code>recommend_replenishment</code></pre>
+
+                    <p>
+                        Anthropic evaluates:
+                    </p>
+
+                    <ul class="mb-0">
+                        <li>SKU criticality</li>
+                        <li>inventory deficit</li>
+                        <li>forecasted demand</li>
+                        <li>forecast confidence</li>
+                        <li>safety stock</li>
+                        <li>supplier lead time</li>
+                        <li>supplier reliability</li>
+                        <li>unit cost</li>
+                        <li>minimum order quantity</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-6">
+
+            <div class="card h-100 shadow-sm border-warning">
+
+                <div class="card-header">
+                    <h3 class="h5 mb-0">
+                        No Supplier Available
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <pre class="code-block"><code>escalate_shortage</code></pre>
+
+                    <p>
+                        Anthropic evaluates:
+                    </p>
+
+                    <ul class="mb-0">
+                        <li>SKU criticality</li>
+                        <li>inventory deficit</li>
+                        <li>product shelf life when available</li>
+                        <li>supplier-unavailable condition</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         AUDIT FLOW
+         ============================================================ -->
+
+    <h2>What a judgment node records</h2>
+
+    <p>
+        The judgment stages do considerably more than call the model.
+    </p>
+
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 12%">Order</th>
+                <th style="width: 30%">Operation</th>
+                <th>Purpose</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>1</td>
+                <td>Build system/user prompt</td>
+                <td>Provide bounded business context.</td>
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td><code>complete_json()</code></td>
+                <td>Invoke Anthropic.</td>
+            </tr>
+
+            <tr>
+                <td>3</td>
+                <td><code>parse_json_response()</code></td>
+                <td>Convert model output into controlled structured data.</td>
+            </tr>
+
+            <tr>
+                <td>4</td>
+                <td><code>log_decision()</code></td>
+                <td>Persist the business judgment and rationale.</td>
+            </tr>
+
+            <tr>
+                <td>5</td>
+                <td><code>log_llm_call()</code></td>
+                <td>Persist model, tokens, latency, cost, and logical payload.</td>
+            </tr>
+
+            <tr>
+                <td>6</td>
+                <td><code>_log_http_trace()</code></td>
+                <td>Persist credential-redacted wire-level HTTP evidence.</td>
+            </tr>
+
+            <tr>
+                <td>7</td>
+                <td>Create order / escalation</td>
+                <td>
+                    Perform the authorized business action through Spring Boot.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         GRAPH.INVOKE
+         ============================================================ -->
+
+    <h2 id="invoke">graph.invoke() — the point where the agent really runs</h2>
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header bg-primary text-white">
+            <strong>Per-Item Execution</strong>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                After low-stock inventory is fetched, the runner executes:
+            </p>
+
+            <pre class="code-block"><code>for item in items:
+
+    state = _item_state_from_dto(
+        item,
+        agent_run_id,
+        dry_run
+    )
+
+    result = graph.invoke(state)</code></pre>
+
+            <p>
+                Every call to:
+            </p>
+
+            <pre class="code-block"><code>graph.invoke(state)</code></pre>
+
+            <p>
+                means one independent low-stock item traverses the compiled
+                LangGraph workflow from its entry node until one END condition
+                is reached.
+            </p>
+
+            <p class="mb-0">
+                If five low-stock items are returned, the runner invokes
+                the compiled graph five times.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         PER ITEM FAILURE
+         ============================================================ -->
+
+    <h2>One failed item does not kill the entire run</h2>
+
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-body">
+
+            <p>
+                <code>graph.invoke(state)</code> is wrapped in an item-level
+                exception handler.
+            </p>
+
+            <pre class="code-block"><code>try:
+
+    result = graph.invoke(state)
+
+except Exception as exc:
+
+    logger.exception(
+        "Item %s / %s failed",
+        item["storeCode"],
+        item["skuCode"]
+    )
+
+    errors.append(...)
+
+    continue</code></pre>
+
+            <p class="mb-0">
+                A single malformed item, API error, or unexpected graph-stage
+                exception is recorded, but processing continues with the next
+                low-stock item.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         WATCH LIST
+         ============================================================ -->
+
+    <h2>How orders leave the graph and enter delivery monitoring</h2>
+
+    <p>
+        After each invocation, <code>runner.py</code> examines the graph result.
+    </p>
+
+
+    <div class="table-responsive mb-4">
+
+        <table class="table table-striped training-table align-middle">
+
+            <thead>
+            <tr>
+                <th>Graph Result</th>
+                <th>Runner Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>
+                    <code>order</code> exists
+                </td>
+                <td>
+                    Increment order count and add the order to
+                    <code>watch_list</code>.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    order status is <code>APPROVED</code>
+                </td>
+                <td>
+                    Increment auto-approved order count.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>escalation</code> exists
+                </td>
+                <td>
+                    Increment escalation count.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    neither exists
+                </td>
+                <td>
+                    Nothing is added to delivery monitoring.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         DELIVERY LOOP
+         ============================================================ -->
+
+    <h2 id="delivery-monitoring">
+        _monitor_deliveries() — the post-graph monitoring loop
+    </h2>
+
+    <p>
+        The per-item <code>monitor_delivery</code> graph node does not wait
+        minutes for a shipment. Long-running wall-clock monitoring is kept
+        outside the graph.
+    </p>
+
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Poll Interval
+                    </div>
+
+                    <h3 class="h5 text-primary">
+                        Configurable
+                    </h3>
+
+                    <code>MONITOR_DELIVERY_POLL_SECONDS</code>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Max Duration
+                    </div>
+
+                    <h3 class="h5 text-primary">
+                        Configurable
+                    </h3>
+
+                    <code>MONITOR_DELIVERY_MAX_MINUTES</code>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Normal 404
+                    </div>
+
+                    <h3 class="h5 text-primary">
+                        Keep Waiting
+                    </h3>
+
+                    <p class="mb-0 text-muted">
+                        Shipment may not exist yet.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-3">
+
+            <div class="card h-100 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="text-primary fw-bold small text-uppercase mb-2">
+                        Terminal States
+                    </div>
+
+                    <h3 class="h5 text-primary">
+                        DELIVERED / EXCEPTION
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 10%">Step</th>
+                <th>Monitoring Behavior</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>1</td>
+                <td>
+                    Calculate monitoring deadline.
+                </td>
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td>
+                    Iterate through all watched replenishment orders.
+                </td>
+            </tr>
+
+            <tr>
+                <td>3</td>
+                <td>
+                    Call <code>get_delivery_status(order_id)</code>.
+                </td>
+            </tr>
+
+            <tr>
+                <td>4</td>
+                <td>
+                    Treat HTTP 404 as "shipment not created yet."
+                </td>
+            </tr>
+
+            <tr>
+                <td>5</td>
+                <td>
+                    Compare current shipment status with last observed status.
+                </td>
+            </tr>
+
+            <tr>
+                <td>6</td>
+                <td>
+                    Persist a decision only when status changes.
+                </td>
+            </tr>
+
+            <tr>
+                <td>7</td>
+                <td>
+                    End early when every shipment reaches a terminal status.
+                </td>
+            </tr>
+
+            <tr>
+                <td>8</td>
+                <td>
+                    Otherwise sleep for the configured polling interval.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         COMPLETE RUN
+         ============================================================ -->
+
+    <h2>Completing the agent run</h2>
+
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-body">
+
+            <p>
+                Once all inventory items and monitored deliveries have been
+                processed, <code>runner.py</code> builds a human-readable summary.
+            </p>
+
+            <pre class="code-block"><code>Scanned N low-stock item(s).
+X order(s) recommended.
+Y auto-approved.
+Z shortage escalation(s) raised.</code></pre>
+
+            <p>
+                The run is then closed through:
+            </p>
+
+            <pre class="code-block"><code>api.complete_agent_run(
+    agent_run_id,
+    status="COMPLETED",
+    summary=summary
+)</code></pre>
+
+            <p class="mb-0">
+                This prevents the agent-run table from containing a run that
+                remains indefinitely in <code>RUNNING</code> state after normal completion.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         FAILURE CLOSURE
+         ============================================================ -->
+
+    <div class="card border-warning shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                What if the overall run crashes?
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                <code>run_once()</code> also has an outer exception handler.
+            </p>
+
+            <p>
+                Before re-raising the failure, it attempts:
+            </p>
+
+            <pre class="code-block"><code>api.complete_agent_run(
+    agent_run_id,
+    status="FAILED",
+    summary="Run failed: ..."
+)</code></pre>
+
+            <p class="mb-0">
+                The error then propagates back to <code>main()</code>, which
+                logs the failure and returns exit code <code>1</code>.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         START TO FINISH CALL STACK
+         ============================================================ -->
+
+    <h2>Start-to-finish call stack</h2>
+
+    <div class="card shadow-sm mb-5">
+
+        <div class="card-body">
+
+            <pre class="code-block mb-0"><code>python -m agent.main
+
+└── agent.main
+    └── main()
+        ├── argparse.parse_args()
+        ├── load_settings()
+        ├── configure logging
+        │
+        └── run_once()
+            │
+            ├── KeycloakTokenProvider()
+            ├── ReplenishmentApiClient()
+            ├── AnthropicJudgment()
+            │
+            ├── build_graph()
+            │   ├── StateGraph(ItemState)
+            │   ├── add_node(...)
+            │   ├── add_edge(...)
+            │   ├── add_conditional_edges(...)
+            │   └── graph.compile()
+            │
+            ├── start_agent_run()
+            ├── get_low_stock()
+            │
+            ├── for each low-stock item
+            │   │
+            │   ├── _item_state_from_dto()
+            │   │
+            │   └── graph.invoke(state)
+            │       │
+            │       ├── detect_low_inventory
+            │       ├── forecast_demand
+            │       ├── check_supplier_availability
+            │       │
+            │       ├── supplier found?
+            │       │   │
+            │       │   ├── YES
+            │       │   │   └── recommend_replenishment
+            │       │   │       ├── Anthropic judgment
+            │       │   │       ├── audit decision
+            │       │   │       ├── audit LLM call
+            │       │   │       ├── audit raw HTTP trace
+            │       │   │       └── create order if approved/recommended
+            │       │   │
+            │       │   └── NO
+            │       │       └── escalate_shortage
+            │       │           ├── Anthropic judgment
+            │       │           ├── audit decision
+            │       │           ├── audit LLM call
+            │       │           ├── audit raw HTTP trace
+            │       │           └── create escalation
+            │       │
+            │       └── END
+            │
+            ├── _monitor_deliveries()
+            │
+            ├── complete_agent_run()
+            │
+            └── return summary
+        │
+        └── return 0
+
+sys.exit(0)</code></pre>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         DRY RUN
+         ============================================================ -->
+
+    <h2>What changes with --dry-run?</h2>
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-body">
+
+            <pre class="code-block"><code>python -m agent.main --dry-run</code></pre>
+
+            <p>
+                The graph is still built and invoked normally.
+            </p>
+
+            <p>
+                Detection, forecasting, supplier lookup, LLM judgment,
+                decision logging, LLM-call logging, and HTTP-trace capture can
+                still execute.
+            </p>
+
+            <p>
+                But the judgment nodes stop before performing the final
+                transactional business write:
+            </p>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped training-table mb-0">
+
+                    <thead>
+                    <tr>
+                        <th>Normal Run</th>
+                        <th>Dry Run</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr>
+                        <td>Create replenishment order</td>
+                        <td>Log what would have been created</td>
+                    </tr>
+
+                    <tr>
+                        <td>Create shortage escalation</td>
+                        <td>Log what would have been escalated</td>
+                    </tr>
+
+                    <tr>
+                        <td>Monitor resulting deliveries</td>
+                        <td>No real created order to monitor</td>
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         COMMAND EXAMPLES
+         ============================================================ -->
+
+    <h2>CLI execution examples</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 45%">Command</th>
+                <th>Meaning</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>
+                    <code>python -m agent.main</code>
+                </td>
+                <td>
+                    Manual run across all stores with real write behavior.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>python -m agent.main --dry-run</code>
+                </td>
+                <td>
+                    Evaluate the complete reasoning path without creating
+                    orders or escalations.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>python -m agent.main --store-id 1</code>
+                </td>
+                <td>
+                    Restrict detection and execution to one store.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>python -m agent.main --trigger-type SCHEDULED</code>
+                </td>
+                <td>
+                    Record the run as scheduler-triggered.
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <code>python -m agent.main --trigger-type EVENT</code>
+                </td>
+                <td>
+                    Record the run as event-triggered.
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         RESPONSIBILITY MATRIX
+         ============================================================ -->
+
+    <h2>Python agent responsibility matrix</h2>
+
+    <div class="table-responsive mb-5">
+
+        <table class="table table-striped table-hover training-table align-middle">
+
+            <thead>
+            <tr>
+                <th style="width: 26%">Concern</th>
+                <th style="width: 29%">Primary Module</th>
+                <th>Responsibility</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td>Process startup</td>
+                <td><code>main.py</code></td>
+                <td>CLI parsing, logging, exit code.</td>
+            </tr>
+
+            <tr>
+                <td>Run orchestration</td>
+                <td><code>runner.py</code></td>
+                <td>Build dependencies, invoke graph, collect results, monitor deliveries.</td>
+            </tr>
+
+            <tr>
+                <td>Graph topology</td>
+                <td><code>graph.py</code></td>
+                <td>Nodes, edges, branches, END conditions, graph compilation.</td>
+            </tr>
+
+            <tr>
+                <td>Business stages</td>
+                <td><code>nodes.py</code></td>
+                <td>Deterministic and judgment-node execution.</td>
+            </tr>
+
+            <tr>
+                <td>Per-item working memory</td>
+                <td><code>state.py</code></td>
+                <td>State contract passed between nodes.</td>
+            </tr>
+
+            <tr>
+                <td>Machine authentication</td>
+                <td><code>auth.py</code></td>
+                <td>OAuth2 access-token acquisition and caching.</td>
+            </tr>
+
+            <tr>
+                <td>Enterprise API integration</td>
+                <td><code>api_client.py</code></td>
+                <td>Authenticated Spring Boot REST communication.</td>
+            </tr>
+
+            <tr>
+                <td>AI inference</td>
+                <td><code>llm_clients.py</code></td>
+                <td>Anthropic requests, token usage, cost, trace, redaction.</td>
+            </tr>
+
+            <tr>
+                <td>Configuration</td>
+                <td><code>config.py</code></td>
+                <td>Immutable environment-driven application settings.</td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ============================================================
+         KEY DESIGN PRINCIPLES
+         ============================================================ -->
+
+    <h2>Key Python agent design principles</h2>
+
+    <div class="row g-3 mb-5">
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        1. Build once, invoke many times
+                    </h3>
+
+                    <p class="mb-0">
+                        One compiled graph is created for the run and then invoked
+                        independently for each low-stock item.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        2. One state per inventory item
+                    </h3>
+
+                    <p class="mb-0">
+                        Each SKU/store condition receives its own ItemState and
+                        traverses the graph independently.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        3. LLM use is bounded
+                    </h3>
+
+                    <p class="mb-0">
+                        Anthropic is invoked only for recommendation and
+                        escalation judgment.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        4. Business writes go through the API
+                    </h3>
+
+                    <p class="mb-0">
+                        Python never bypasses Spring Boot to manipulate MySQL directly.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        5. Auditability is part of execution
+                    </h3>
+
+                    <p class="mb-0">
+                        Every deterministic stage and every LLM judgment produces
+                        persisted audit evidence.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6 col-xl-4">
+
+            <div class="card h-100">
+
+                <div class="card-body">
+
+                    <h3 class="h5 text-primary">
+                        6. Wall-clock waiting stays outside the graph
+                    </h3>
+
+                    <p class="mb-0">
+                        Long delivery polling remains in runner.py instead of
+                        making every graph invocation sleep for minutes.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         MOST IMPORTANT CONCEPT
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-5">
+
+        <div class="card-header">
+            <h3 class="h5 mb-0">
+                The most important concept to understand
+            </h3>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                The command:
+            </p>
+
+            <pre class="code-block"><code>python -m agent.main</code></pre>
+
+            <p>
+                does not directly "run LangGraph."
+            </p>
+
+            <p>
+                It first starts the Python application, loads configuration,
+                constructs security and integration dependencies, creates the
+                Anthropic client, builds and compiles the LangGraph workflow,
+                creates an auditable agent-run record, retrieves the current
+                workload, and only then invokes the compiled graph.
+            </p>
+
+            <p class="mb-0">
+                <strong>
+                    The graph is the per-item decision engine; runner.py is the
+                    overall business-process orchestrator.
+                </strong>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         FINAL TAKEAWAY
+         ============================================================ -->
+
+    <div class="card border-primary shadow-sm mb-4">
+
+        <div class="card-header bg-primary text-white">
+            <strong>Python Agent Architecture Takeaway</strong>
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                The Python application deliberately separates process startup,
+                orchestration, graph topology, business-stage implementation,
+                REST integration, authentication, configuration, state, and
+                LLM integration.
+            </p>
+
+            <p>
+                That separation makes the agent easier to understand and prevents
+                the LLM from becoming the application architecture itself.
+            </p>
+
+            <p>
+                <code>main.py</code> starts the process.
+                <code>runner.py</code> assembles and governs the run.
+                <code>graph.py</code> constructs the decision workflow.
+                <code>nodes.py</code> performs each stage.
+                <code>api_client.py</code> reaches the enterprise system.
+                <code>auth.py</code> establishes machine identity.
+                <code>llm_clients.py</code> provides bounded AI judgment.
+            </p>
+
+            <p class="mb-0">
+
+                <strong>
+                    Python and LangGraph orchestrate the work; Keycloak establishes
+                    machine identity; Spring Boot enforces business authority;
+                    MySQL remains the system of record; RabbitMQ executes
+                    asynchronous side effects; Anthropic supplies only the
+                    judgment that deterministic software cannot reasonably provide.
+                </strong>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>

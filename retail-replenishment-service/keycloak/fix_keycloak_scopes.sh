@@ -16,8 +16,9 @@
 set -euo pipefail
 
 KEYCLOAK_URL="http://localhost:8080"
-MASTER_ADMIN_USER="admin"
-MASTER_ADMIN_PASSWORD="${1:-}"
+MASTER_ADMIN_USER="binitadmin"
+#MASTER_ADMIN_PASSWORD="${1:-}"
+MASTER_ADMIN_PASSWORD="password"
 TARGET_REALM="retail-replenishment"
 TARGET_CLIENT_ID="retail-replenishment-dashboard"
 

@@ -109,4 +109,36 @@ Lambda/Fargate task on EventBridge) instead of a local cron entry.
 
 cd retail-replenishment-agent
 unzip -o ../agent-http-trace-feature.zip
+
+(.venv) Binits-MacBook-Pro:retail-replenishment-agent binitdatta$ python -m agent.main
+/Users/binitdatta/Development/Retail_Agentic_App/retail-replenishment-agent/.venv/lib/python3.12/site-packages/langgraph/checkpoint/base/__init__.py:18: LangChainPendingDeprecationWarning: The default value of `allowed_objects` will change in a future version. Pass an explicit value (e.g., allowed_objects='messages' or allowed_objects='core') to suppress this warning.
+  from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
+2026-09-12 15:32:35,734 INFO     agent.auth: Fetching a new access token from http://localhost:8080/realms/retail-replenishment/protocol/openid-connect/token
+2026-09-12 15:32:36,518 INFO     agent.runner: Started agent_run 2 (uuid=8de524ca-100a-439d-a310-384bfd4c3f54)
+2026-09-12 15:32:36,565 INFO     agent.runner: Detected 5 low-stock item(s)
+2026-09-12 15:32:40,470 INFO     httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-12 15:32:43,662 INFO     httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-12 15:32:46,819 INFO     httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-12 15:32:49,625 INFO     httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-12 15:32:52,654 INFO     httpx: HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+2026-09-12 15:32:52,741 INFO     agent.runner: Monitoring delivery for 4 order(s) for up to 8 minute(s)
+2026-09-12 15:32:52,774 INFO     agent.runner: Order 2 shipment now CREATED
+2026-09-12 15:33:22,870 INFO     agent.runner: Order 2 shipment now DEPARTED
+2026-09-12 15:34:23,008 INFO     agent.runner: Order 2 shipment now IN_TRANSIT
+2026-09-12 15:35:23,186 INFO     agent.runner: Order 5 shipment now CREATED
+2026-09-12 15:35:53,221 INFO     agent.runner: Order 3 shipment now DEPARTED
+2026-09-12 15:35:53,253 INFO     agent.runner: Order 4 shipment now DEPARTED
+2026-09-12 15:35:53,279 INFO     agent.runner: Order 5 shipment now DEPARTED
+2026-09-12 15:36:53,349 INFO     agent.runner: Order 2 shipment now OUT_FOR_DELIVERY
+2026-09-12 15:36:53,383 INFO     agent.runner: Order 4 shipment now IN_TRANSIT
+2026-09-12 15:36:53,407 INFO     agent.runner: Order 5 shipment now IN_TRANSIT
+2026-09-12 15:37:23,446 INFO     agent.runner: Order 3 shipment now IN_TRANSIT
+2026-09-12 15:38:23,606 INFO     agent.runner: Order 4 shipment now DELAYED
+2026-09-12 15:38:53,646 INFO     agent.runner: Order 2 shipment now DELIVERED
+2026-09-12 15:39:23,717 INFO     agent.runner: Order 4 shipment now OUT_FOR_DELIVERY
+2026-09-12 15:39:23,737 INFO     agent.runner: Order 5 shipment now OUT_FOR_DELIVERY
+2026-09-12 15:39:53,804 INFO     agent.runner: Order 3 shipment now OUT_FOR_DELIVERY
+2026-09-12 15:40:53,897 INFO     agent.runner: Monitoring window elapsed with 4 order(s) still not delivered
+2026-09-12 15:40:53,964 INFO     agent.runner: agent_run 2 complete: Scanned 5 low-stock item(s). 4 order(s) recommended (1 auto-approved). 1 shortage escalation(s) raised.
+(.venv) Binits-MacBook-Pro:retail-replenishment-agent binitdatta$ 
 ```

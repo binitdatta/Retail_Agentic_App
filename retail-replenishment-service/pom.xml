@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.havi</groupId>
+    <groupId>com.rollingstone</groupId>
     <artifactId>retail-replenishment-service</artifactId>
     <version>0.1.0</version>
     <name>retail-replenishment-service</name>

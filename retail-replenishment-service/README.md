@@ -48,7 +48,7 @@ Agent run / audit trail (called by the LangGraph agent, read by the dashboard):
 
 Master data: `GET /api/stores`, `GET /api/products`, `GET /api/suppliers` (+ `/{id}`).
 
-## Notable behavior
+## Notable berollingstoneor
 
 - A shipment status update to `DELIVERED` (`PATCH /api/shipments/{id}/status`)
   receives the ordered quantities into `store_inventory` and closes the

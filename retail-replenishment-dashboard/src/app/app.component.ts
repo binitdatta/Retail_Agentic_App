@@ -24,6 +24,9 @@ import { ActorNameService } from './core/actor-name.service';
           <li class="nav-item">
             <a class="nav-link" routerLink="/inventory" routerLinkActive="fw-bold">Inventory</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/audit" routerLinkActive="fw-bold">Audit Log</a>
+          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Training
@@ -61,6 +64,7 @@ import { ActorNameService } from './core/actor-name.service';
                   <li><a class="dropdown-item" routerLink="/training/python-agent" fragment="overview">Overview</a></li>
                   <li><a class="dropdown-item" routerLink="/training/python-agent" fragment="pipeline">LangGraph pipeline</a></li>
                   <li><a class="dropdown-item" routerLink="/training/python-agent" fragment="llm">LLM judgment calls</a></li>
+                  <li><a class="dropdown-item" routerLink="/training/python-agent-reference">Code reference (function-by-function)</a></li>
                 </ul>
               </li>
 

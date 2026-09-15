@@ -46,6 +46,11 @@ app:
   cors:
     allowed-origins:
       - http://localhost:4200
+  demo-reset:
+    # SAFETY DEFAULT: only true in this local/demo config. Never set true
+    # in a shared or production configuration — this endpoint truncates
+    # transactional tables.
+    enabled: true
   rabbitmq:
     exchange: retail.replenishment.events
     routing-keys:
@@ -73,5 +78,5 @@ app:
 
 logging:
   level:
-    com.havi.retailreplenishment: INFO
+    com.rollingstone.retailreplenishment: INFO
     org.hibernate.SQL: WARN

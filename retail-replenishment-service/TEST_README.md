@@ -207,7 +207,7 @@ messages_ready: 0
 binit.datta@C6NWKQ290Y retail-replenishment-service % mvn clean install                                      
 [INFO] Scanning for projects...
 [INFO] 
-[INFO] ---------------< com.havi:retail-replenishment-service >----------------
+[INFO] ---------------< com.rollingstone:retail-replenishment-service >----------------
 [INFO] Building retail-replenishment-service 0.1.0
 [INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------
@@ -240,8 +240,8 @@ binit.datta@C6NWKQ290Y retail-replenishment-service % mvn clean install
 [INFO] The original artifact has been renamed to /Users/binit.datta/Development/OpenSource/Retail_Agentic_App/retail-replenishment-service/target/retail-replenishment-service-0.1.0.jar.original
 [INFO] 
 [INFO] --- install:3.1.4:install (default-install) @ retail-replenishment-service ---
-[INFO] Installing /Users/binit.datta/Development/OpenSource/Retail_Agentic_App/retail-replenishment-service/pom.xml to /Users/binit.datta/.m2/repository/com/havi/retail-replenishment-service/0.1.0/retail-replenishment-service-0.1.0.pom
-[INFO] Installing /Users/binit.datta/Development/OpenSource/Retail_Agentic_App/retail-replenishment-service/target/retail-replenishment-service-0.1.0.jar to /Users/binit.datta/.m2/repository/com/havi/retail-replenishment-service/0.1.0/retail-replenishment-service-0.1.0.jar
+[INFO] Installing /Users/binit.datta/Development/OpenSource/Retail_Agentic_App/retail-replenishment-service/pom.xml to /Users/binit.datta/.m2/repository/com/rollingstone/retail-replenishment-service/0.1.0/retail-replenishment-service-0.1.0.pom
+[INFO] Installing /Users/binit.datta/Development/OpenSource/Retail_Agentic_App/retail-replenishment-service/target/retail-replenishment-service-0.1.0.jar to /Users/binit.datta/.m2/repository/com/rollingstone/retail-replenishment-service/0.1.0/retail-replenishment-service-0.1.0.jar
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
@@ -360,7 +360,7 @@ chmod +x diagnose_run.sh
 binit.datta@C6NWKQ290Y retail-replenishment-service % mvn clean install                                      
 [INFO] Scanning for projects...
 [INFO] 
-[INFO] ---------------< com.havi:retail-replenishment-service >----------------
+[INFO] ---------------< com.rollingstone:retail-replenishment-service >----------------
 [INFO] Building retail-replenishment-service 0.1.0
 [INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------
@@ -393,8 +393,8 @@ binit.datta@C6NWKQ290Y retail-replenishment-service % mvn clean install
 [INFO] The original artifact has been renamed to /Users/binit.datta/Development/OpenSource/Retail_Agentic_App/retail-replenishment-service/target/retail-replenishment-service-0.1.0.jar.original
 [INFO] 
 [INFO] --- install:3.1.4:install (default-install) @ retail-replenishment-service ---
-[INFO] Installing /Users/binit.datta/Development/OpenSource/Retail_Agentic_App/retail-replenishment-service/pom.xml to /Users/binit.datta/.m2/repository/com/havi/retail-replenishment-service/0.1.0/retail-replenishment-service-0.1.0.pom
-[INFO] Installing /Users/binit.datta/Development/OpenSource/Retail_Agentic_App/retail-replenishment-service/target/retail-replenishment-service-0.1.0.jar to /Users/binit.datta/.m2/repository/com/havi/retail-replenishment-service/0.1.0/retail-replenishment-service-0.1.0.jar
+[INFO] Installing /Users/binit.datta/Development/OpenSource/Retail_Agentic_App/retail-replenishment-service/pom.xml to /Users/binit.datta/.m2/repository/com/rollingstone/retail-replenishment-service/0.1.0/retail-replenishment-service-0.1.0.pom
+[INFO] Installing /Users/binit.datta/Development/OpenSource/Retail_Agentic_App/retail-replenishment-service/target/retail-replenishment-service-0.1.0.jar to /Users/binit.datta/.m2/repository/com/rollingstone/retail-replenishment-service/0.1.0/retail-replenishment-service-0.1.0.jar
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
